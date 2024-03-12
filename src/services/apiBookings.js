@@ -2,16 +2,22 @@ import { PAGE_SIZE } from "../utils/constants";
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
-export async function getBookings({ filter, sortBy, page }) {
+export async function getBookings({ filter, search, sortBy, page }) {
   let query = supabase
     .from("bookings")
     .select(
       "id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)",
-      { count: "exact" }
+      { count: "exact" },
     );
 
   // FILTER
   if (filter) query = query[filter.method || "eq"](filter.field, filter.value);
+  // что такое eq - https://supabase.io/docs/reference/javascript/select
+
+  // SEARCH
+  if (search && search.length > 0) {
+    query = query.ilike("guests.fullName", `%${search}%`);
+  }
 
   // SORT
   if (sortBy)
@@ -25,7 +31,13 @@ export async function getBookings({ filter, sortBy, page }) {
     query = query.range(from, to);
   }
 
-  const { data, error, count } = await query;
+  let { data, error, count } = await query;
+
+  if (search) {
+    data = data.filter((booking) => {
+      return !(booking.guests === null);
+    });
+  }
 
   if (error) {
     throw new Error("Bookings could not be loaded");
@@ -87,7 +99,7 @@ export async function getStaysTodayActivity() {
     .from("bookings")
     .select("*, guests(fullName, nationality, countryFlag)")
     .or(
-      `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
+      `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`,
     )
     .order("created_at");
 
@@ -126,4 +138,22 @@ export async function deleteBooking(id) {
     throw new Error("Booking could not be deleted");
   }
   return data;
+}
+
+export async function searchBookingsByGuest(query) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("guests(fullName, email)")
+    .ilike("guests.fullName", `${query}`);
+
+  const result = data.filter((booking) => {
+    return !(booking.guests === null);
+  });
+
+  if (error) {
+    console.error(error);
+    throw new Error("Bookings could not be searched");
+  }
+
+  return result;
 }

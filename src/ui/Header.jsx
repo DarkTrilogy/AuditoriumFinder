@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import HeaderMenu from "./HeaderMenu";
 import UserAvatar from "../features/authentication/UserAvatar";
+import SearchBar from "./SearchBar";
 
 const StyledHeader = styled.header`
   background-color: var(--color-grey-0);
@@ -10,14 +11,20 @@ const StyledHeader = styled.header`
   display: flex;
   gap: 2.4rem;
   align-items: center;
+  /* justify-content: space-between; */
   justify-content: flex-end;
 `;
 
 function Header() {
   return (
     <StyledHeader>
+      {/* <div>
+        <SearchBar />
+      </div> */}
+      {/* <div class="flex"> */}
       <UserAvatar />
       <HeaderMenu />
+      {/* </div> */}
     </StyledHeader>
   );
 }

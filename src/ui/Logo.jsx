@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useDarkMode } from "../context/DarkModeContext";
+import { useNavigate } from "react-router-dom";
 
 const StyledLogo = styled.div`
   text-align: center;
@@ -12,12 +13,19 @@ const Img = styled.img`
 
 function Logo() {
   const { isDarkMode } = useDarkMode();
+  const navigate = useNavigate();
 
-  const src = isDarkMode ? "/logo-dark.png" : "/logo-light.png";
+  const src = isDarkMode ? "/hse-light.png" : "/hse-dark.png";
 
   return (
-    <StyledLogo>
-      <Img src={src} alt="Logo" />
+    <StyledLogo className="grid justify-center gap-10">
+      <Img
+        className="m-auto"
+        src={src}
+        alt="Logo"
+        onClick={() => navigate("/dashboard")}
+      />
+      <span className="uppercase">AuditoriumFinder</span>
     </StyledLogo>
   );
 }

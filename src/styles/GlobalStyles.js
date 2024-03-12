@@ -109,6 +109,8 @@ const GlobalStyles = createGlobalStyle`:root {
   html {
     font-size: 62.5%;
   }
+
+  
   
   body {
     font-family: "Poppins", sans-serif;

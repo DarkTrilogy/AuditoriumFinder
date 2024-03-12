@@ -33,7 +33,7 @@ function UpdateUserDataForm() {
           setAvatar(null);
           e.target.reset();
         },
-      }
+      },
     );
   }
 
@@ -48,7 +48,7 @@ function UpdateUserDataForm() {
         <Input value={email} disabled />
       </FormRow>
 
-      <FormRow label="Full name">
+      <FormRow label="Nickname">
         <Input
           type="text"
           value={fullName}
