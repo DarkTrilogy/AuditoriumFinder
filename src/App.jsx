@@ -22,6 +22,8 @@ import Moderator from "./pages/Moderator";
 import Report from "./pages/Report";
 import Reports from "./pages/Reports";
 import { useEffect } from "react";
+import Friends from "./pages/Friends";
+import Friend from "./pages/Friend";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,6 +56,8 @@ function App() {
               <Route path="checkin/:bookingId" element={<Checkin />} />
               <Route path="cabins" element={<Cabins />} />
               <Route path="users" element={<NewUsers />} />
+              <Route path="friends" element={<Friends />} />
+              <Route path="friends/:friendId" element={<Friend />} />
               <Route path="settings" element={<Settings />} />
               <Route path="account" element={<Account />} />
             </Route>

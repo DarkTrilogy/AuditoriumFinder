@@ -92,6 +92,12 @@ function MainNav({ role }) {
             </StyledNavLink>
           </li>
           <li>
+            <StyledNavLink to="/friends">
+              <HiOutlineUsers />
+              <span>Friends</span>
+            </StyledNavLink>
+          </li>
+          <li>
             <StyledNavLink to="/settings">
               <HiOutlineCog6Tooth />
               <span>Settings</span>

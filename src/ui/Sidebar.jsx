@@ -14,8 +14,6 @@ const StyledSidebar = styled.aside`
 `;
 
 function Sidebar({ role }) {
-  const isModerator = role === "moderator";
-
   return (
     <StyledSidebar>
       <Logo />

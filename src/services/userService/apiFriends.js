@@ -1,8 +1,13 @@
 const prefixUrl = "http://localhost:8080/friends";
 
-export async function getFriendList(userid) {
-  const response = await fetch(`${prefixUrl}/${userid}`);
-  return response.json();
+export async function getFriendList(userid, friendId = 0) {
+  const response = await fetch(`${prefixUrl}/${userid}/`);
+  const data = await response.json();
+  if (friendId !== 0) {
+    const result = data.find((friend) => friend.userId === Number(friendId));
+    return result;
+  }
+  return { data };
 }
 
 export async function subscribeToNotificationsFromUser(id, userid) {
