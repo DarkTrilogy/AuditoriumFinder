@@ -10,16 +10,18 @@ const StyledHeaderMenu = styled.ul`
   gap: 0.4rem;
 `;
 
-function HeaderMenu() {
+function HeaderMenu({ isModerator }) {
   const navigate = useNavigate();
 
   return (
     <StyledHeaderMenu>
-      <li>
-        <ButtonIcon onClick={() => navigate("/account")}>
-          <HiOutlineUser />
-        </ButtonIcon>
-      </li>
+      {!isModerator && (
+        <li>
+          <ButtonIcon onClick={() => navigate("/account")}>
+            <HiOutlineUser />
+          </ButtonIcon>
+        </li>
+      )}
       <li>
         <DarkModeToggle />
       </li>

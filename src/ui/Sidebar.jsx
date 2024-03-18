@@ -13,11 +13,13 @@ const StyledSidebar = styled.aside`
   gap: 3.2rem;
 `;
 
-function Sidebar() {
+function Sidebar({ role }) {
+  const isModerator = role === "moderator";
+
   return (
     <StyledSidebar>
       <Logo />
-      <MainNav />
+      <MainNav role={role} />
     </StyledSidebar>
   );
 }

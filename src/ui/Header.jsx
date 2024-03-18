@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import HeaderMenu from "./HeaderMenu";
 import UserAvatar from "../features/authentication/UserAvatar";
-import SearchBar from "./SearchBar";
 
 const StyledHeader = styled.header`
   background-color: var(--color-grey-0);
@@ -12,18 +11,20 @@ const StyledHeader = styled.header`
   gap: 2.4rem;
   align-items: center;
   /* justify-content: space-between; */
-  justify-content: flex-end;
+  justify-content: ${(props) =>
+    !props.isModerator ? "flex-end" : "space-between"};
 `;
 
-function Header() {
+function Header({ isModerator }) {
+  console.log(isModerator);
   return (
-    <StyledHeader>
+    <StyledHeader isModerator={isModerator}>
       {/* <div>
         <SearchBar />
       </div> */}
       {/* <div class="flex"> */}
       <UserAvatar />
-      <HeaderMenu />
+      <HeaderMenu isModerator={isModerator} />
       {/* </div> */}
     </StyledHeader>
   );

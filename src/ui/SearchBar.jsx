@@ -1,7 +1,22 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useSearchParams } from "react-router-dom";
+
+const inputSizes = {
+  common: css``,
+  screen: css`
+    width: 92vw;
+    text-align: center;
+  `,
+};
+
+const buttonProps = {
+  common: css``,
+  screen: css`
+    display: none;
+  `,
+};
 
 const Input = styled.input.attrs({
   type: "search",
@@ -10,6 +25,7 @@ const Input = styled.input.attrs({
   className:
     "block w-full rounded-lg border border-gray-300 bg-gray-50 p-4 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500",
 })`
+  ${(props) => inputSizes[props.size] || inputSizes.common}
   font-size: 1.6rem;
 `;
 
@@ -18,10 +34,11 @@ const Button = styled.button.attrs({
   className:
     "absolute bottom-2.5 end-2.5 rounded-lg bg-blue-700 px-4 py-2 font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
 })`
+  ${(props) => buttonProps[props.location] || buttonProps.common}
   font-size: 1.6rem;
 `;
 
-function SearchBar() {
+function SearchBar({ prop }) {
   const { register, formState, handleSubmit, reset } = useForm();
   // const { errors } = formState;
   const filterField = "search";
@@ -70,6 +87,7 @@ function SearchBar() {
         </div>
         {/* <SearchRow error={errors?.search?.message}> */}
         <Input
+          size={prop}
           type="text"
           id="search"
           // {...register("search", {
@@ -80,7 +98,7 @@ function SearchBar() {
         />
         {/* </SearchRow> */}
 
-        <Button>Search</Button>
+        <Button location={prop}>Search</Button>
       </div>
     </form>
   );

@@ -10,6 +10,9 @@ export default {
       width: {
         searchBar: ["300%"],
       },
+      scale: {
+        image: ".4",
+      },
       height: {
         screen: "100dvh",
       },

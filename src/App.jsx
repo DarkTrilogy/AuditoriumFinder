@@ -10,7 +10,7 @@ import Settings from "./pages/Settings";
 import Account from "./pages/Account";
 import PageNotFound from "./pages/PageNotFound";
 import GlobalStyles from "./styles/GlobalStyles";
-import AppLayout from "./ui/AppLayout";
+import AppLayout, { isModerator } from "./ui/AppLayout";
 import Login from "./pages/Login";
 import { Toaster } from "react-hot-toast";
 import Booking from "./pages/Booking";
@@ -18,6 +18,10 @@ import Checkin from "./pages/Checkin";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import Register from "./pages/Register";
+import Moderator from "./pages/Moderator";
+import Report from "./pages/Report";
+import Reports from "./pages/Reports";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,7 +47,7 @@ function App() {
                 </ProtectedRoute>
               }
             >
-              <Route index element={<Navigate replace to="dashboard" />} />
+              {/* <Route index element={<Navigate replace to={"moderator"} />} /> */}
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="bookings" element={<Bookings />} />
               <Route path="bookings/:bookingId" element={<Booking />} />
@@ -52,6 +56,13 @@ function App() {
               <Route path="users" element={<NewUsers />} />
               <Route path="settings" element={<Settings />} />
               <Route path="account" element={<Account />} />
+            </Route>
+
+            <Route element={<AppLayout showOutlet={true} />}>
+              <Route index element={<Navigate replace to="moderator" />} />
+              <Route path="moderator" element={<Moderator />} />
+              <Route path="reports" element={<Reports />} />
+              <Route path="reports/:reportId" element={<Report />} />
             </Route>
 
             <Route path="login" element={<Login />} />

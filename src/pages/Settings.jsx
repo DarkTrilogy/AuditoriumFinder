@@ -1,13 +1,13 @@
 import UpdateSettingsForm from "../features/settings/UpdateSettingsForm";
-import { getReports } from "../services/apiModerator";
+import { getReports } from "../services/userService/apiModerator";
 import Button from "../ui/Button";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 
 function Settings() {
-  function handler(e) {
+  async function handler(e) {
     e.preventDefault();
-    const reports = getReports();
+    const reports = await getReports();
     console.log(reports);
   }
 
