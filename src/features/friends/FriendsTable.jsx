@@ -15,7 +15,7 @@ function FriendsTable() {
 
   // if (!bookings.length) return <Empty resourceName={"bookings"} />;
 
-  const { friends, isLoading, count } = useFriends();
+  const { friends, isLoading, count } = useFriends(1);
 
   if (isLoading) return <Spinner />;
 

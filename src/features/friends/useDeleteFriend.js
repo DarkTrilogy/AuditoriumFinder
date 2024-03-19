@@ -6,12 +6,12 @@ export function useDeleteFriend() {
   const queryClient = useQueryClient();
 
   const { isDeleting, mutate: deleteFriend } = useMutation({
-    mutationFn: removeFromFriendList,
+    mutationFn: (friendId, id) => removeFromFriendList(friendId, 1),
     onSuccess: () => {
       toast.success("Friend successfully deleted");
 
       queryClient.invalidateQueries({
-        queryKey: ["friends"],
+        queryKey: ["friends"], // почему не обновляется список друзей? - потому что не правильно указан queryKey в useQuery
       });
     },
     onError: (err) => toast.error(err.message),

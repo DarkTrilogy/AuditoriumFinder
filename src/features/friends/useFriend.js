@@ -10,12 +10,10 @@ export function useFriend() {
     data: friend,
     error,
   } = useQuery({
-    queryKey: ["booking", friendId],
+    queryKey: ["friend", friendId],
     queryFn: () => getFriendList(1, friendId),
     retry: false,
   });
-
-  console.log("friend", friend);
 
   return { isLoading, error, friend };
 }

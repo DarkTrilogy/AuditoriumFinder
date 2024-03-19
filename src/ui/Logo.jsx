@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 const StyledLogo = styled.div`
   text-align: center;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const Img = styled.img`
@@ -23,7 +26,7 @@ function Logo() {
         className="m-auto"
         src={src}
         alt="Logo"
-        onClick={() => navigate("/dashboard")}
+        onClick={() => navigate("/moderator")}
       />
       <span className="uppercase">AuditoriumFinder</span>
     </StyledLogo>

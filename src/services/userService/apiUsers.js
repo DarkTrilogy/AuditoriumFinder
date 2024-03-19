@@ -1,10 +1,16 @@
 const prefixUrl = "http://localhost:8080/user";
 
-export async function searchByCriteria(userid, nickname, tagIds) {
+export async function searchByCriteria(userId, nickname = "", tagIds = "") {
   const response = await fetch(
-    `${prefixUrl}/${userid}/search?nickname=${nickname}&tags=${tagIds}`,
+    `${prefixUrl}/${userId}/search?nickname=${nickname}&tags=${tagIds}`,
   );
-  return response.json();
+
+  let data;
+  data = await response.json();
+  if (userId === 0) return { data, count: data.length };
+
+  data = data.find((user) => user.userId === Number(userId));
+  return data;
 }
 
 export async function reportUser(userid, reportRequest, id) {
@@ -12,5 +18,6 @@ export async function reportUser(userid, reportRequest, id) {
     method: "POST",
     body: JSON.stringify(reportRequest),
   });
-  return response.json();
+  const data = await response.json();
+  return { data };
 }

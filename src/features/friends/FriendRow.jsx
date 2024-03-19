@@ -15,6 +15,7 @@ import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../check-in-out/useCheckout";
 import { useDeleteBooking } from "../bookings/useDeleteBooking";
+import { useDeleteFriend } from "./useDeleteFriend";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -41,7 +42,7 @@ const Stacked = styled.div`
 function FriendRow({ friend: { userId: friendId, userNickname: nickname } }) {
   const navigate = useNavigate();
   const { checkout, isCheckingOut } = useCheckout();
-  const { deleteBooking, isDeleting } = useDeleteBooking();
+  const { deleteFriend, isDeleting } = useDeleteFriend();
 
   const status = "friend";
   const statusToTagName = {
@@ -98,9 +99,9 @@ function FriendRow({ friend: { userId: friendId, userNickname: nickname } }) {
 
         <Modal.Window name="delete">
           <ConfirmDelete
-            resourceName="booking"
+            resourceName="friend"
             disabled={isDeleting}
-            onConfirm={() => deleteBooking(friendId)}
+            onConfirm={() => deleteFriend(friendId, friendId)} // как передать 2 аргумента в useDeleteFriend - friendId и id - ? - см. useDeleteBooking
           />
         </Modal.Window>
       </Modal>

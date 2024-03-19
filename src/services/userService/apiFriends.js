@@ -7,7 +7,7 @@ export async function getFriendList(userid, friendId = 0) {
     const result = data.find((friend) => friend.userId === Number(friendId));
     return result;
   }
-  return { data };
+  return { data, count: data.length };
 }
 
 export async function subscribeToNotificationsFromUser(id, userid) {
@@ -25,8 +25,15 @@ export async function unsubscribeFromNotificationsFromUser(id, userid) {
 }
 
 export async function removeFromFriendList(id, userid) {
-  const response = await fetch(`${prefixUrl}/${id}/remove/${userid}`, {
-    method: "PATCH",
-  });
-  return response.json();
+  // await fetch(`${prefixUrl}/${id}/remove/${userid}`, {
+  //   method: "PATCH",
+  // });
+  console.log("REMOVE", id, userid);
+  const data = await getFriendList(id);
+  console.log(data.data);
+
+  data.data = data.data.filter((friend) => friend.userId !== userid);
+  console.log(data.data);
+
+  return { data };
 }

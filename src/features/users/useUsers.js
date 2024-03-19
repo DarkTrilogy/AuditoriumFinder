@@ -2,8 +2,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
 import { PAGE_SIZE } from "../../utils/constants";
+import { searchByCriteria } from "../../services/userService/apiUsers";
 
-export function useUsers() {
+export function useUsers(userId) {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
@@ -31,27 +32,29 @@ export function useUsers() {
   // QUERY
   const {
     isLoading,
-    data: { data: bookings, count } = {},
+    data: { data: users, count } = {},
     error,
   } = useQuery({
-    queryKey: ["bookings", search, filter, sortBy, page],
-    queryFn: () => getBookings({ filter, search, sortBy, page }),
+    queryKey: ["users", search, filter, sortBy, page],
+    queryFn: () => searchByCriteria(userId),
   });
 
+  console.log(users);
+
   // PRE-FETCHING
-  const pageCount = Math.ceil(count / PAGE_SIZE);
+  // const pageCount = Math.ceil(count / PAGE_SIZE);
 
-  if (page < pageCount)
-    queryClient.prefetchQuery({
-      queryKey: ["bookings", search, filter, sortBy, page + 1],
-      queryFn: () => getBookings({ filter, search, sortBy, page: page + 1 }),
-    });
+  // if (page < pageCount)
+  //   queryClient.prefetchQuery({
+  //     queryKey: ["bookings", search, filter, sortBy, page + 1],
+  //     queryFn: () => getBookings({ filter, search, sortBy, page: page + 1 }),
+  //   });
 
-  if (page > 1)
-    queryClient.prefetchQuery({
-      queryKey: ["bookings", search, filter, sortBy, page - 1],
-      queryFn: () => getBookings({ filter, search, sortBy, page: page - 1 }),
-    });
+  // if (page > 1)
+  //   queryClient.prefetchQuery({
+  //     queryKey: ["bookings", search, filter, sortBy, page - 1],
+  //     queryFn: () => getBookings({ filter, search, sortBy, page: page - 1 }),
+  //   });
 
-  return { isLoading, error, bookings, count };
+  return { isLoading, error, users, count };
 }

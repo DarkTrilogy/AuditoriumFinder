@@ -1,23 +1,14 @@
 import styled from "styled-components";
-import { format, isToday } from "date-fns";
-import {
-  HiArrowDownOnSquare,
-  HiArrowUpOnSquare,
-  HiEye,
-  HiTrash,
-} from "react-icons/hi2";
+import { HiEye, HiOutlineEnvelope } from "react-icons/hi2";
 
 import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
-import ConfirmDelete from "../../ui/ConfirmDelete";
 
-import { formatCurrency } from "../../utils/helpers";
-import { formatDistanceFromNow } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
-import { useCheckout } from "../check-in-out/useCheckout";
-import { useDeleteBooking } from "../bookings/useDeleteBooking";
+import { makeFriendRequest } from "../../services/userService/apiRequests";
+import { useUser } from "../authentication/useUser";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -41,42 +32,30 @@ const Stacked = styled.div`
   }
 `;
 
-const Amount = styled.div`
-  font-family: "Sono";
-  font-weight: 500;
-`;
-
-function UserRow({
-  booking: {
-    id: bookingId,
-    created_at,
-    startDate,
-    endDate,
-    numNights,
-    numGuests,
-    totalPrice,
-    status,
-    guests: { fullName: guestName, email },
-    cabins: { name: cabinName },
-  },
-}) {
+function UserRow({ user: { userId, userNickname: nickname } }) {
   const navigate = useNavigate();
-  const { checkout, isCheckingOut } = useCheckout();
-  const { deleteBooking, isDeleting } = useDeleteBooking();
 
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
     "checked-out": "silver",
+    envelope: "green",
   };
+  const status = "unconfirmed";
+
+  function handleFriendRequest() {
+    // TODO: при авторизации через бэкенд, мы получаем id текущего пользователя
+    // и можем отправлять запрос на добавление в друзья другого пользователя при помощи данных id
+    // const data = makeFriendRequest(currentUserId, userId);
+  }
 
   return (
     <Table.Row>
-      <Cabin>{cabinName}</Cabin>
+      <Cabin>{nickname}</Cabin>
 
       <Stacked>
-        <span>{guestName}</span>
-        <span>{email}</span>
+        <span>{nickname}</span>
+        <span>{nickname}</span>
       </Stacked>
 
       {/* <Stacked>
@@ -94,21 +73,25 @@ function UserRow({
 
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
+      <Tag type="envelope" onClick={() => handleFriendRequest()}>
+        <HiOutlineEnvelope />
+      </Tag>
+
       <Modal>
         <Menus.Menu>
-          <Menus.Toggle id={bookingId} />
-          <Menus.List id={bookingId}>
+          <Menus.Toggle id={userId} />
+          <Menus.List id={userId}>
             <Menus.Button
               icon={<HiEye />}
-              onClick={() => navigate(`/bookings/${bookingId}`)}
+              onClick={() => navigate(`/users/${userId}`)}
             >
               See details
             </Menus.Button>
 
-            {status === "unconfirmed" && (
+            {/* {status === "unconfirmed" && (
               <Menus.Button
                 icon={<HiArrowDownOnSquare />}
-                onClick={() => navigate(`/checkin/${bookingId}`)}
+                onClick={() => navigate(`/checkin/${userId}`)}
               >
                 Check in
               </Menus.Button>
@@ -117,26 +100,14 @@ function UserRow({
             {status === "checked-in" && (
               <Menus.Button
                 icon={<HiArrowUpOnSquare />}
-                onClick={() => checkout(bookingId)}
+                onClick={() => checkout(userId)}
                 disabled={isCheckingOut}
               >
                 Check out
               </Menus.Button>
-            )}
-
-            <Modal.Open opens="delete">
-              <Menus.Button icon={<HiTrash />}>Delete booking</Menus.Button>
-            </Modal.Open>
+            )} */}
           </Menus.List>
         </Menus.Menu>
-
-        <Modal.Window name="delete">
-          <ConfirmDelete
-            resourceName="booking"
-            disabled={isDeleting}
-            onConfirm={() => deleteBooking(bookingId)}
-          />
-        </Modal.Window>
       </Modal>
     </Table.Row>
   );

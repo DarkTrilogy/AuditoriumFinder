@@ -1,17 +1,16 @@
-import SignupForm from "../features/authentication/SignupForm";
 import UsersTable from "../features/users/UsersTable";
 import Heading from "../ui/Heading";
 import SearchBar from "../ui/SearchBar";
 
-function NewUsers() {
+function Users() {
   return (
     <>
       <SearchBar />
-      <Heading as="h1">Create a new user</Heading>
+      <Heading as="h1">List of all users</Heading>
       {/* <SignupForm /> */}
       <UsersTable />
     </>
   );
 }
 
-export default NewUsers;
+export default Users;

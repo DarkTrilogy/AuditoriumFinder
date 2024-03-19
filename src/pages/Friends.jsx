@@ -6,7 +6,7 @@ function Friends() {
   return (
     <>
       <SearchBar />
-      <Heading as="h1">Create a new user</Heading>
+      <Heading as="h1">Your friends</Heading>
       {/* <SignupForm /> */}
       <FriendsTable />
     </>

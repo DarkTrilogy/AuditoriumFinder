@@ -1,9 +1,7 @@
 import styled from "styled-components";
 
 import { HiArrowUpOnSquare } from "react-icons/hi2";
-import { useBooking } from "../bookings/useBooking";
 import { useCheckout } from "../check-in-out/useCheckout";
-import { useDeleteBooking } from "../bookings/useDeleteBooking";
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { useNavigate } from "react-router-dom";
 
@@ -13,15 +11,11 @@ import Row from "../../ui/Row";
 import Heading from "../../ui/Heading";
 import Tag from "../../ui/Tag";
 import ButtonText from "../../ui/ButtonText";
-import BookingDataBox from "../bookings/BookingDataBox";
 import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
-import Modal from "../../ui/Modal";
-import ConfirmDelete from "../../ui/ConfirmDelete";
-import { useFriends } from "./useFriends";
-import { useDeleteFriend } from "./useDeleteFriend";
-import { useFriend } from "./useFriend";
-import FriendDataBox from "./FriendDataBox";
+import UserDataBox from "./UserDataBox";
+import { useUsers } from "./useUsers";
+import { useUser } from "./useUser";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -29,23 +23,19 @@ const HeadingGroup = styled.div`
   align-items: center;
 `;
 
-function FriendDetail() {
-  //   const { booking, isLoading } = useBooking();
+function UserDetail() {
   const { checkout, isCheckingOut } = useCheckout();
-  //   const { deleteBooking, isDeleting } = useDeleteBooking();
 
-  const { friend, isLoading } = useFriend();
-  const { deleteFriend, isDeleting } = useDeleteFriend();
-
+  const { user, isLoading } = useUser();
+  console.log("USER", user);
+  //   console.log("USER", user.data);
   const moveBack = useMoveBack();
   const navigate = useNavigate();
 
   if (isLoading) return <Spinner />;
-  //   if (!booking) return <Empty resourceName="report" />;
-  if (!friend) return <Empty resourceName="friend" />;
+  if (!user) return <Empty resourceName="user" />;
 
-  //   const { status, id: bookingId } = booking;
-  const { userId: friendId, userNickname: nickname } = friend;
+  const { userId, userNickname: nickname } = user;
   const status = "friend";
 
   const statusToTagName = {
@@ -60,18 +50,18 @@ function FriendDetail() {
       <Row type="horizontal">
         <HeadingGroup>
           <Heading as="h1">
-            Friend #{friendId} - {nickname}
+            User #{userId} - {nickname}
           </Heading>
           <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 
-      <FriendDataBox friend={friend} />
+      <UserDataBox user={user} />
 
       <ButtonGroup>
         {status === "unconfirmed" && (
-          <Button onClick={() => navigate(`/checkin/${friendId}`)}>
+          <Button onClick={() => navigate(`/checkin/${userId}`)}>
             Check in
           </Button>
         )}
@@ -79,30 +69,12 @@ function FriendDetail() {
         {status === "checked-in" && (
           <Button
             icon={<HiArrowUpOnSquare />}
-            onClick={() => checkout(friendId)}
+            onClick={() => checkout(userId)}
             disabled={isCheckingOut}
           >
             Check out
           </Button>
         )}
-
-        <Modal>
-          <Modal.Open opens="delete">
-            <Button variation="danger">Delete friend</Button>
-          </Modal.Open>
-
-          <Modal.Window name="delete">
-            <ConfirmDelete
-              resourceName="friend"
-              disabled={isDeleting}
-              onConfirm={() =>
-                deleteFriend(friendId, {
-                  onSettled: () => navigate(-1),
-                })
-              }
-            />
-          </Modal.Window>
-        </Modal>
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>
@@ -111,4 +83,4 @@ function FriendDetail() {
   );
 }
 
-export default FriendDetail;
+export default UserDetail;

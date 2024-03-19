@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { PAGE_SIZE } from "../../utils/constants";
 import { getFriendList } from "../../services/userService/apiFriends";
 
-export function useFriends() {
+export function useFriends(userId) {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
@@ -32,11 +32,12 @@ export function useFriends() {
   // QUERY
   const {
     isLoading,
-    data: { data: friends } = {},
+    data: { data: friends, count } = {},
     error,
   } = useQuery({
-    queryKey: ["friends", search, filter, sortBy, page],
-    queryFn: () => getFriendList(1),
+    // queryKey: ["friends", search, filter, sortBy, page],
+    queryKey: ["friends"],
+    queryFn: () => getFriendList(userId),
   });
 
   // TODO: связать здесь логику с пагинацией на бэке
@@ -56,5 +57,5 @@ export function useFriends() {
   //       queryFn: () => getBookings({ filter, search, sortBy, page: page - 1 }),
   //     });
 
-  return { isLoading, error, friends };
+  return { isLoading, error, friends, count };
 }

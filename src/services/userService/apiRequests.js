@@ -14,7 +14,9 @@ export async function makeFriendRequest(userid, id) {
   const response = await fetch(`${prefixUrl}/${userid}/in/${id}/accept`, {
     method: "POST",
   });
-  return response.json();
+
+  const data = await response.json();
+  return { data };
 }
 
 export async function declineIncomingRequestFromUser(userid, id) {
