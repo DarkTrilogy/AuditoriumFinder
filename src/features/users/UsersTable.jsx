@@ -4,7 +4,6 @@ import Empty from "../../ui/Empty";
 
 import Spinner from "../../ui/Spinner";
 import Pagination from "../../ui/Pagination";
-import { useBookings } from "../bookings/useBookings";
 import UserRow from "./UserRow";
 import { useUsers } from "./useUsers";
 

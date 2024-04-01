@@ -1,4 +1,6 @@
-const prefixUrl = "http://localhost:8080/friends";
+import { LOCALHOST_USER } from "../constant";
+
+const prefixUrl = LOCALHOST_USER + "/friends";
 
 export async function getFriendList(userid, friendId = 0) {
   const response = await fetch(`${prefixUrl}/${userid}/`);

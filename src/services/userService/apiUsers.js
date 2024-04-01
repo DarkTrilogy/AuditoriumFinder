@@ -1,4 +1,6 @@
-const prefixUrl = "http://localhost:8080/user";
+import { LOCALHOST_USER } from "../constant";
+
+const prefixUrl = LOCALHOST_USER + "/user";
 
 export async function searchByCriteria(userId, nickname = "", tagIds = "") {
   const response = await fetch(

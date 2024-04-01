@@ -1,4 +1,6 @@
-const prefixUrl = "http://localhost:8080/moderator";
+import { LOCALHOST_USER } from "../constant";
+
+const prefixUrl = LOCALHOST_USER + "/moderator";
 
 export async function getReports() {
   const response = await fetch(`${prefixUrl}/reports`);

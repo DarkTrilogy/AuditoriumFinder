@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useLogin } from "./useLogin";
 import { useSignup } from "./useSignup";
+import { useEmailVerification } from "./useEmailVerification";
 
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
@@ -10,11 +11,15 @@ import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
 import SpinnerMini from "../../ui/SpinnerMini";
 
+export let emailOfCurrentUser;
+
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isLoading: loginLoading } = useLogin();
+  const { signIn, isLoading: loginLoading } = useLogin();
   const { signup, isLoading: signupLoading } = useSignup();
+  const { confirmCode, isLoading: confirmationLoading } =
+    useEmailVerification();
   const navigate = useNavigate();
 
   function handleSubmit(e) {
@@ -22,7 +27,8 @@ function LoginForm() {
     const action = e.nativeEvent.submitter.innerText;
     if (action === "Log in") {
       if (!email || !password) return;
-      login(
+      emailOfCurrentUser = email;
+      signIn(
         { email, password },
         {
           onSettled: () => {
@@ -33,19 +39,25 @@ function LoginForm() {
       );
     } else if (action === "Register") {
       if (!email || !password) return;
-      signup(
-        { email, password },
-        {
-          onSettled: () => {
-            setEmail("");
-            setPassword("");
-          },
-          onError: () => {
-            return;
-          },
-        },
-      );
-      navigate("/register");
+      emailOfCurrentUser = email;
+      // Our option
+      console.log("EMAIL", email);
+      confirmCode(email);
+      // navigate("/dashboard");
+      // Supabase option
+
+      // signup(
+      //   { email, password },
+      //   {
+      //     onSettled: () => {
+      //       setEmail("");
+      //       setPassword("");
+      //     },
+      //     onError: () => {
+      //       return;
+      //     },
+      //   },
+      // );
     }
   }
 

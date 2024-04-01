@@ -30,7 +30,15 @@ const Stacked = styled.div`
   }
 `;
 
-function UserRow({ user: { userId, userNickname: nickname } }) {
+function BuildingRow({
+  building: {
+    id,
+    city,
+    address,
+    first_lesson_start: start,
+    last_lesson_end: end,
+  },
+}) {
   const navigate = useNavigate();
 
   const statusToTagName = {
@@ -49,11 +57,9 @@ function UserRow({ user: { userId, userNickname: nickname } }) {
 
   return (
     <Table.Row>
-      <Cabin>{nickname}</Cabin>
-
       <Stacked>
-        <span>{nickname}</span>
-        <span>{nickname}</span>
+        <span>{address}</span>
+        <span>{city}</span>
       </Stacked>
 
       {/* <Stacked>
@@ -69,19 +75,20 @@ function UserRow({ user: { userId, userNickname: nickname } }) {
         </span>
       </Stacked> */}
 
-      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
-
-      <Tag type="envelope" onClick={() => handleFriendRequest()}>
-        <HiOutlineEnvelope />
+      <Tag type="green">
+        <span>{start}</span>
       </Tag>
 
+      <Tag type="red">
+        <span>{end}</span>
+      </Tag>
       <Modal>
         <Menus.Menu>
-          <Menus.Toggle id={userId} />
-          <Menus.List id={userId}>
+          <Menus.Toggle id={id} />
+          <Menus.List id={id}>
             <Menus.Button
               icon={<HiEye />}
-              onClick={() => navigate(`/users/${userId}`)}
+              onClick={() => navigate(`/users/${id}`)}
             >
               See details
             </Menus.Button>
@@ -111,4 +118,4 @@ function UserRow({ user: { userId, userNickname: nickname } }) {
   );
 }
 
-export default UserRow;
+export default BuildingRow;

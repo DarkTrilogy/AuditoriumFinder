@@ -1,9 +1,8 @@
-import { Navigate, Outlet, Route } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import styled from "styled-components";
 import { useUser } from "../features/authentication/useUser";
-import Moderator from "../pages/Moderator";
 import { MODERATOR_EMAIL } from "../utils/constants";
 
 const StyledLayount = styled.div`
@@ -34,10 +33,9 @@ const Container = styled.div`
   gap: 3.2rem;
 `;
 
-export let isModerator;
-function AppLayout({ showOutlet }) {
+function AppLayout({ showOutlet, checkForModerator }) {
   const { user } = useUser();
-  isModerator = user?.email === MODERATOR_EMAIL;
+  const isModerator = user?.email === MODERATOR_EMAIL;
 
   return (
     <>
@@ -60,9 +58,7 @@ function AppLayout({ showOutlet }) {
           <Sidebar />
 
           <Main>
-            <Container>
-              <Outlet />
-            </Container>
+            <Container>{!checkForModerator && <Outlet />}</Container>
           </Main>
         </StyledLayount>
       )}

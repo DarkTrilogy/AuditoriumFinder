@@ -1,4 +1,6 @@
-const prefixUrl = "http://localhost:8080/profile";
+import { LOCALHOST } from "./constant";
+
+const prefixUrl = LOCALHOST + "/profile";
 
 export async function editNickname(userid, profileChangeRequest) {
   const response = await fetch(`${prefixUrl}/${userid}`, {

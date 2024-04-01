@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../features/authentication/useUser";
+import { MODERATOR_EMAIL } from "../utils/constants";
 
 const StyledLogo = styled.div`
   text-align: center;
@@ -18,6 +20,11 @@ function Logo() {
   const { isDarkMode } = useDarkMode();
   const navigate = useNavigate();
 
+  const { user } = useUser();
+  const isModerator = user?.email === MODERATOR_EMAIL;
+
+  const urlToNavigate = isModerator ? "/moderator" : "/";
+
   const src = isDarkMode ? "/hse-light.png" : "/hse-dark.png";
 
   return (
@@ -26,7 +33,7 @@ function Logo() {
         className="m-auto"
         src={src}
         alt="Logo"
-        onClick={() => navigate("/moderator")}
+        onClick={() => navigate(urlToNavigate)}
       />
       <span className="uppercase">AuditoriumFinder</span>
     </StyledLogo>

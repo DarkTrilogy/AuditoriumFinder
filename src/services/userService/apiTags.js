@@ -1,4 +1,6 @@
-const prefixUrl = "http://localhost:8080/tags";
+import { LOCALHOST } from "./constant";
+
+const prefixUrl = LOCALHOST + "/tags";
 
 export async function addTags(userid, tagId) {
   const response = await fetch(`${prefixUrl}/${userid}/add`, {

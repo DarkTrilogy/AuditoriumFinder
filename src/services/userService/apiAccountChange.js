@@ -1,4 +1,6 @@
-const prefixUrl = "http://localhost:8080/account";
+import { LOCALHOST } from "./constant";
+
+const prefixUrl = LOCALHOST + "/account";
 
 // @Override
 // public ResponseEntity<FullProfileResponse> createProfile(ProfileCreateRequest profileCreateRequest) {

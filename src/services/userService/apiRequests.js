@@ -1,4 +1,6 @@
-const prefixUrl = "http://localhost:8080/requests";
+import { LOCALHOST } from "./constant";
+
+const prefixUrl = LOCALHOST + "/requests";
 
 export async function getIncomingRequests(userid) {
   const response = await fetch(`${prefixUrl}/${userid}/in`);

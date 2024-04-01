@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ButtonIcon from "./ButtonIcon";
 import { HiOutlineUser } from "react-icons/hi2";
 import DarkModeToggle from "./DarkModeToggle";
+import LanguageToggle from "./LanguageToggle";
 
 const StyledHeaderMenu = styled.ul`
   display: flex;
@@ -24,6 +25,9 @@ function HeaderMenu({ isModerator }) {
       )}
       <li>
         <DarkModeToggle />
+      </li>
+      <li>
+        <LanguageToggle />
       </li>
       <li>
         <Logout />

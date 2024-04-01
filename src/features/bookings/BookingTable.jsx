@@ -22,7 +22,7 @@ function BookingTable() {
           <div>Guest</div>
           <div>Dates</div>
           <div>Status</div>
-          <div>Amount</div>
+          {/* <div>Amount</div> */}
           <div></div>
         </Table.Header>
 

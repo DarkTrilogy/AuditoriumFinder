@@ -7,6 +7,23 @@ import {
   HiOutlineHomeModern,
   HiOutlineUsers,
 } from "react-icons/hi2";
+import { useLocalization } from "../context/LocalizationContext";
+import {
+  BOOKINGS_EN,
+  BOOKINGS_RU,
+  BUILDINGS_EN,
+  BUILDINGS_RU,
+  FRIENDS_EN,
+  FRIENDS_RU,
+  HOME_EN,
+  HOME_RU,
+  REPORTS_EN,
+  REPORTS_RU,
+  SETTINGS_EN,
+  SETTINGS_RU,
+  USERS_EN,
+  USERS_RU,
+} from "../utils/constants";
 
 const NavList = styled.ul`
   display: flex;
@@ -54,6 +71,8 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 function MainNav({ role }) {
+  const { language } = useLocalization();
+
   return (
     <nav>
       {role === "moderator" ? (
@@ -61,7 +80,7 @@ function MainNav({ role }) {
           <li>
             <StyledNavLink to="/reports">
               <HiOutlineUsers />
-              <span>All reports</span>
+              <span>{language === "en" ? REPORTS_EN : REPORTS_RU}</span>
             </StyledNavLink>
           </li>
         </NavList>
@@ -70,37 +89,37 @@ function MainNav({ role }) {
           <li>
             <StyledNavLink to="/dashboard">
               <HiOutlineHome />
-              <span>Home</span>
+              <span>{language === "en" ? HOME_EN : HOME_RU}</span>
             </StyledNavLink>
           </li>
           <li>
             <StyledNavLink to="/bookings">
               <HiOutlineCalendarDays />
-              <span>Bookings</span>
+              <span>{language === "en" ? BOOKINGS_EN : BOOKINGS_RU}</span>
             </StyledNavLink>
           </li>
           <li>
-            <StyledNavLink to="/cabins">
+            <StyledNavLink to="/buildings">
               <HiOutlineHomeModern />
-              <span>Cabins</span>
+              <span>{language === "en" ? BUILDINGS_EN : BUILDINGS_RU}</span>
             </StyledNavLink>
           </li>
           <li>
             <StyledNavLink to="/users">
               <HiOutlineUsers />
-              <span>Users</span>
+              <span>{language === "en" ? USERS_EN : USERS_RU}</span>
             </StyledNavLink>
           </li>
           <li>
             <StyledNavLink to="/friends">
               <HiOutlineUsers />
-              <span>Friends</span>
+              <span>{language === "en" ? FRIENDS_EN : FRIENDS_RU}</span>
             </StyledNavLink>
           </li>
           <li>
             <StyledNavLink to="/settings">
               <HiOutlineCog6Tooth />
-              <span>Settings</span>
+              <span>{language === "en" ? SETTINGS_EN : SETTINGS_RU}</span>
             </StyledNavLink>
           </li>
         </NavList>
