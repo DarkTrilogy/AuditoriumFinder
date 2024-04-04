@@ -7,8 +7,7 @@ export async function searchByCriteria(userId, nickname = "", tagIds = "") {
     `${prefixUrl}/${userId}/search?nickname=${nickname}&tags=${tagIds}`,
   );
 
-  let data;
-  data = await response.json();
+  let data = await response.json();
   if (userId === 0) return { data, count: data.length };
 
   data = data.find((user) => user.userId === Number(userId));

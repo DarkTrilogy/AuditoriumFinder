@@ -8,7 +8,7 @@ import Menus from "../../ui/Menus";
 
 import { useNavigate } from "react-router-dom";
 
-const Cabin = styled.div`
+const Nickname = styled.div`
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-grey-600);
@@ -30,13 +30,12 @@ const Stacked = styled.div`
   }
 `;
 
-function UserRow({ user: { userId, userNickname: nickname } }) {
+function UserRow({ user: { userId, userNickname: nickname, email } }) {
   const navigate = useNavigate();
 
   const statusToTagName = {
-    unconfirmed: "blue",
-    "checked-in": "green",
-    "checked-out": "silver",
+    unconfirmed: "silver",
+    confirmed: "green",
     envelope: "green",
   };
   const status = "unconfirmed";
@@ -49,11 +48,10 @@ function UserRow({ user: { userId, userNickname: nickname } }) {
 
   return (
     <Table.Row>
-      <Cabin>{nickname}</Cabin>
+      <Nickname>{nickname}</Nickname>
 
       <Stacked>
-        <span>{nickname}</span>
-        <span>{nickname}</span>
+        <span>{email}</span>
       </Stacked>
 
       {/* <Stacked>

@@ -27,6 +27,9 @@ import User from "./pages/User";
 import Buildings from "./pages/Buildings";
 import { LocalizationProvider } from "./context/LocalizationContext";
 import WelcomePage from "./pages/WelcomePage";
+import Building from "./pages/Building";
+import Audience from "./pages/Audience";
+import Audiences from "./pages/Audiences";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -67,6 +70,15 @@ function App() {
                 <Route path="settings" element={<Settings />} />
                 <Route path="account" element={<Account />} />
                 <Route path="buildings" element={<Buildings />} />
+                <Route path="buildings/:buildingId" element={<Building />} />
+                {/* <Route
+                  path="buildings/:buildingId/audience"
+                  element={<Audiences />}
+                />
+                <Route
+                  path="buildings/:buildingId/audience/:audienceId"
+                  element={<Audience />}
+                /> */}
               </Route>
 
               <Route

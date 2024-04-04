@@ -11,23 +11,18 @@ import { useUpdateUser } from "./useUpdateUser";
 
 function UpdateUserDataForm() {
   // We don't need the loading state, and can immediately use the user data, because we know that it has already been loaded at this point
-  const {
-    user: {
-      email,
-      user_metadata: { fullName: currentFullName },
-    },
-  } = useUser();
+  const { data: user } = useUser();
 
   const { updateUser, isUpdating } = useUpdateUser();
 
-  const [fullName, setFullName] = useState(currentFullName);
+  const [nick, setNick] = useState(user.nickname);
   const [avatar, setAvatar] = useState(null);
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!fullName) return;
+    if (!nick) return;
     updateUser(
-      { fullName, avatar },
+      { nickname: nick, avatar },
       {
         onSuccess: () => {
           setAvatar(null);
@@ -38,21 +33,21 @@ function UpdateUserDataForm() {
   }
 
   function handleCancel() {
-    setFullName(currentFullName);
+    setNick(user.nickname);
     setAvatar(null);
   }
 
   return (
     <Form onSubmit={handleSubmit}>
       <FormRow label="Email address">
-        <Input value={email} disabled />
+        <Input value={user.email} disabled />
       </FormRow>
 
       <FormRow label="Nickname">
         <Input
           type="text"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
+          value={nick}
+          onChange={(e) => setNick(e.target.value)}
           id="fullName"
           disabled={isUpdating}
         />

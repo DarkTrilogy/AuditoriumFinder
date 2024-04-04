@@ -76,3 +76,12 @@ export const ALL_BOOKINGS_EN = "All bookings";
 
 export const DASHBOARD_RU = "Панель управления";
 export const DASHBOARD_EN = "Dashboard";
+
+export const NICKNAME_RU = "Никнейм";
+export const NICKNAME_EN = "Nickname";
+
+export const STATUS_RU = "Статус";
+export const STATUS_EN = "Status";
+
+export const EMAIL_RU = "Почта";
+export const EMAIL_EN = "Email";

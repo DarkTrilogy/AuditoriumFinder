@@ -1,4 +1,5 @@
 import supabase, { supabaseUrl } from "./supabase";
+import { searchByCriteria } from "./userService/apiUsers";
 
 // Supabase option
 // export async function signup({ fullName, email, password }) {
@@ -46,14 +47,42 @@ export async function login({ email, password }) {
   return data;
 }
 
+// export async function getCurrentUser() {
+//   const { data: session } = await supabase.auth.getSession();
+//   if (!session.session) return null;
+
+//   const { data, error } = await supabase.auth.getUser();
+
+//   if (error) throw new Error(error.message);
+//   return data?.user;
+// }
+
 export async function getCurrentUser() {
-  const { data: session } = await supabase.auth.getSession();
-  if (!session.session) return null;
+  let session;
+  const token = localStorage.getItem("accessToken");
+  if (token) {
+    // Пользователь аутентифицирован
+    session = { accessToken: token };
+  } else {
+    // Пользователь не аутентифицирован
+    session = null;
+  }
 
-  const { data, error } = await supabase.auth.getUser();
+  if (!session) return null;
+  const userId = localStorage.getItem("userId");
+  let data = await searchByCriteria(userId);
 
-  if (error) throw new Error(error.message);
-  return data?.user;
+  if (data.userNickname !== "" && data.userNickname !== undefined) {
+    data = {
+      user: {
+        id: data.userId,
+        nickname: data.userNickname,
+        role: "authenticated",
+        email: "fjalfj",
+      },
+    };
+  }
+  return data.user;
 }
 
 export async function logout() {
@@ -61,12 +90,12 @@ export async function logout() {
   if (error) throw new Error(error.message);
 }
 
-export async function updateCurrentUser({ password, fullName, avatar }) {
+export async function updateCurrentUser({ password, nickname, avatar }) {
   // 1. Update password OR fullName
 
   let updateData;
   if (password) updateData = { password };
-  if (fullName) updateData = { data: { fullName } };
+  if (nickname) updateData = { data: { nickname } };
 
   const { data, error } = await supabase.auth.updateUser(updateData);
 

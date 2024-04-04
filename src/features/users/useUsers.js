@@ -9,35 +9,44 @@ export function useUsers(userId) {
   const [searchParams] = useSearchParams();
 
   // FILTER
-  const filterValue = searchParams.get("status");
-  const filter =
-    !filterValue || filterValue === "all"
-      ? null
-      : {
-          field: "status",
-          value: filterValue,
-        };
+  // const filterValue = searchParams.get("status");
+  // const filter =
+  //   !filterValue || filterValue === "all"
+  //     ? null
+  //     : {
+  //         field: "status",
+  //         value: filterValue,
+  //       };
 
   // SEARCH
-  const search = searchParams.get("search");
+  const nickname = searchParams.get("search");
+  console.log("search", nickname);
 
   // SORT
-  const sortByRaw = searchParams.get("sortBy") || "startDate-desc";
-  const [field, direction] = sortByRaw.split("-");
-  const sortBy = { field, direction };
+  // const sortByRaw = searchParams.get("sortBy") || "startDate-desc";
+  // const [field, direction] = sortByRaw.split("-");
+  // const sortBy = { field, direction };
 
   // PAGINATION
   const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
 
   // QUERY
-  const {
+  let {
     isLoading,
     data: { data: users, count } = {},
     error,
   } = useQuery({
-    queryKey: ["users", search, filter, sortBy, page],
+    queryKey: ["users" /* search, */ /* filter */ /* sortBy */, page],
     queryFn: () => searchByCriteria(userId),
   });
+
+  // filter by nickname
+  if (nickname) {
+    users = users.filter((user) => {
+      console.log("user", user.userNickname, nickname);
+      return user.userNickname.toLowerCase().includes(nickname.toLowerCase());
+    });
+  }
 
   console.log(users);
 

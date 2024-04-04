@@ -15,7 +15,7 @@ export function useEmailVerification() {
       );
     },
     onError: (err) => {
-      toast.error("Something went wrong");
+      toast.error("Invalid email");
     },
   });
 

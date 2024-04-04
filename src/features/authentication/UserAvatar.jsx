@@ -26,21 +26,21 @@ const Avatar = styled.img`
 `;
 
 function UserAvatar() {
-  const { user } = useUser();
+  const { data: user } = useUser();
   const navigate = useNavigate();
 
-  const { fullName, avatar } = user?.user_metadata || {
-    fullName: "moderator",
-    avatar: "default-user.jpg",
+  const userMetadata = {
+    nickname: user?.nickname,
+    avatar: user?.avatar,
   };
 
   return (
     <StyledUserAvatar onClick={() => navigate("/account")}>
       <Avatar
-        src={avatar || "default-user.jpg"}
-        alt={`{Avatar of ${fullName}}`}
+        src={userMetadata.avatar || "default-user.jpg"}
+        alt={`{Avatar of ${userMetadata.nickname}}`}
       />
-      <span>{fullName}</span>
+      <span>{userMetadata.nickname}</span>
     </StyledUserAvatar>
   );
 }

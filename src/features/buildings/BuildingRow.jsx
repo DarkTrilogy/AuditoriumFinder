@@ -33,33 +33,20 @@ const Stacked = styled.div`
 function BuildingRow({
   building: {
     id,
-    city,
+    name,
     address,
     first_lesson_start: start,
     last_lesson_end: end,
   },
+  onClick,
 }) {
   const navigate = useNavigate();
 
-  const statusToTagName = {
-    unconfirmed: "blue",
-    "checked-in": "green",
-    "checked-out": "silver",
-    envelope: "green",
-  };
-  const status = "unconfirmed";
-
-  function handleFriendRequest() {
-    // TODO: при авторизации через бэкенд, мы получаем id текущего пользователя
-    // и можем отправлять запрос на добавление в друзья другого пользователя при помощи данных id
-    // const data = makeFriendRequest(currentUserId, userId);
-  }
-
   return (
-    <Table.Row>
+    <Table.Row onClick={onClick}>
       <Stacked>
         <span>{address}</span>
-        <span>{city}</span>
+        <span>{name}</span>
       </Stacked>
 
       {/* <Stacked>
@@ -88,7 +75,7 @@ function BuildingRow({
           <Menus.List id={id}>
             <Menus.Button
               icon={<HiEye />}
-              onClick={() => navigate(`/users/${id}`)}
+              // onClick={() => navigate(`/buildings/${id}`, { state: { id } })}
             >
               See details
             </Menus.Button>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useLogin } from "./useLogin";
+import { useLogin, useLogin1 } from "./useLogin";
 import { useSignup } from "./useSignup";
 import { useEmailVerification } from "./useEmailVerification";
 
@@ -16,7 +16,8 @@ export let emailOfCurrentUser;
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn, isLoading: loginLoading } = useLogin();
+  const { signIn, isLoading: signinLoading } = useLogin();
+  const { login, isLoading: loginLoading } = useLogin1();
   const { signup, isLoading: signupLoading } = useSignup();
   const { confirmCode, isLoading: confirmationLoading } =
     useEmailVerification();
@@ -28,6 +29,16 @@ function LoginForm() {
     if (action === "Log in") {
       if (!email || !password) return;
       emailOfCurrentUser = email;
+      console.log("CURRENT_EMAIL", emailOfCurrentUser);
+      // signIn(
+      //   { email, password },
+      //   {
+      //     onSettled: () => {
+      //       setEmail("");
+      //       setPassword("");
+      //     },
+      //   },
+      // );
       signIn(
         { email, password },
         {
@@ -71,7 +82,7 @@ function LoginForm() {
           autoComplete="username"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          disabled={loginLoading}
+          disabled={signinLoading}
         />
       </FormRowVertical>
       <FormRowVertical label="Password">
@@ -81,12 +92,12 @@ function LoginForm() {
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          disabled={loginLoading}
+          disabled={signinLoading}
         />
       </FormRowVertical>
       <FormRowVertical>
-        <Button size="large" disabled={loginLoading}>
-          {!loginLoading ? "Log in" : <SpinnerMini />}
+        <Button size="large" disabled={signinLoading}>
+          {!signinLoading ? "Log in" : <SpinnerMini />}
         </Button>
       </FormRowVertical>
       <FormRowVertical type="register" className="text-teal-950">

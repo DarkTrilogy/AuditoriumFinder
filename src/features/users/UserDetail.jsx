@@ -14,7 +14,6 @@ import ButtonText from "../../ui/ButtonText";
 import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
 import UserDataBox from "./UserDataBox";
-import { useUsers } from "./useUsers";
 import { useUser } from "./useUser";
 
 const HeadingGroup = styled.div`
@@ -27,8 +26,6 @@ function UserDetail() {
   const { checkout, isCheckingOut } = useCheckout();
 
   const { user, isLoading } = useUser();
-  console.log("USER", user);
-  //   console.log("USER", user.data);
   const moveBack = useMoveBack();
   const navigate = useNavigate();
 

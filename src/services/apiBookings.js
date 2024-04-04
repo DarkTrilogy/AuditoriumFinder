@@ -3,6 +3,7 @@ import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
 export async function getBookings({ filter, search, sortBy, page }) {
+  console.log("GETBOOKINGS");
   let query = supabase
     .from("bookings")
     .select(
@@ -12,7 +13,6 @@ export async function getBookings({ filter, search, sortBy, page }) {
 
   // FILTER
   if (filter) query = query[filter.method || "eq"](filter.field, filter.value);
-  // что такое eq - https://supabase.io/docs/reference/javascript/select
 
   // SEARCH
   if (search && search.length > 0) {

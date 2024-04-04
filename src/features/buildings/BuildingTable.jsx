@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
 import Pagination from "../../ui/Pagination";
@@ -7,15 +8,20 @@ import { useBuildings } from "./useBuildings";
 
 function BuildingTable() {
   const data = useBuildings();
+  const navigate = useNavigate();
   const { buildings, count } = data;
 
   //   if (isLoading) return <Spinner />;
 
   if (!buildings.length) return <Empty resourceName={"buildings"} />;
-  console.log("BUILDINGS", buildings);
+
+  function showBuilding(building) {
+    navigate(`/buildings/${building.id}`, { state: { building } });
+  }
+
   return (
     <Menus>
-      <Table columns="1fr 1.5fr 1fr">
+      <Table columns="30% 30% 30% 1%">
         <Table.Header>
           <div>Address</div>
           <div>Start</div>
@@ -25,7 +31,13 @@ function BuildingTable() {
         <Table.Body
           data={buildings}
           render={(building) => (
-            <BuildingRow key={building.id} building={building} />
+            <BuildingRow
+              key={building.id}
+              building={building}
+              onClick={() => {
+                showBuilding(building);
+              }}
+            />
           )}
         />
         <Table.Footer>

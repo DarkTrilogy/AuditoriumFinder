@@ -11,6 +11,9 @@ export async function sendConfirmationCode(email) {
   });
 
   const data = await response.json();
-  console.log("VERIFICATION DATA", data);
+  console.log("VERIFICATION DATA", data.email);
+  if (data.email === "Некорректный email") {
+    throw new Error("Некорректный email");
+  }
   return { data };
 }

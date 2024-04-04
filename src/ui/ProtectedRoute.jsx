@@ -14,32 +14,62 @@ const FullPage = styled.div`
 
 function ProtectedRoute({ children }) {
   const navigate = useNavigate();
+  const { isLoading, error, data: user } = useUser();
 
-  // 1. Load the authenticated user
-  const { isLoading, isAuthenticated } = useUser();
-
-  // if (isModerator) navigate("/*");
-
-  // 2. If there is NO authenticated user, redirect to the /login
-  // useEffect(
-  //   function () {
-  //     if (!isAuthenticated && !isLoading) {
-  //       navigate("/login");
-  //     }
-  //   },
-  //   [isAuthenticated, isLoading, navigate],
-  // );
-
-  // 3. While loading, show a spinner
-  if (isLoading)
+  // Если идет загрузка, показать спиннер
+  if (isLoading) {
     return (
       <FullPage>
         <Spinner />
       </FullPage>
     );
+  }
 
-  // 4. If there IS a user, render the app
-  if (true) return children;
+  // Если произошла ошибка
+  if (error) {
+    console.error(error);
+    navigate("/error");
+  }
+
+  // Если пользователь не аутентифицирован, перенаправить на страницу входа
+  if (user?.role !== "authenticated") {
+    navigate("/login");
+  }
+
+  // Если пользователь аутентифицирован, отрендерить дочерний компонент
+  if (user?.role === "authenticated") {
+    return children;
+  }
 }
 
 export default ProtectedRoute;
+
+// function ProtectedRoute({ children }) {
+//   console.log("Protected Route");
+//   const navigate = useNavigate();
+
+//   const { isLoading, user, isAuthenticated } = useUser();
+//   console.log("ISAUTHENTICATED", user, isAuthenticated, isLoading);
+
+//   useEffect(
+//     function () {
+//       if (!isAuthenticated /* && !isLoading */) {
+//         navigate("/login");
+//       }
+//     },
+//     [isAuthenticated, isLoading, user, navigate],
+//   );
+
+//   // 3. While loading, show a spinner
+//   if (!isLoading)
+//     return (
+//       <FullPage>
+//         <Spinner />
+//       </FullPage>
+//     );
+
+//   // 4. If there IS a user, render the app
+//   if (isAuthenticated) return children;
+// }
+
+// export default ProtectedRoute;

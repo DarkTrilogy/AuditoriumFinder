@@ -39,6 +39,9 @@ const StyledRow = styled(CommonRow)`
 
 const StyledBody = styled.section`
   margin: 0.4rem 0;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const Footer = styled.footer`
@@ -78,10 +81,10 @@ function Header({ children }) {
     </StyledHeader>
   );
 }
-function Row({ children }) {
+function Row({ children, onClick }) {
   const { columns } = useContext(TableContext);
   return (
-    <StyledRow role="row" columns={columns}>
+    <StyledRow onClick={onClick} role="row" columns={columns}>
       {children}
     </StyledRow>
   );

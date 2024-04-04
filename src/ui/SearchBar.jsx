@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
 import { useSearchParams } from "react-router-dom";
@@ -47,6 +47,13 @@ function SearchBar({ prop }) {
 
   const [searchQuery, setSearchQuery] = useState("");
 
+  useEffect(
+    function () {
+      onSubmit();
+    },
+    [searchQuery],
+  );
+
   async function onSubmit() {
     if (!searchQuery) {
       searchParams.delete(filterField);
@@ -94,7 +101,9 @@ function SearchBar({ prop }) {
           //   required: "This field is required",
           // })}
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+          }}
         />
         {/* </SearchRow> */}
 
