@@ -74,11 +74,11 @@ function App() {
                 {/* <Route
                   path="buildings/:buildingId/audience"
                   element={<Audiences />}
-                />
+              /> */}
                 <Route
                   path="buildings/:buildingId/audience/:audienceId"
                   element={<Audience />}
-                /> */}
+                />
               </Route>
 
               <Route

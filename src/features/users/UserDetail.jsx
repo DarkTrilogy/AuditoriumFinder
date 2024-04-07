@@ -55,8 +55,9 @@ function UserDetail() {
       </Row>
 
       <UserDataBox user={user} />
+      {/* TODO: изменить под возможность отправки запроса в друзья */}
 
-      <ButtonGroup>
+      {/* <ButtonGroup>
         {status === "unconfirmed" && (
           <Button onClick={() => navigate(`/checkin/${userId}`)}>
             Check in
@@ -71,11 +72,11 @@ function UserDetail() {
           >
             Check out
           </Button>
-        )}
-        <Button variation="secondary" onClick={moveBack}>
-          Back
-        </Button>
-      </ButtonGroup>
+        )} */}
+      <Button variation="secondary" onClick={moveBack}>
+        Back
+      </Button>
+      {/* </ButtonGroup> */}
     </>
   );
 }

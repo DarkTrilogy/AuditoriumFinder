@@ -5,19 +5,15 @@ import Pagination from "../../ui/Pagination";
 import Table from "../../ui/Table";
 import BuildingRow from "./BuildingRow";
 import { useBuildings } from "./useBuildings";
+import Spinner from "../../ui/Spinner";
 
 function BuildingTable() {
-  const data = useBuildings();
+  const { buildings, count, isLoading, error } = useBuildings();
   const navigate = useNavigate();
-  const { buildings, count } = data;
 
-  //   if (isLoading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
-  if (!buildings.length) return <Empty resourceName={"buildings"} />;
-
-  function showBuilding(building) {
-    navigate(`/buildings/${building.id}`, { state: { building } });
-  }
+  if (error) return <Empty resourceName="buildings" />;
 
   return (
     <Menus>
@@ -27,19 +23,20 @@ function BuildingTable() {
           <div>Start</div>
           <div>End</div>
         </Table.Header>
-
-        <Table.Body
-          data={buildings}
-          render={(building) => (
-            <BuildingRow
-              key={building.id}
-              building={building}
-              onClick={() => {
-                showBuilding(building);
-              }}
-            />
-          )}
-        />
+        {buildings !== undefined && (
+          <Table.Body
+            data={buildings}
+            render={(building) => (
+              <BuildingRow
+                key={building.id}
+                building={building}
+                onClick={() => {
+                  navigate(`/buildings/${building.id}`);
+                }}
+              />
+            )}
+          />
+        )}
         <Table.Footer>
           <Pagination count={count} />
         </Table.Footer>

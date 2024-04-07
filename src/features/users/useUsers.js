@@ -20,7 +20,6 @@ export function useUsers(userId) {
 
   // SEARCH
   const nickname = searchParams.get("search");
-  console.log("search", nickname);
 
   // SORT
   // const sortByRaw = searchParams.get("sortBy") || "startDate-desc";
@@ -47,8 +46,6 @@ export function useUsers(userId) {
       return user.userNickname.toLowerCase().includes(nickname.toLowerCase());
     });
   }
-
-  console.log(users);
 
   // PRE-FETCHING
   // const pageCount = Math.ceil(count / PAGE_SIZE);

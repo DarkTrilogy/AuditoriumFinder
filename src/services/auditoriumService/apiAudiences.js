@@ -1,45 +1,88 @@
-// import { PAGE_SIZE } from "../../utils/constants";
+// const prefixUrl = "http://10.8.0.4:8000";
+const prefixUrl = "http://25.12.120.182:8000";
 
-// export async function getAudiences({ filter, search, sortBy, page }) {
-//   console.log("GETAUDIENCES");
-//   let query = supabase
-//     .from("bookings")
-//     .select(
-//       "id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)",
-//       { count: "exact" },
-//     );
+export async function getFreeAudiencesInBuilding(building) {
+  const currentDate = new Date();
+  const day = currentDate.toISOString().split("T")[0];
+  let hour =
+    currentDate.getHours() < 10
+      ? "0" + currentDate.getHours()
+      : currentDate.getHours();
+  const minutes =
+    currentDate.getMinutes() < 10
+      ? "0" + currentDate.getMinutes()
+      : currentDate.getMinutes();
 
-//   // FILTER
-//   if (filter) query = query[filter.method || "eq"](filter.field, filter.value);
+  hour = 10; // для тестов
+  const intervalStart = day + "-" + hour + "-" + minutes;
+  const intervalEnd = day + "-" + building.lastLessonEnd;
 
-//   // SEARCH
-//   if (search && search.length > 0) {
-//     query = query.ilike("guests.fullName", `%${search}%`);
-//   }
+  if (hour <= Number(building.lastLessonEnd.split("-")[0])) {
+    const response = await fetch(
+      `${prefixUrl}/auditorium/building/${building.id}?intervalStart=${intervalStart}&intervalEnd=${intervalEnd}`,
+    );
+    console.log(
+      "URL",
+      `${prefixUrl}/auditorium/building/${building.id}?intervalStart=${intervalStart}&intervalEnd=${intervalEnd}`,
+    );
+    const data = await response.json();
+    return data;
+  } else {
+    return {
+      building: {},
+      auditoriums: {},
+    };
+  }
+}
 
-//   // SORT
-//   if (sortBy)
-//     query = query.order(sortBy.field, {
-//       ascending: sortBy.direction === "asc",
-//     });
+export async function getUserAudience(userId) {
+  const response = await fetch(`${prefixUrl}/auditorium/building`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      userId: userId,
+    },
+  });
+  const data = await response.json();
+  return data;
+}
 
-//   if (page) {
-//     const from = (page - 1) * PAGE_SIZE;
-//     const to = from + PAGE_SIZE - 1;
-//     query = query.range(from, to);
-//   }
+export async function getAudienceInfo(auditoriumId) {
+  const response = await fetch(`${prefixUrl}/auditorium/info/${auditoriumId}`);
+  const data = await response.json();
+  return data;
+}
 
-//   let { data, error, count } = await query;
+export async function getAudienceUsers(auditoriumId) {
+  const response = await fetch(
+    `${prefixUrl}/auditorium/info/${auditoriumId}/users`,
+  );
+  const data = await response.json();
+  return data;
+}
 
-//   if (search) {
-//     data = data.filter((booking) => {
-//       return !(booking.guests === null);
-//     });
-//   }
+export async function addUserToAuditorium(userId, auditoriumId, silentStatus) {
+  const response = await fetch(`${prefixUrl}/auditorium/users/add_user`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      userId: userId,
+    },
+    body: JSON.stringify({
+      auditoriumId,
+      silentStatus,
+    }),
+  });
+  return response.json();
+}
 
-//   if (error) {
-//     throw new Error("Bookings could not be loaded");
-//   }
-
-//   return { data, count };
-// }
+export async function removeUserFromAuditorium(userId) {
+  const response = await fetch(`${prefixUrl}/auditorium/remove_user`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      userId: userId,
+    },
+  });
+  return response.json();
+}

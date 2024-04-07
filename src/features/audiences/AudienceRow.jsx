@@ -1,12 +1,17 @@
-import styled from "styled-components";
-import { HiEye } from "react-icons/hi2";
-
-import Tag from "../../ui/Tag";
+import { useNavigate } from "react-router-dom";
 import Table from "../../ui/Table";
+import Tag from "../../ui/Tag";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
+import { HiEye } from "react-icons/hi2";
+import styled from "styled-components";
 
-import { useNavigate } from "react-router-dom";
+const Type = styled.div`
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--color-grey-600);
+  font-family: "Sono";
+`;
 
 const Stacked = styled.div`
   display: flex;
@@ -23,25 +28,35 @@ const Stacked = styled.div`
   }
 `;
 
-function BuildingRow({
-  building: { id, name, address, firstLessonStart: start, lastLessonEnd: end },
-  onClick,
-}) {
+function AudienceRow({ audience, onClick }) {
+  console.log("fsjadkl", audience);
   const navigate = useNavigate();
+  const {
+    id,
+    name,
+    type,
+    capacity,
+    corpus,
+    noiseUsersAmount,
+    silentUsersAmount,
+    projector,
+    socketsAmount,
+  } = audience;
 
   return (
     <Table.Row onClick={onClick}>
-      <Stacked>
-        <span>{address}</span>
-        <span>{name}</span>
-      </Stacked>
+      <Type>{type}</Type>
+      <Type>
+        {corpus.name}
+        {name}
+      </Type>
 
       <Tag type="green">
-        <span>{start}</span>
+        <span>{silentUsersAmount}</span>
       </Tag>
 
       <Tag type="red">
-        <span>{end}</span>
+        <span>{noiseUsersAmount}</span>
       </Tag>
       <Modal>
         <Menus.Menu>
@@ -60,4 +75,4 @@ function BuildingRow({
   );
 }
 
-export default BuildingRow;
+export default AudienceRow;

@@ -2,13 +2,12 @@ import styled from "styled-components";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
 import Spinner from "../../ui/Spinner";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useCheckout } from "../check-in-out/useCheckout";
 import Empty from "../../ui/Empty";
 import Heading from "../../ui/Heading";
 import Tag from "../../ui/Tag";
-import AudienceTable from "../audiences/AudienceTable";
 import Audiences from "../../pages/Audiences";
+import { useBuilding } from "./useBuilding";
+import AudienceTable from "../audiences/AudienceTable";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -16,17 +15,21 @@ const HeadingGroup = styled.div`
   align-items: center;
 `;
 
-function BuildingDetail({ state }) {
-  const { building } = state;
+function BuildingDetail() {
+  const { building, isLoading, error } = useBuilding();
+  const moveBack = useMoveBack();
+  if (isLoading) return <Spinner />;
+
+  console.log(building);
   const {
     id,
     address,
-    name,
-    first_lesson_start: start,
-    last_lesson_end: end,
+    city,
+    firstLessonStart: start,
+    lastLessonEnd: end,
   } = building;
 
-  const moveBack = useMoveBack();
+  if (error) return <Empty resourceName="building" />;
 
   const statusToTagName = {
     open: "green",
@@ -42,22 +45,17 @@ function BuildingDetail({ state }) {
     currentHour >= Number(startHour) && currentHour < Number(endHour)
       ? "open"
       : "closed";
-  console.log(
-    "STARTHOUr, ENDHOUR",
-    Number(startHour),
-    Number(endHour),
-    currentHour,
-  );
 
   return (
     <>
       <HeadingGroup>
         <Heading as="h1">
-          {name}, {address}
+          {city}, {address}
         </Heading>
         <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
       </HeadingGroup>
-      <Audiences buildingId={id} />
+      {/* <AudienceTable building={building} /> */}
+      <Audiences building={building} />
     </>
   );
 }
