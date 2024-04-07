@@ -23,7 +23,7 @@ function UsersTable() {
 
   // if (!bookings.length) return <Empty resourceName={"bookings"} />;
 
-  const { users, isLoading, count } = useUsers(0);
+  const { data: users, isLoading, count } = useUsers();
   const { language } = useLocalization();
 
   if (isLoading) return <Spinner />;

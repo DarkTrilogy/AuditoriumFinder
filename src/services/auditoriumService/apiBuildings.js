@@ -1,5 +1,5 @@
-// const prefixUrl = "http://10.8.0.4:8000";
-const prefixUrl = "http://25.12.120.182:8000";
+const prefixUrl = "http://10.8.0.4:8050";
+// const prefixUrl = "http://25.12.120.182:8050";
 
 export async function getAllBuildings() {
   const response = await fetch(`${prefixUrl}/buildings`);

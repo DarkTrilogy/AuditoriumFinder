@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { PAGE_SIZE } from "../../utils/constants";
 import { searchByCriteria } from "../../services/userService/apiUsers";
 
-export function useUsers(userId) {
+export function useUsers() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
@@ -32,20 +32,22 @@ export function useUsers(userId) {
   // QUERY
   let {
     isLoading,
-    data: { data: users, count } = {},
+    data = {},
     error,
   } = useQuery({
     queryKey: ["users" /* search, */ /* filter */ /* sortBy */, page],
-    queryFn: () => searchByCriteria(userId),
+    queryFn: () => searchByCriteria(),
   });
 
   // filter by nickname
   if (nickname) {
-    users = users.filter((user) => {
+    data = data.filter((user) => {
       console.log("user", user.userNickname, nickname);
       return user.userNickname.toLowerCase().includes(nickname.toLowerCase());
     });
   }
+
+  const count = data.length;
 
   // PRE-FETCHING
   // const pageCount = Math.ceil(count / PAGE_SIZE);
@@ -62,5 +64,5 @@ export function useUsers(userId) {
   //     queryFn: () => getBookings({ filter, search, sortBy, page: page - 1 }),
   //   });
 
-  return { isLoading, error, users, count };
+  return { isLoading, error, data, count };
 }

@@ -29,7 +29,6 @@ const Stacked = styled.div`
 `;
 
 function AudienceRow({ audience, onClick }) {
-  console.log("fsjadkl", audience);
   const navigate = useNavigate();
   const {
     id,

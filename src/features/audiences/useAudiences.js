@@ -35,7 +35,6 @@ export function useAudiences(building) {
     retry: false,
   });
 
-  console.log("sdfghjk", data);
   let currentBuilding, auditoriums;
 
   if (data) {

@@ -30,7 +30,7 @@ const Stacked = styled.div`
   }
 `;
 
-function UserRow({ user: { userId, userNickname: nickname, email } }) {
+function UserRow({ user: { userId, userNickname: nickname } }) {
   const navigate = useNavigate();
 
   const statusToTagName = {
@@ -49,10 +49,11 @@ function UserRow({ user: { userId, userNickname: nickname, email } }) {
   return (
     <Table.Row>
       <Nickname>{nickname}</Nickname>
+      <Nickname>{localStorage.getItem("email")}</Nickname>
 
-      <Stacked>
-        <span>{email}</span>
-      </Stacked>
+      {/* <Stacked>
+        <span>{localStorage.getItem("email")}</span>
+      </Stacked> */}
 
       {/* <Stacked>
         <span>

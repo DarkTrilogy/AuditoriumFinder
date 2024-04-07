@@ -1,66 +1,121 @@
-// import { useMoveBack } from "../../hooks/useMoveBack";
-// import ButtonText from "../../ui/ButtonText";
-// import Empty from "../../ui/Empty";
-// import Heading from "../../ui/Heading";
-// import Row from "../../ui/Row";
-// import Spinner from "../../ui/Spinner";
-// import Tag from "../../ui/Tag";
-// import UserDataBox from "../users/UserDataBox";
+import styled from "styled-components";
 
-function AudienceDetail() {}
-//   const { audience, isLoading } = useAudience();
-//   const moveBack = useMoveBack();
-//   const navigate = useNavigate();
+import { useMoveBack } from "../../hooks/useMoveBack";
+import Button from "../../ui/Button";
+import ButtonText from "../../ui/ButtonText";
+import Empty from "../../ui/Empty";
+import Heading from "../../ui/Heading";
+import Row from "../../ui/Row";
+import Spinner from "../../ui/Spinner";
+import Tag from "../../ui/Tag";
+import AudienceDataBox from "./AudienceDataBox";
+import { useAudience } from "./useAudience";
+import {
+  useAddUserToAuditorium,
+  useUserAudience,
+} from "./useAudiencesFunctions";
+import ButtonGroup from "../../ui/ButtonGroup";
+import { HiArrowUpOnSquare } from "react-icons/hi2";
+import Modal from "../../ui/Modal";
+import { useNavigate } from "react-router-dom";
+import ConfirmAdding from "../../ui/ConfirmAdding";
 
-//   if (isLoading) return <Spinner />;
-//   if (!audience) return <Empty resourceName="audience" />;
+const HeadingGroup = styled.div`
+  display: flex;
+  gap: 2.4rem;
+  align-items: center;
+`;
 
-//   const { userId, userNickname: nickname } = audience;
-//   const status = "friend";
+function AudienceDetail() {
+  const { audience, isLoading, error } = useAudience();
 
-//   const statusToTagName = {
-//     unconfirmed: "blue",
-//     "checked-in": "green",
-//     "checked-out": "silver",
-//     friend: "green",
-//   };
+  const navigate = useNavigate();
+  const moveBack = useMoveBack();
+  const { isAdding, addUserToAudience } = useAddUserToAuditorium();
+  const { userAudience } = useUserAudience();
 
-//   return (
-//     <>
-//       <Row type="horizontal">
-//         <HeadingGroup>
-//           <Heading as="h1">
-//             User #{userId} - {nickname}
-//           </Heading>
-//           <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
-//         </HeadingGroup>
-//         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
-//       </Row>
+  const userId = localStorage.getItem("userId");
+  console.log("fja;sldkf", userId);
 
-//       <UserDataBox user={user} />
+  if (isLoading) return <Spinner />;
+  if (error) return <Empty resourceName="audience" />;
 
-//       <ButtonGroup>
-//         {status === "unconfirmed" && (
-//           <Button onClick={() => navigate(`/checkin/${userId}`)}>
-//             Check in
-//           </Button>
-//         )}
+  const { id, type } = audience;
+  const status = "friend";
 
-//         {status === "checked-in" && (
-//           <Button
-//             icon={<HiArrowUpOnSquare />}
-//             onClick={() => checkout(userId)}
-//             disabled={isCheckingOut}
-//           >
-//             Check out
-//           </Button>
-//         )}
-//         <Button variation="secondary" onClick={moveBack}>
-//           Back
-//         </Button>
-//       </ButtonGroup>
-//     </>
-//   );
-// }
+  const statusToTagName = {
+    unconfirmed: "blue",
+    "checked-in": "green",
+    "checked-out": "silver",
+    friend: "green",
+  };
 
+  return (
+    <>
+      <Row type="horizontal">
+        <HeadingGroup>
+          <Heading as="h1">
+            Audience #{id} - {type}
+          </Heading>
+          <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+        </HeadingGroup>
+        <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
+      </Row>
+
+      <AudienceDataBox audience={audience} />
+
+      <ButtonGroup>
+        <Modal>
+          <Modal.Open opens="add">
+            <Button icon={<HiArrowUpOnSquare />} disabled={false}>
+              Check in
+            </Button>
+          </Modal.Open>
+          <Modal.Window name="add">
+            <ConfirmAdding
+              disabled={isAdding}
+              onSilent={() => {
+                addUserToAudience({
+                  userId,
+                  audience: audience,
+                  silenceStatus: "silent",
+                  onSettled: () => {
+                    navigate(-1);
+                  },
+                });
+              }}
+              onNoise={() => {
+                addUserToAudience({
+                  userId,
+                  audience: audience,
+                  silenceStatus: "noise",
+                  onSettled: () => {
+                    navigate(-1);
+                  },
+                });
+              }}
+            />
+          </Modal.Window>
+        </Modal>
+        <Button variation="secondary" onClick={moveBack}>
+          Back
+        </Button>
+        <Button
+          variation="secondary"
+          onClick={() => {
+            userAudience(userId)
+              .then((data) => {
+                console.log("asfda", data);
+              })
+              .catch((error) => {
+                console.error("Error fetching user audience:", error);
+              });
+          }}
+        >
+          Get the fuck out
+        </Button>
+      </ButtonGroup>
+    </>
+  );
+}
 export default AudienceDetail;

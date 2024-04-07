@@ -12,6 +12,8 @@ export async function signUp(request) {
   });
 
   console.log("JSON", JSON.stringify(request));
+  localStorage.setItem("nickname", request.nickname);
+  localStorage.setItem("email", request.email);
 
   const data = await response.json();
   console.log("SIGNUP DATA", data);

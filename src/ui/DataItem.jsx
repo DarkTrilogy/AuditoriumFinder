@@ -12,6 +12,7 @@ const Label = styled.span`
   align-items: center;
   gap: 0.8rem;
   font-weight: 500;
+  // увеличить размер иконки -
 
   & svg {
     width: 2rem;
@@ -23,11 +24,11 @@ const Label = styled.span`
 function DataItem({ icon, label, children }) {
   return (
     <StyledDataItem>
+      {icon}
       <Label>
-        {icon}
-        <span>{label}</span>
+        <span className="text-4xl	">{label}</span>
       </Label>
-      {children}
+      <span className="text-4xl">{children}</span>
     </StyledDataItem>
   );
 }

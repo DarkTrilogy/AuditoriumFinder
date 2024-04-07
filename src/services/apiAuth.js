@@ -1,4 +1,5 @@
 import supabase, { supabaseUrl } from "./supabase";
+import { createProfile } from "./userService/apiAccountChange";
 import { searchByCriteria } from "./userService/apiUsers";
 
 // Supabase option
@@ -61,24 +62,37 @@ export async function getCurrentUser() {
   let session;
   const token = localStorage.getItem("accessToken");
   if (token) {
-    // Пользователь аутентифицирован
     session = { accessToken: token };
   } else {
-    // Пользователь не аутентифицирован
     session = null;
   }
 
   if (!session) return null;
   const userId = localStorage.getItem("userId");
   let data = await searchByCriteria(userId);
+  console.log("SEARCHDATA", data, data[0].userNickname);
+  if (!data) {
+    console.log("NOT DATA");
+    const profileCreateRequest = {
+      id: userId,
+      nickname: localStorage.getItem("nickname"),
+      email: localStorage.getItem("email"),
+      telegramHandle: "",
+    };
+    const profile = await createProfile(profileCreateRequest);
+    data = await searchByCriteria(profile.id);
+  }
 
-  if (data.userNickname !== "" && data.userNickname !== undefined) {
+  const userNickname = data[0].userNickname;
+
+  if (userNickname !== "" && userNickname !== undefined) {
+    console.log("USER");
     data = {
       user: {
-        id: data.userId,
-        nickname: data.userNickname,
+        id: data.userid,
+        nickname: userNickname,
         role: "authenticated",
-        email: "fjalfj",
+        email: localStorage.getItem("email"),
       },
     };
   }

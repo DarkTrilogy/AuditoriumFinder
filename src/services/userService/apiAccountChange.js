@@ -1,52 +1,32 @@
-import { LOCALHOST } from "./constant";
+import { LOCALHOST_USER } from "../constant";
 
-const prefixUrl = LOCALHOST + "/account";
-
-// @Override
-// public ResponseEntity<FullProfileResponse> createProfile(ProfileCreateRequest profileCreateRequest) {
-//     return null;
-// }
-
-// @Override
-// public ResponseEntity<ShortUserResponse> deleteProfile(int userid) {
-//     return null;
-// }
-
-// @Override
-// public ResponseEntity<FullProfileResponse> removeTelegram(int userid) {
-//     return null;
-// }
-
-// @Override
-// public ResponseEntity<FullProfileResponse> addTelegram(int userid) {
-//     return null;
-// }
+const prefixUrl = LOCALHOST_USER + "/account";
 
 export async function createProfile(profileCreateRequest) {
-  const response = await fetch(`${prefixUrl}/create`, {
-    method: "POST",
+  console.log("PROFILE FOR CREATING", profileCreateRequest);
+  const response = await fetch(`${prefixUrl}/`, {
+    method: "PUT",
     body: JSON.stringify(profileCreateRequest),
   });
-  return response.json();
-}
-
-export async function deleteProfile(userid) {
-  const response = await fetch(`${prefixUrl}/${userid}/delete`, {
-    method: "DELETE",
-  });
-  return response.json();
+  const data = await response.json();
+  console.log("CREATEPROFILE", data);
+  return { data };
 }
 
 export async function removeTelegram(userid) {
   const response = await fetch(`${prefixUrl}/${userid}/remove_telegram`, {
     method: "DELETE",
   });
-  return response.json();
+  const data = await response.json();
+  console.log("REMOVETELEGRAM", data);
+  return { data };
 }
 
 export async function addTelegram(userid) {
   const response = await fetch(`${prefixUrl}/${userid}/add_telegram`, {
     method: "PATCH",
   });
-  return response.json();
+  const data = await response.json();
+  console.log("ADDTELEGRAM", data);
+  return { data };
 }

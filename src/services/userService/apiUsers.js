@@ -3,14 +3,20 @@ import { LOCALHOST_USER } from "../constant";
 const prefixUrl = LOCALHOST_USER + "/user";
 
 export async function searchByCriteria(userId, nickname = "", tagIds = "") {
-  const response = await fetch(
-    `${prefixUrl}/${userId}/search?nickname=${nickname}&tags=${tagIds}`,
-  );
+  let url = `${prefixUrl}/search`;
+  let params = "";
+  if (userId) params += `id=${userId}&`;
+  if (nickname) params += `nickname=${nickname}&`;
+  if (tagIds) params += `&tags=${tagIds}&`;
+
+  if (params) url += `?${params}`;
+  const response = await fetch(url);
 
   let data = await response.json();
-  if (userId === 0) return { data, count: data.length };
+  // if (userId === 0) return { data, count: data.length };
+  console.log("APIUSER", data);
 
-  data = data.find((user) => user.userId === Number(userId));
+  // data = data.find((user) => user.userId === Number(userId));
   return data;
 }
 
