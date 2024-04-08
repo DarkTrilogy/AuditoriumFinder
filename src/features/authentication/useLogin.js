@@ -7,12 +7,17 @@ import { login as loginApi } from "../../services/apiAuth";
 export function useLogin() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  let emailForStorage;
 
   const { mutate: signIn, isLoading } = useMutation({
-    mutationFn: ({ email, password }) => signInApi({ email, password }),
+    mutationFn: ({ email, password }) => {
+      emailForStorage = email;
+      signInApi({ email, password });
+    },
     onSuccess: (user) => {
       // console.log("USER", user.user);
       // queryClient.setQueryData(["user"], user.user);
+      localStorage.setItem("email", emailForStorage);
       navigate("/", { replace: true });
     },
     onError: (err) => {

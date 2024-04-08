@@ -1,32 +1,16 @@
 import supabase, { supabaseUrl } from "./supabase";
 import { createProfile } from "./userService/apiAccountChange";
+import { editNickname } from "./userService/apiProfile";
+import { addTags } from "./userService/apiTags";
 import { searchByCriteria } from "./userService/apiUsers";
 
 // Supabase option
-// export async function signup({ fullName, email, password }) {
-//   const { data, error } = await supabase.auth.signUp({
-//     email,
-//     password,
-//     options: {
-//       data: {
-//         fullName,
-//         avatar: "",
-//       },
-//     },
-//   });
 
-//   if (error) throw new Error(error.message);
-
-//   return data;
-// }
-
-export async function signup({ fullName, email, password }) {
+export async function signup({ email }) {
   const { data, error } = await supabase.auth.signUp({
     email,
-    password,
     options: {
       data: {
-        fullName,
         avatar: "",
       },
     },
@@ -61,13 +45,16 @@ export async function login({ email, password }) {
 export async function getCurrentUser() {
   let session;
   const token = localStorage.getItem("accessToken");
-  if (token) {
+  if (token /* && token !== "undefined" */) {
     session = { accessToken: token };
   } else {
     session = null;
   }
 
-  if (!session) return null;
+  if (!session) {
+    console.log("NO SESSION");
+    return null;
+  }
   const userId = localStorage.getItem("userId");
   let data = await searchByCriteria(userId);
   console.log("SEARCHDATA", data, data[0].userNickname);
@@ -99,25 +86,42 @@ export async function getCurrentUser() {
   return data.user;
 }
 
+// export async function logout() {
+//   const { error } = await supabase.auth.signOut();
+//   if (error) throw new Error(error.message);
+// }
+
 export async function logout() {
-  const { error } = await supabase.auth.signOut();
-  if (error) throw new Error(error.message);
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("userId");
+  localStorage.removeItem("nickname");
+  localStorage.removeItem("email");
+  // localStorage.removeItem("avatar");
+  // localStorage.removeItem("userAudienceId");
 }
 
-export async function updateCurrentUser({ password, nickname, avatar }) {
+export async function updateCurrentUser({
+  password,
+  nickname,
+  avatar,
+  newTags,
+}) {
+  console.log("UPDATE", password, nickname, avatar, newTags);
   // 1. Update password OR fullName
 
   let updateData;
   if (password) updateData = { password };
   if (nickname) updateData = { data: { nickname } };
 
-  const { data, error } = await supabase.auth.updateUser(updateData);
+  const data = await editNickname(localStorage.getItem("userId"), nickname);
+  console.log("EDITNICKNAME", data);
 
-  if (error) throw new Error(error.message);
-  if (!avatar) return data;
+  // tags
+  addTags(localStorage.getItem("userId"), newTags);
 
   // 2.Upload avatar image
-  const fileName = `avatar-${data.user.id}-${Math.random()}`;
+  const fileName = `avatar-${nickname}-${Math.random()}`;
 
   const { error: storageError } = await supabase.storage
     .from("avatars")
@@ -126,12 +130,63 @@ export async function updateCurrentUser({ password, nickname, avatar }) {
   if (storageError) throw new Error(storageError.message);
 
   // 3. Update avatar in the user
-  const { data: updatedUser, error: error2 } = await supabase.auth.updateUser({
-    data: {
-      avatar: `${supabaseUrl}/storage/v1/object/public/avatars/${fileName}`,
-    },
-  });
+  // const { data: updatedUser, error: error2 } = await supabase.auth.updateUser({
+  //   data: {
+  //     avatar: `${supabaseUrl}/storage/v1/object/public/avatars/${fileName}`,
+  //   },
+  // });
 
-  if (error2) throw new Error(error2.message);
-  return updatedUser;
+  let updateUser;
+  if (avatar !== "" && avatar !== undefined && avatar !== null) {
+    localStorage.setItem(
+      `avatar${localStorage.getItem("userId")}`,
+      `${supabaseUrl}/storage/v1/object/public/avatars/${fileName}`,
+    );
+
+    updateUser = {
+      avatar: `${supabaseUrl}/storage/v1/object/public/avatars/${fileName}`,
+      tags: newTags,
+      nickname: nickname,
+    };
+  } else {
+    updateUser = {
+      tags: newTags,
+      nickname: nickname,
+    };
+  }
+
+  // if (error2) throw new Error(error2.message);
+  return updateUser;
 }
+
+// export async function updateCurrentUser({ password, nickname, avatar }) {
+//   // 1. Update password OR fullName
+
+//   let updateData;
+//   if (password) updateData = { password };
+//   if (nickname) updateData = { data: { nickname } };
+
+//   const { data, error } = await supabase.auth.updateUser(updateData);
+
+//   if (error) throw new Error(error.message);
+//   if (!avatar) return data;
+
+//   // 2.Upload avatar image
+//   const fileName = `avatar-${data.user.id}-${Math.random()}`;
+
+//   const { error: storageError } = await supabase.storage
+//     .from("avatars")
+//     .upload(fileName, avatar);
+
+//   if (storageError) throw new Error(storageError.message);
+
+//   // 3. Update avatar in the user
+//   const { data: updatedUser, error: error2 } = await supabase.auth.updateUser({
+//     data: {
+//       avatar: `${supabaseUrl}/storage/v1/object/public/avatars/${fileName}`,
+//     },
+//   });
+
+//   if (error2) throw new Error(error2.message);
+//   return updatedUser;
+// }

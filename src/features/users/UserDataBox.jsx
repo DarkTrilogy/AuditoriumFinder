@@ -1,5 +1,11 @@
 import styled from "styled-components";
 import { HiOutlineUser } from "react-icons/hi2";
+import DataItem from "../../ui/DataItem";
+import { CiUser } from "react-icons/ci";
+import { MdAlternateEmail } from "react-icons/md";
+import { FaLock, FaTags, FaUserFriends, FaUserLock } from "react-icons/fa";
+import Tag from "../../ui/Tag";
+import FormRow2 from "../../ui/FormRow2";
 
 const StyledBookingDataBox = styled.section`
   /* Box */
@@ -57,8 +63,8 @@ const Guest = styled.div`
   }
 `;
 
-function UserDataBox({ user }) {
-  const { userId, userNickname: nickname } = user;
+function UserDataBox({ profile }) {
+  const { userid, nickname, email, emailVisibility, isFriend, tags } = profile;
 
   return (
     <StyledBookingDataBox>
@@ -70,9 +76,39 @@ function UserDataBox({ user }) {
       </Header>
 
       <Section>
-        <Guest>
-          <p>User ID: {userId}</p>
-        </Guest>
+        <DataItem
+          icon={<MdAlternateEmail color="var(--color-brand-600)" size={32} />}
+          label="Email:"
+        >
+          {emailVisibility === "PRIVATE" ? <FaLock /> : email}
+        </DataItem>
+        <DataItem
+          icon={<FaUserFriends color="var(--color-brand-600)" size={32} />}
+          label="Your Friend:"
+        >
+          {isFriend && isFriend === true ? "Yes" : "No"}
+        </DataItem>
+        <DataItem
+          icon={<FaTags color="var(--color-brand-600)" size={32} />}
+          label="Tags:"
+        >
+          {/* {tags?.length === 0 && "No tags"}
+          {tags?.map((tag) => (
+            <Tag key={tag.name} type="green" descriptionPosition="bottom">
+              {tag.name}
+              <span className="tag-description">{tag.description}</span>
+            </Tag>
+          ))} */}
+
+          <FormRow2>
+            {tags?.map((tag) => (
+              <Tag key={tag.name} type="green" descriptionPosition="right">
+                {tag.name}
+                <span className="tag-description">{tag.description}</span>
+              </Tag>
+            ))}
+          </FormRow2>
+        </DataItem>
       </Section>
     </StyledBookingDataBox>
   );

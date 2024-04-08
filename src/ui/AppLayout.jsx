@@ -34,6 +34,7 @@ const Container = styled.div`
 `;
 
 function AppLayout({ showOutlet, checkForModerator }) {
+  console.log("AppLayout");
   const { user } = useUser();
   const isModerator = user?.email === MODERATOR_EMAIL;
 

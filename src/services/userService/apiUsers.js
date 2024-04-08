@@ -2,6 +2,7 @@ import { LOCALHOST_USER } from "../constant";
 
 const prefixUrl = LOCALHOST_USER + "/user";
 
+// DONE
 export async function searchByCriteria(userId, nickname = "", tagIds = "") {
   let url = `${prefixUrl}/search`;
   let params = "";
@@ -10,6 +11,7 @@ export async function searchByCriteria(userId, nickname = "", tagIds = "") {
   if (tagIds) params += `&tags=${tagIds}&`;
 
   if (params) url += `?${params}`;
+  console.log("SEARCH123", url);
   const response = await fetch(url);
 
   let data = await response.json();

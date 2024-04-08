@@ -2,20 +2,32 @@ import { LOCALHOST_USER } from "../constant";
 
 const prefixUrl = LOCALHOST_USER + "/profile";
 
+// DONE
 export async function editNickname(userid, profileChangeRequest) {
-  const response = await fetch(`${prefixUrl}/${userid}`, {
+  console.log("EDIT NICKNAME1", userid, profileChangeRequest);
+  const response = await fetch(`${prefixUrl}/`, {
     method: "PATCH",
-    body: JSON.stringify(profileChangeRequest),
+    headers: {
+      "Content-Type": "application/json",
+      userid: userid,
+    },
+    body: JSON.stringify({ nickname: profileChangeRequest }),
   });
-  return response.json();
+
+  const data = await response.json();
+  console.log("EDIT NICKNAME2", data);
+  return data;
 }
 
+// DONE
 export async function getProfileData(userid, id) {
+  console.log("GET PROFILE DATA1", userid, id);
   const response = await fetch(`${prefixUrl}?id=${id}`, {
     method: "GET",
     headers: { userid: userid },
   });
   const data = await response.json();
+  console.log("GET PROFILE DATA2", data);
   return data;
 }
 

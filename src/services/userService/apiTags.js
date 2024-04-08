@@ -1,13 +1,27 @@
-import { LOCALHOST } from "./constant";
+import { LOCALHOST_USER } from "../constant";
 
-const prefixUrl = LOCALHOST + "/tags";
+const prefixUrl = LOCALHOST_USER + "/tags";
 
-export async function addTags(userid, tagId) {
-  const response = await fetch(`${prefixUrl}/${userid}/add`, {
+// DONE
+export async function addTags(userid, tagsId) {
+  const tags = tagsId && tagsId.length > 1 ? tagsId.split(", ") : tagsId;
+  // console.log(
+  //   "ADD TAGS1",
+  //   userid,
+  //   tagsId,
+  //   typeof tagsId,
+  //   `${prefixUrl}/add?id=${tags.join("&id=")}`,
+  // );
+  const response = await fetch(`${prefixUrl}/add?id=${tags.join("&id=")}`, {
     method: "POST",
-    body: JSON.stringify(tagId),
+    headers: {
+      userid: userid,
+    },
   });
-  return response.json();
+
+  const data = await response.json();
+  console.log("ADD TAGS2", data);
+  return data;
 }
 
 export async function removeTags(userid, tagId) {

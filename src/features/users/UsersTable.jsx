@@ -2,6 +2,7 @@ import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import Empty from "../../ui/Empty";
 
+import { useNavigate } from "react-router-dom";
 import Spinner from "../../ui/Spinner";
 import Pagination from "../../ui/Pagination";
 import UserRow from "./UserRow";
@@ -17,14 +18,10 @@ import {
 } from "../../utils/constants";
 
 function UsersTable() {
-  // const { bookings, isLoading, count } = useBookings();
-
-  // if (isLoading) return <Spinner />;
-
-  // if (!bookings.length) return <Empty resourceName={"bookings"} />;
-
-  const { data: users, isLoading, count } = useUsers();
+  const navigate = useNavigate();
   const { language } = useLocalization();
+  const { data: users, isLoading, count } = useUsers();
+  console.log("USERS123", users, isLoading, count);
 
   if (isLoading) return <Spinner />;
 
@@ -42,7 +39,13 @@ function UsersTable() {
 
         <Table.Body
           data={users}
-          render={(user) => <UserRow key={user.id} user={user} />}
+          render={(user) => (
+            <UserRow
+              key={user.userid}
+              user={user}
+              onClick={() => navigate(`/users/${user.userid}`)}
+            />
+          )}
         />
         <Table.Footer>
           <Pagination count={count} />

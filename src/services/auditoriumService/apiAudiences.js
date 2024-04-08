@@ -36,9 +36,8 @@ export async function getFreeAudiencesInBuilding(building) {
   }
 }
 
-// PROCESS
+// DONE ??
 export async function getUserAudience(userId) {
-  console.log("GETUSERAUDIENCE", userId);
   const response = await fetch(`${prefixUrl}/auditorium/building`, {
     method: "GET",
     headers: {
@@ -47,7 +46,6 @@ export async function getUserAudience(userId) {
     },
   });
   const data = await response.json();
-  console.log("GETUSERAUDIENCE101", data);
   return data;
 }
 
@@ -88,6 +86,7 @@ export async function addUserToAuditorium(userId, audienceId, silentStatus) {
   return { data };
 }
 
+// DONE
 export async function removeUserFromAuditorium(userId) {
   console.log("REMOVE USER FROM AUDITORIUM", userId);
   const response = await fetch(`${prefixUrl}/auditorium/remove_user`, {
@@ -97,5 +96,7 @@ export async function removeUserFromAuditorium(userId) {
       userId: userId,
     },
   });
-  return response.json();
+
+  const data = await response.json();
+  return data;
 }

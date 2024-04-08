@@ -37,7 +37,10 @@ function UserAvatar() {
   return (
     <StyledUserAvatar onClick={() => navigate("/account")}>
       <Avatar
-        src={userMetadata.avatar || "default-user.jpg"}
+        src={
+          localStorage.getItem(`avatar${localStorage.getItem("userId")}`) ||
+          "default-user.jpg"
+        }
         alt={`{Avatar of ${userMetadata.nickname}}`}
       />
       <span>{userMetadata.nickname}</span>

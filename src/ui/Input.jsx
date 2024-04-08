@@ -6,6 +6,13 @@ const Input = styled.input`
   border-radius: var(--border-radius-sm);
   padding: 0.8rem 1.2rem;
   box-shadow: var(--shadow-sm);
+
+  // если придет определенный пропс, то меняем стили
+  ${(props) =>
+    props.small &&
+    `
+    width: fit-content;
+  `}
 `;
 
 export default Input;

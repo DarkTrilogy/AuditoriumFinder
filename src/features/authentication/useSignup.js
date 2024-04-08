@@ -9,7 +9,7 @@ export function useSignup() {
   const { mutate: signup, isLoading } = useMutation({
     mutationFn: signUpApi,
     onSuccess: (user) => {
-      navigate("/", { replace: true });
+      navigate("/login", { replace: true });
       toast.success("Account successfully verified!");
     },
     onError: (err) => {

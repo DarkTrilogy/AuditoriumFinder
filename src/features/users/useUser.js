@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { searchByCriteria } from "../../services/userService/apiUsers";
 
-export function useUser() {
+export function useUser(userid) {
   const { userId } = useParams();
 
   const {
@@ -11,7 +11,7 @@ export function useUser() {
     error,
   } = useQuery({
     queryKey: ["user", userId],
-    queryFn: () => searchByCriteria(userId),
+    queryFn: () => searchByCriteria(userid || userId),
     retry: false,
   });
 

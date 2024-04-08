@@ -7,6 +7,9 @@ import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 
 import { useNavigate } from "react-router-dom";
+import { useUser } from "./useUser";
+import { useProfile } from "./useProfile";
+import Spinner from "../../ui/Spinner";
 
 const Nickname = styled.div`
   font-size: 1.6rem;
@@ -30,8 +33,13 @@ const Stacked = styled.div`
   }
 `;
 
-function UserRow({ user: { userId, userNickname: nickname } }) {
+function UserRow({ user, onClick }) {
+  const { userid, userNickname: nickname } = user;
   const navigate = useNavigate();
+  const { profile, isLoading } = useProfile(userid);
+
+  if (isLoading) return <Spinner />;
+  console.log("profile12", profile);
 
   const statusToTagName = {
     unconfirmed: "silver",
@@ -41,15 +49,16 @@ function UserRow({ user: { userId, userNickname: nickname } }) {
   const status = "unconfirmed";
 
   function handleFriendRequest() {
+    console.log("handleFriendRequest");
     // TODO: при авторизации через бэкенд, мы получаем id текущего пользователя
     // и можем отправлять запрос на добавление в друзья другого пользователя при помощи данных id
     // const data = makeFriendRequest(currentUserId, userId);
   }
 
   return (
-    <Table.Row>
+    <Table.Row onClick={onClick}>
       <Nickname>{nickname}</Nickname>
-      <Nickname>{localStorage.getItem("email")}</Nickname>
+      <Nickname>{profile.email}</Nickname>
 
       {/* <Stacked>
         <span>{localStorage.getItem("email")}</span>
@@ -76,11 +85,11 @@ function UserRow({ user: { userId, userNickname: nickname } }) {
 
       <Modal>
         <Menus.Menu>
-          <Menus.Toggle id={userId} />
-          <Menus.List id={userId}>
+          <Menus.Toggle id={userid} />
+          <Menus.List id={userid}>
             <Menus.Button
               icon={<HiEye />}
-              onClick={() => navigate(`/users/${userId}`)}
+              onClick={() => navigate(`/users/${userid}`)}
             >
               See details
             </Menus.Button>

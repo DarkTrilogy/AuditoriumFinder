@@ -12,6 +12,7 @@ import AudienceDataBox from "./AudienceDataBox";
 import { useAudience } from "./useAudience";
 import {
   useAddUserToAuditorium,
+  useRemoveUserFromAudience,
   useUserAudience,
 } from "./useAudiencesFunctions";
 import ButtonGroup from "../../ui/ButtonGroup";
@@ -33,9 +34,13 @@ function AudienceDetail() {
   const moveBack = useMoveBack();
   const { isAdding, addUserToAudience } = useAddUserToAuditorium();
   const { userAudience } = useUserAudience();
+  const { isRemoving, removeUserFromAudience } = useRemoveUserFromAudience();
 
   const userId = localStorage.getItem("userId");
-  console.log("fja;sldkf", userId);
+  const userAudienceId =
+    Number(
+      localStorage.getItem(`userAudienceId${localStorage.getItem("userId")}`),
+    ) || null;
 
   if (isLoading) return <Spinner />;
   if (error) return <Empty resourceName="audience" />;
@@ -79,9 +84,10 @@ function AudienceDetail() {
                   userId,
                   audience: audience,
                   silenceStatus: "silent",
-                  onSettled: () => {
-                    navigate(-1);
-                  },
+                  // onSettled: () => {
+                  //   localStorage.setItem("userAudienceId", audience.id);
+                  //   navigate(-1);
+                  // },
                 });
               }}
               onNoise={() => {
@@ -89,9 +95,10 @@ function AudienceDetail() {
                   userId,
                   audience: audience,
                   silenceStatus: "noise",
-                  onSettled: () => {
-                    navigate(-1);
-                  },
+                  // onSettled: () => {
+                  //   localStorage.setItem("userAudienceId", audience.id);
+                  //   navigate(-1);
+                  // },
                 });
               }}
             />
@@ -100,20 +107,17 @@ function AudienceDetail() {
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>
-        <Button
-          variation="secondary"
-          onClick={() => {
-            userAudience(userId)
-              .then((data) => {
-                console.log("asfda", data);
-              })
-              .catch((error) => {
-                console.error("Error fetching user audience:", error);
-              });
-          }}
-        >
-          Get the fuck out
-        </Button>
+
+        {userAudienceId === audience.id ? (
+          <Button
+            variation="secondary"
+            onClick={() => {
+              removeUserFromAudience(userId, audience.id);
+            }}
+          >
+            Check out
+          </Button>
+        ) : null}
       </ButtonGroup>
     </>
   );

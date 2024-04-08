@@ -1,5 +1,4 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
 import { PAGE_SIZE } from "../../utils/constants";
 import { searchByCriteria } from "../../services/userService/apiUsers";
@@ -42,8 +41,14 @@ export function useUsers() {
   // filter by nickname
   if (nickname) {
     data = data.filter((user) => {
-      console.log("user", user.userNickname, nickname);
+      console.log("user123", user, user.userNickname, nickname);
       return user.userNickname.toLowerCase().includes(nickname.toLowerCase());
+    });
+  }
+
+  if (data && data.length > 0) {
+    data = data.filter((user) => {
+      return user.userid !== Number(localStorage.getItem("userId"));
     });
   }
 

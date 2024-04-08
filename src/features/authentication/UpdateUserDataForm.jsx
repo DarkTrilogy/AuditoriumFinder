@@ -9,22 +9,28 @@ import Input from "../../ui/Input";
 import { useUser } from "./useUser";
 import { useUpdateUser } from "./useUpdateUser";
 import { useProfile } from "./useProfile";
+import Spinner from "../../ui/Spinner";
+import Tag from "../../ui/Tag";
+import FormRow2 from "../../ui/FormRow2";
 
-function UpdateUserDataForm() {
+function UpdateUserDataForm({ nickname, currentTags }) {
   // We don't need the loading state, and can immediately use the user data, because we know that it has already been loaded at this point
   // const { data: user } = useUser();
-  const { user } = useProfile();
-
+  const { user, isLoading } = useProfile();
   const { updateUser, isUpdating } = useUpdateUser();
-
-  const [nick, setNick] = useState(user.nickname);
   const [avatar, setAvatar] = useState(null);
+  const [nick, setNick] = useState(nickname);
+  const [tags, setTags] = useState(currentTags);
+  const [newTags, setNewTags] = useState([]);
+
+  if (isLoading) return <Spinner />;
 
   function handleSubmit(e) {
+    console.log("Tags10", tags, newTags);
     e.preventDefault();
     if (!nick) return;
     updateUser(
-      { nickname: nick, avatar },
+      { nickname: nick, avatar, newTags },
       {
         onSuccess: () => {
           setAvatar(null);
@@ -55,6 +61,23 @@ function UpdateUserDataForm() {
         />
       </FormRow>
 
+      <FormRow2 label="Tags">
+        {tags?.map((tag) => (
+          <Tag key={tag.name} type="green" descriptionPosition="right">
+            {tag.name}
+            <span className="tag-description">{tag.description}</span>
+          </Tag>
+        ))}
+        <Input
+          placeholder="Add a tag..."
+          type="text"
+          value={newTags}
+          onChange={(e) => setNewTags(e.target.value)}
+          id="tags"
+          disabled={isUpdating}
+          small
+        />
+      </FormRow2>
       <FormRow label="Avatar image">
         <FileInput
           id="avatar"

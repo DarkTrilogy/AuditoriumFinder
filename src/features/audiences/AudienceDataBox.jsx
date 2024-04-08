@@ -122,6 +122,8 @@ function AudienceDataBox({ audience }) {
     projector,
     socketsAmount,
     type,
+    noiseUsersAmount,
+    silentUsersAmount,
     building: {
       address,
       city,
@@ -194,13 +196,13 @@ function AudienceDataBox({ audience }) {
           icon={<FaMicrophone color="var(--color-brand-600)" size={32} />}
           label="Noise people:"
         >
-          {}
+          {noiseUsersAmount}
         </DataItem>
         <DataItem
           icon={<FaMicrophoneSlash color="var(--color-brand-600)" size={32} />}
           label="Silent people:"
         >
-          {}
+          {silentUsersAmount}
         </DataItem>
       </Section>
 

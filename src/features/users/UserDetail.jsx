@@ -15,6 +15,7 @@ import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
 import UserDataBox from "./UserDataBox";
 import { useUser } from "./useUser";
+import { useProfile } from "./useProfile";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -25,20 +26,19 @@ const HeadingGroup = styled.div`
 function UserDetail() {
   const { checkout, isCheckingOut } = useCheckout();
 
-  const { user, isLoading } = useUser();
+  const { profile, isLoading } = useProfile();
   const moveBack = useMoveBack();
   const navigate = useNavigate();
 
   if (isLoading) return <Spinner />;
-  if (!user) return <Empty resourceName="user" />;
+  if (!profile) return <Empty resourceName="user" />;
 
-  const { userId, userNickname: nickname } = user;
+  const { userid, nickname } = profile;
   const status = "friend";
 
   const statusToTagName = {
     unconfirmed: "blue",
-    "checked-in": "green",
-    "checked-out": "silver",
+    "not-friend": "red",
     friend: "green",
   };
 
@@ -46,37 +46,35 @@ function UserDetail() {
     <>
       <Row type="horizontal">
         <HeadingGroup>
-          <Heading as="h1">
-            User #{userId} - {nickname}
-          </Heading>
+          <Heading as="h1">{nickname}</Heading>
           <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 
-      <UserDataBox user={user} />
+      <UserDataBox profile={profile} />
       {/* TODO: изменить под возможность отправки запроса в друзья */}
 
-      {/* <ButtonGroup>
+      <ButtonGroup>
         {status === "unconfirmed" && (
-          <Button onClick={() => navigate(`/checkin/${userId}`)}>
-            Check in
-          </Button>
+          <ButtonText disabled="true">Waiting for confirmation</ButtonText>
         )}
 
-        {status === "checked-in" && (
-          <Button
-            icon={<HiArrowUpOnSquare />}
-            onClick={() => checkout(userId)}
-            disabled={isCheckingOut}
-          >
-            Check out
-          </Button>
-        )} */}
-      <Button variation="secondary" onClick={moveBack}>
-        Back
-      </Button>
-      {/* </ButtonGroup> */}
+        {status === "not-friend" && (
+          <>
+            <Button onClick={() => checkout(userid)} disabled={isCheckingOut}>
+              Add to friends
+            </Button>
+          </>
+        )}
+
+        {status === "friend" && (
+          <ButtonText disabled="true">Already friends</ButtonText>
+        )}
+        {/* <Button variation="secondary" onClick={moveBack}>
+          Back
+        </Button> */}
+      </ButtonGroup>
     </>
   );
 }
