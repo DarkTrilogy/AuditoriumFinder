@@ -11,6 +11,7 @@ import { useUser } from "./useUser";
 import { useProfile } from "./useProfile";
 import Spinner from "../../ui/Spinner";
 import { useMakeFriendRequest } from "../friends/useMakeFriendRequest";
+import { FaLock } from "react-icons/fa";
 
 const Nickname = styled.div`
   font-size: 1.6rem;
@@ -35,20 +36,20 @@ const Stacked = styled.div`
 `;
 
 function UserRow({ user, onClick }) {
-  const { userid, userNickname: nickname } = user;
   const navigate = useNavigate();
+  const { userid, userNickname: nickname } = user;
   const { profile, isLoading } = useProfile(userid);
   const { isLoading: isSending, makeRequest } = useMakeFriendRequest();
 
   if (isLoading) return <Spinner />;
-  console.log("profile12", profile);
+  console.log("profile12", profile, user);
 
   const statusToTagName = {
-    unconfirmed: "silver",
-    confirmed: "green",
-    envelope: "green",
+    friend: "green",
+    "not-friend": "red",
+    unconfirmed: "blue",
   };
-  const status = "unconfirmed";
+  const status = profile.isFriend === true ? "friend" : "not-friend";
 
   function handleFriendRequest() {
     console.log("USERID", localStorage.getItem("userId"), userid);
@@ -58,7 +59,9 @@ function UserRow({ user, onClick }) {
   return (
     <Table.Row onClick={onClick}>
       <Nickname>{nickname}</Nickname>
-      <Nickname>{profile.email}</Nickname>
+      <Nickname>
+        {profile.email === null ? <FaLock size={32} /> : profile.email}
+      </Nickname>
 
       {/* <Stacked>
         <span>{localStorage.getItem("email")}</span>

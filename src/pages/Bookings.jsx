@@ -10,7 +10,7 @@ function Bookings() {
       <SearchBar />
       <Row type="horizontal">
         <Heading as="h1">All bookings</Heading>
-        <BookingTableOperations />
+        {/* <BookingTableOperations /> */}
       </Row>
 
       <BookingTable />

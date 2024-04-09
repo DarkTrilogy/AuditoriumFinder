@@ -27,6 +27,7 @@ function UserDetail() {
   const { checkout, isCheckingOut } = useCheckout();
 
   const { profile, isLoading } = useProfile();
+  console.log("PROFILE", profile);
   const moveBack = useMoveBack();
   const navigate = useNavigate();
 
@@ -34,12 +35,12 @@ function UserDetail() {
   if (!profile) return <Empty resourceName="user" />;
 
   const { userid, nickname } = profile;
-  const status = "friend";
+  const status = profile.isFriend === true ? "friend" : "not-friend";
 
   const statusToTagName = {
-    unconfirmed: "blue",
     "not-friend": "red",
     friend: "green",
+    unconfirmed: "blue",
   };
 
   return (
@@ -53,7 +54,6 @@ function UserDetail() {
       </Row>
 
       <UserDataBox profile={profile} />
-      {/* TODO: изменить под возможность отправки запроса в друзья */}
 
       <ButtonGroup>
         {status === "unconfirmed" && (

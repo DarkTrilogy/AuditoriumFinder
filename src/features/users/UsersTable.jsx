@@ -44,6 +44,7 @@ function UsersTable() {
               key={user.userid}
               user={user}
               onClick={() => navigate(`/users/${user.userid}`)}
+              userid={user.userid}
             />
           )}
         />

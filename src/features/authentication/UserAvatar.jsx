@@ -29,10 +29,7 @@ const Avatar = styled.img`
 
 function UserAvatar() {
   // const { data: user } = useUser();
-  const { profile: user, isLoading } = useProfile(
-    localStorage.getItem("userId"),
-  );
-  console.log("AVATAR123", user);
+  const { profile: user, isLoading } = useProfile();
   const navigate = useNavigate();
 
   const userMetadata = {

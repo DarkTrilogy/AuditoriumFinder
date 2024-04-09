@@ -10,8 +10,15 @@ export function useProfile(userid) {
     data: profile,
     error,
   } = useQuery({
-    queryKey: ["profile", userid],
-    queryFn: () => getProfileData(userid || userId, userid || userId),
+    queryKey: ["profile", userid || userId],
+    queryFn: () => {
+      if (userid || userId) {
+        return getProfileData(
+          Number(localStorage.getItem("userId")),
+          userid || userId,
+        );
+      }
+    },
     retry: false,
   });
 

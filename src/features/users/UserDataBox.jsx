@@ -64,7 +64,7 @@ const Guest = styled.div`
 `;
 
 function UserDataBox({ profile }) {
-  const { userid, nickname, email, emailVisibility, isFriend, tags } = profile;
+  const { nickname, email, emailVisibility, isFriend, tags } = profile;
 
   return (
     <StyledBookingDataBox>
