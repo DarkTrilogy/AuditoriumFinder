@@ -30,6 +30,8 @@ import WelcomePage from "./pages/WelcomePage";
 import Building from "./pages/Building";
 import Audience from "./pages/Audience";
 import Audiences from "./pages/Audiences";
+import Requests from "./pages/Requests";
+import Request from "./pages/Request";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -71,6 +73,8 @@ function App() {
                 <Route path="account" element={<Account />} />
                 <Route path="buildings" element={<Buildings />} />
                 <Route path="buildings/:buildingId" element={<Building />} />
+                <Route path="requests" element={<Requests />} />
+                <Route path="requests/:requestId" element={<Request />} />
                 {/* <Route
                   path="buildings/:buildingId/audience"
                   element={<Audiences />}

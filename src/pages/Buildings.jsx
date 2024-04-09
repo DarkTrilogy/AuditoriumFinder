@@ -10,7 +10,7 @@ function Buildings() {
       <SearchBar />
       <Row type="horizontal">
         <Heading as="h1">All buildings</Heading>
-        <BookingTableOperations />
+        {/* <BookingTableOperations /> */}
       </Row>
 
       <BuildingTable />

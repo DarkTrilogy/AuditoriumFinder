@@ -85,3 +85,7 @@ export const STATUS_EN = "Status";
 
 export const EMAIL_RU = "Почта";
 export const EMAIL_EN = "Email";
+
+// requests
+export const REQUESTS_RU = "Запросы";
+export const REQUESTS_EN = "Requests";

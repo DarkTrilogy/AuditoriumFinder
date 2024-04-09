@@ -2,13 +2,16 @@ import { LOCALHOST_USER } from "../constant";
 
 const prefixUrl = LOCALHOST_USER + "/friends";
 
-export async function getFriendList(userid, friendId = 0) {
-  const response = await fetch(`${prefixUrl}/${userid}/`);
+export async function getFriendList(userid) {
+  console.log("1. GET FRIENDS: ", userid);
+  const response = await fetch(`${prefixUrl}/`, {
+    method: "GET",
+    headers: {
+      userid: userid,
+    },
+  });
   const data = await response.json();
-  if (friendId !== 0) {
-    const result = data.find((friend) => friend.userId === Number(friendId));
-    return result;
-  }
+  console.log("2. GET FRIENDS: ", data);
   return { data, count: data.length };
 }
 

@@ -1,5 +1,3 @@
-import { useBookings } from "../bookings/useBookings";
-import UserRow from "../users/UserRow";
 import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
 import Pagination from "../../ui/Pagination";
@@ -9,13 +7,7 @@ import FriendRow from "./FriendRow";
 import { useFriends } from "./useFriends";
 
 function FriendsTable() {
-  // const { bookings, isLoading, count } = useBookings();
-
-  // if (isLoading) return <Spinner />;
-
-  // if (!bookings.length) return <Empty resourceName={"bookings"} />;
-
-  const { friends, isLoading, count } = useFriends(1);
+  const { friends, isLoading, count } = useFriends();
 
   if (isLoading) return <Spinner />;
 

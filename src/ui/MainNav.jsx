@@ -1,10 +1,13 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import {
+  HiEnvelope,
   HiOutlineCalendarDays,
   HiOutlineCog6Tooth,
+  HiOutlineEnvelopeOpen,
   HiOutlineHome,
   HiOutlineHomeModern,
+  HiOutlineUserGroup,
   HiOutlineUsers,
 } from "react-icons/hi2";
 import { useLocalization } from "../context/LocalizationContext";
@@ -19,6 +22,8 @@ import {
   HOME_RU,
   REPORTS_EN,
   REPORTS_RU,
+  REQUESTS_EN,
+  REQUESTS_RU,
   SETTINGS_EN,
   SETTINGS_RU,
   USERS_EN,
@@ -106,7 +111,7 @@ function MainNav({ role }) {
           </li>
           <li>
             <StyledNavLink to="/users">
-              <HiOutlineUsers />
+              <HiOutlineUserGroup />
               <span>{language === "en" ? USERS_EN : USERS_RU}</span>
             </StyledNavLink>
           </li>
@@ -114,6 +119,12 @@ function MainNav({ role }) {
             <StyledNavLink to="/friends">
               <HiOutlineUsers />
               <span>{language === "en" ? FRIENDS_EN : FRIENDS_RU}</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="/requests">
+              <HiOutlineEnvelopeOpen />
+              <span>{language === "en" ? REQUESTS_EN : REQUESTS_RU}</span>
             </StyledNavLink>
           </li>
           <li>

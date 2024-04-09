@@ -16,6 +16,7 @@ const StyledHeader = styled.header`
 `;
 
 function Header({ isModerator }) {
+  console.log("HEADER123");
   return (
     <StyledHeader isModerator={isModerator}>
       {/* <div>

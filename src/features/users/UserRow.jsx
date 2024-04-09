@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "./useUser";
 import { useProfile } from "./useProfile";
 import Spinner from "../../ui/Spinner";
+import { useMakeFriendRequest } from "../friends/useMakeFriendRequest";
 
 const Nickname = styled.div`
   font-size: 1.6rem;
@@ -37,6 +38,7 @@ function UserRow({ user, onClick }) {
   const { userid, userNickname: nickname } = user;
   const navigate = useNavigate();
   const { profile, isLoading } = useProfile(userid);
+  const { isLoading: isSending, makeRequest } = useMakeFriendRequest();
 
   if (isLoading) return <Spinner />;
   console.log("profile12", profile);
@@ -49,12 +51,10 @@ function UserRow({ user, onClick }) {
   const status = "unconfirmed";
 
   function handleFriendRequest() {
-    console.log("handleFriendRequest");
-    // TODO: при авторизации через бэкенд, мы получаем id текущего пользователя
-    // и можем отправлять запрос на добавление в друзья другого пользователя при помощи данных id
-    // const data = makeFriendRequest(currentUserId, userId);
+    console.log("USERID", localStorage.getItem("userId"), userid);
+    const userId = localStorage.getItem("userId");
+    makeRequest({ id: userid, userId });
   }
-
   return (
     <Table.Row onClick={onClick}>
       <Nickname>{nickname}</Nickname>
@@ -79,7 +79,7 @@ function UserRow({ user, onClick }) {
 
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
-      <Tag type="envelope" onClick={() => handleFriendRequest()}>
+      <Tag type="envelope" onClick={handleFriendRequest}>
         <HiOutlineEnvelope />
       </Tag>
 

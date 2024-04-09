@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useUser } from "./useUser";
 import { useNavigate } from "react-router-dom";
+import { useProfile } from "../users/useProfile";
+import Spinner from "../../ui/Spinner";
 
 const StyledUserAvatar = styled.div`
   display: flex;
@@ -26,13 +28,19 @@ const Avatar = styled.img`
 `;
 
 function UserAvatar() {
-  const { data: user } = useUser();
+  // const { data: user } = useUser();
+  const { profile: user, isLoading } = useProfile(
+    localStorage.getItem("userId"),
+  );
+  console.log("AVATAR123", user);
   const navigate = useNavigate();
 
   const userMetadata = {
     nickname: user?.nickname,
     avatar: user?.avatar,
   };
+
+  if (isLoading) return <Spinner />;
 
   return (
     <StyledUserAvatar onClick={() => navigate("/account")}>
