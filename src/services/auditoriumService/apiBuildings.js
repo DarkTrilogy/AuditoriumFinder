@@ -15,11 +15,9 @@ export async function getAllBuildings(page, size = 10) {
     data,
   );
 
-  console.log(
-    "GET ALL BUILDINGS COUNT",
-    response.headers.get("entities_amount"),
-  );
-  return data;
+  const count = response.headers.get("entities_amount");
+  console.log("1234567", { data, count });
+  return { data, count };
 }
 
 export async function getBuilding(buildingId) {

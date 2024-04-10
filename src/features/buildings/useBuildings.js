@@ -31,12 +31,13 @@ export function useBuildings() {
   // QUERY
   let {
     isLoading,
-    data: buildings = {},
+    data: { data: buildings, count } = {},
     error,
   } = useQuery({
     queryKey: ["buildings" /* , search, filter, sortBy, */, page],
     queryFn: () => getAllBuildings(page, PAGE_SIZE),
   });
+  console.log("USE BUILDINGS", buildings, count);
 
   if (address) {
     buildings = buildings.filter((building) => {
@@ -45,7 +46,7 @@ export function useBuildings() {
   }
 
   // PRE-FETCHING
-  const pageCount = Math.ceil(buildings.length / PAGE_SIZE);
+  const pageCount = Math.ceil(count / PAGE_SIZE);
 
   if (page < pageCount)
     queryClient.prefetchQuery({
@@ -59,9 +60,7 @@ export function useBuildings() {
       queryFn: () => getAllBuildings(page - 1, PAGE_SIZE),
     });
 
-  console.log("USE BUILDINGS", buildings, buildings.length, isLoading, error);
-
-  return { buildings, count: buildings.length, isLoading, error };
+  return { buildings, count, isLoading, error };
 
   // return { isLoading, error, bookings, count };
 }
