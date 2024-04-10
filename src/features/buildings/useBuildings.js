@@ -26,7 +26,7 @@ export function useBuildings() {
   // const sortBy = { field, direction };
 
   // PAGINATION
-  // const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
+  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
 
   // QUERY
   let {
@@ -34,8 +34,8 @@ export function useBuildings() {
     data: buildings = {},
     error,
   } = useQuery({
-    queryKey: ["buildings" /* , search, filter, sortBy, page */],
-    queryFn: () => getAllBuildings(),
+    queryKey: ["buildings" /* , search, filter, sortBy, */, page],
+    queryFn: () => getAllBuildings(page, PAGE_SIZE),
   });
 
   if (address) {
@@ -44,21 +44,24 @@ export function useBuildings() {
     });
   }
 
+  // PRE-FETCHING
+  const pageCount = Math.ceil(buildings.length / PAGE_SIZE);
+
+  if (page < pageCount)
+    queryClient.prefetchQuery({
+      queryKey: ["buildings", /* search, filter, sortBy, */ page + 1],
+      queryFn: () => getAllBuildings(page + 1, PAGE_SIZE),
+    });
+
+  if (page > 1)
+    queryClient.prefetchQuery({
+      queryKey: ["buildings", /* search, filter, sortBy, */ page - 1],
+      queryFn: () => getAllBuildings(page - 1, PAGE_SIZE),
+    });
+
+  console.log("USE BUILDINGS", buildings, buildings.length, isLoading, error);
+
   return { buildings, count: buildings.length, isLoading, error };
 
-  // PRE-FETCHING
-  // const pageCount = Math.ceil(count / PAGE_SIZE);
-
-  // if (page < pageCount)
-  //   queryClient.prefetchQuery({
-  //     queryKey: ["bookings", search, filter, sortBy, page + 1],
-  //     queryFn: () => getAllBuildings(),
-  //   });
-
-  // if (page > 1)
-  //   queryClient.prefetchQuery({
-  //     queryKey: ["bookings", search, filter, sortBy, page - 1],
-  //     queryFn: () => getAllBuildings(),
-  //   });
   // return { isLoading, error, bookings, count };
 }

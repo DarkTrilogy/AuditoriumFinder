@@ -29,16 +29,16 @@ export async function unsubscribeFromNotificationsFromUser(id, userid) {
   return response.json();
 }
 
-export async function removeFromFriendList(id, userid) {
-  // await fetch(`${prefixUrl}/${id}/remove/${userid}`, {
-  //   method: "PATCH",
-  // });
-  console.log("REMOVE", id, userid);
-  const data = await getFriendList(id);
-  console.log(data.data);
+export async function removeFromFriendList(friendid, userid) {
+  console.log("USEDELETEFRIEND2", friendid, userid);
+  const response = await fetch(`${prefixUrl}/${friendid}/remove`, {
+    method: "PATCH",
+    headers: {
+      userid: userid,
+    },
+  });
 
-  data.data = data.data.filter((friend) => friend.userId !== userid);
-  console.log(data.data);
-
-  return { data };
+  const data = await response.json();
+  console.log("USEDELETEFRIEND3", data);
+  return data;
 }

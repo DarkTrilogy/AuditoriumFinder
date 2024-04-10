@@ -29,7 +29,9 @@ const Avatar = styled.img`
 
 function UserAvatar() {
   // const { data: user } = useUser();
-  const { profile: user, isLoading } = useProfile();
+  const { profile: user, isLoading } = useProfile(
+    localStorage.getItem("userId"),
+  );
   const navigate = useNavigate();
 
   const userMetadata = {
@@ -46,9 +48,9 @@ function UserAvatar() {
           localStorage.getItem(`avatar${localStorage.getItem("userId")}`) ||
           "default-user.jpg"
         }
-        alt={`{Avatar of ${userMetadata.nickname}}`}
+        alt={`{Avatar of ${user?.nickname}}`}
       />
-      <span>{userMetadata.nickname}</span>
+      <span>{user?.nickname}</span>
     </StyledUserAvatar>
   );
 }

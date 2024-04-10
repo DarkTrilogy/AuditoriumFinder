@@ -15,16 +15,17 @@ function FriendsTable() {
 
   return (
     <Menus>
-      <Table columns="2.5fr 2fr 0.5fr">
+      <Table columns="2fr 3fr 2fr 0.5fr">
         <Table.Header>
-          <div>Guest</div>
+          <div>Friend</div>
+          <div>Email</div>
           <div>Status</div>
           <div></div>
         </Table.Header>
 
         <Table.Body
           data={friends}
-          render={(friend) => <FriendRow key={friend.userId} friend={friend} />}
+          render={(friend) => <FriendRow key={friend.userid} friend={friend} />}
         />
         <Table.Footer>
           <Pagination count={count} />

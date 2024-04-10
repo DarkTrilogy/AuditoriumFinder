@@ -57,7 +57,7 @@ function UserRow({ user, onClick }) {
     makeRequest({ id: userid, userId });
   }
   return (
-    <Table.Row onClick={onClick}>
+    <Table.Row /* onClick={onClick} */>
       <Nickname>{nickname}</Nickname>
       <Nickname>
         {profile.email === null ? <FaLock size={32} /> : profile.email}

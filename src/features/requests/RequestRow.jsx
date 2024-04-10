@@ -18,6 +18,7 @@ import { TiTick } from "react-icons/ti";
 import { GiCancel } from "react-icons/gi";
 import { useAcceptRequest } from "./useAcceptReques";
 import { useDeclineRequest } from "./useDeclineRequest";
+import { useDeleteOutcomingRequest } from "./useDeleteOutcomingRequest";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -46,6 +47,8 @@ function RequestRow({ request: { userid, userNickname: nickname }, type }) {
   const { checkout, isCheckingOut } = useCheckout();
   const { isAccepting, acceptRequest } = useAcceptRequest();
   const { isDeclining, declineRequest } = useDeclineRequest();
+  const { isDeleting, deleteOutcomingRequest } = useDeleteOutcomingRequest();
+  const requestid = userid;
   const currentUserId = localStorage.getItem("userId");
 
   const status = "friend";
@@ -83,50 +86,37 @@ function RequestRow({ request: { userid, userNickname: nickname }, type }) {
         </>
       )}
 
-      <Modal>
-        <Menus.Menu>
-          <Menus.Toggle id={userid} />
-          <Menus.List id={userid}>
-            <Menus.Button
-              icon={<HiEye />}
-              onClick={() => navigate(`/requests/${userid}`)}
-            >
-              See details
-            </Menus.Button>
-
-            {status === "unconfirmed" && (
-              <Menus.Button
-                icon={<HiArrowDownOnSquare />}
-                onClick={() => navigate(`/checkin/${userid}`)}
+      {type === "outcoming" && (
+        <Modal>
+          <Menus.Menu>
+            <Menus.Toggle id={userid} />
+            <Menus.List id={userid}>
+              {/* <Menus.Button
+                icon={<HiEye />}
+                onClick={() => navigate(`/requests/${userid}`)}
               >
-                Check in
-              </Menus.Button>
-            )}
+                See details
+              </Menus.Button> */}
+              <Modal.Open opens="delete">
+                <Menus.Button icon={<HiTrash />}>Delete request</Menus.Button>
+              </Modal.Open>
+            </Menus.List>
+          </Menus.Menu>
 
-            {status === "checked-in" && (
-              <Menus.Button
-                icon={<HiArrowUpOnSquare />}
-                onClick={() => checkout(userid)}
-                disabled={isCheckingOut}
-              >
-                Check out
-              </Menus.Button>
-            )}
-
-            <Modal.Open opens="delete">
-              <Menus.Button icon={<HiTrash />}>Delete friend</Menus.Button>
-            </Modal.Open>
-          </Menus.List>
-        </Menus.Menu>
-
-        <Modal.Window name="delete">
-          {/* <ConfirmDelete
-            resourceName="friend"
-            disabled={isDeleting}
-            onConfirm={() => deleteFriend(friendId, friendId)} // как передать 2 аргумента в useDeleteFriend - friendId и id - ? - см. useDeleteBooking
-          /> */}
-        </Modal.Window>
-      </Modal>
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              resourceName="request"
+              disabled={isDeleting}
+              onConfirm={() =>
+                deleteOutcomingRequest({
+                  currentUserId,
+                  requestid,
+                })
+              }
+            />
+          </Modal.Window>
+        </Modal>
+      )}
     </Table.Row>
   );
 }

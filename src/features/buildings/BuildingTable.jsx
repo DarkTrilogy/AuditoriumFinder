@@ -38,7 +38,7 @@ function BuildingTable() {
           />
         )}
         <Table.Footer>
-          <Pagination count={count} />
+          <Pagination count={50} />
         </Table.Footer>
       </Table>
     </Menus>

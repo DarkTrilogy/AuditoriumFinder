@@ -39,8 +39,6 @@ export function useOutcomingRequests() {
     queryFn: () => getOutgoingRequests(Number(localStorage.getItem("userId"))),
   });
 
-  console.log("DATA05", data);
-
   // filter by nickname
   if (nickname) {
     data = data.filter((user) => {

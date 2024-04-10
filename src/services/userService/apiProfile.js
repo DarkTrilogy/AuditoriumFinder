@@ -29,10 +29,17 @@ export async function getProfileData(userid, id) {
   return data;
 }
 
+// DONE
 export async function changeVisibility(userid, visibilityChangeRequest) {
-  const response = await fetch(`${prefixUrl}/${userid}/visibility`, {
+  const response = await fetch(`${prefixUrl}/visibility`, {
     method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      userid: userid,
+    },
     body: JSON.stringify(visibilityChangeRequest),
   });
-  return response.json();
+  const data = await response.json();
+  console.log("changeVisibility", data);
+  return data;
 }

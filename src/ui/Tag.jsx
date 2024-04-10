@@ -13,7 +13,7 @@ const Tag = styled.span`
   background-color: var(--color-${(props) => props.type}-100);
 
   // Envelope
-  font-size: ${(props) => (props.type === "envelope" ? "4rem" : "1.1rem")};
+  font-size: ${(props) => (props.type === "envelope" ? "4rem" : "1.5rem")};
   color: ${(props) => props.type === "envelope" && "var(--color-green-700)"};
   background-color: ${(props) =>
     props.type === "envelope" && `var(--color-green-100)`};
@@ -53,6 +53,55 @@ const Tag = styled.span`
     visibility: visible;
     opacity: 1;
   }
+
+  /* Добавляем стиль для выделения текущего тега */
+  ${(props) =>
+    props.isSelected &&
+    `
+  &::before {
+    border-color: var(--color-${props.type}-700); /* Цвет обводки соответствует цвету тега */
+    transition: border-color 0.3s ease; /* Добавляем плавный переход */
+  }
+`}
+
+  /* Стиль для не выбранных тегов */
+  ${(props) =>
+    !props.isSelected &&
+    `
+  filter: brightness(70%); /* Уменьшаем яркость, чтобы сделать теги более мутными */
+  transition: filter 0.3s ease, brightness 0.3s ease; /* Добавляем плавный переход */
+  // cursor: not-allowed; /* Меняем курсор на запрещающий, чтобы показать неактивность */
+`}
+
+/* Возвращаем прежнюю яркость при наведении на неактивный тег */
+${(props) =>
+    !props.isSelected &&
+    `
+  &:hover {
+    filter: brightness(100%); /* Возвращаем прежнюю яркость */
+  }
+`}
+
+  /* Стиль для обводки выбранного тега */
+  &::before {
+    content: "";
+    position: absolute;
+    top: -2px; /* Отступ вверх для обводки */
+    left: -2px; /* Отступ влево для обводки */
+    right: -2px; /* Отступ вправо для обводки */
+    bottom: -2px; /* Отступ вниз для обводки */
+    border: 2px solid transparent; /* Создаем пустую обводку */
+    border-radius: 100px; /* Задаем скругление для обводки */
+  }
+
+  /* Стиль для обводки выбранного тега того же цвета, что и тег */
+  ${(props) =>
+    props.isSelected &&
+    `
+    &::before {
+      border-color: var(--color-${props.type}-700); /* Цвет обводки соответствует цвету тега */
+    }
+  `}
 `;
 
 export default Tag;

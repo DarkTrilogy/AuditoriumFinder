@@ -45,6 +45,7 @@ export async function makeFriendRequest(userid, id) {
   return { data };
 }
 
+// DONE
 export async function declineIncomingRequestFromUser(userid, id) {
   console.log("1. DECLINE INCOMING REQUEST: ", userid, id);
   const response = await fetch(`${prefixUrl}/in/${id}/decline`, {
@@ -58,9 +59,16 @@ export async function declineIncomingRequestFromUser(userid, id) {
   return data;
 }
 
+// DONE
 export async function removeOutgoingRequest(userid, id) {
-  const response = await fetch(`${prefixUrl}/${userid}/out/${id}/remove`, {
+  console.log("REMOVE OUTGOING REQUEST1: ", userid, id);
+  const response = await fetch(`${prefixUrl}/out/${id}/remove`, {
     method: "POST",
+    headers: {
+      userid: userid,
+    },
   });
-  return response.json();
+  const data = await response.json();
+  console.log("REMOVE OUTGOING REQUEST2: ", data);
+  return data;
 }

@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
 const StyledFormRow = styled.div`
-  display: grid;
+  display: ${({ type }) =>
+    type === "visibility"
+      ? "flex"
+      : "grid"}; // Используем flex для type === "visibility"
   align-items: center;
-  // файл не выбран
   gap: 1.2rem;
 
   padding: 1.2rem 0;
@@ -36,13 +38,20 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function FormRow2({ label, error, children }) {
+function FormRow2({ label, error, children, type }) {
   return (
-    <StyledFormRow>
+    <>
       <Label>{label}</Label>
-      {children}
-      {error && <Error>{error}</Error>}
-    </StyledFormRow>
+
+      {type === "visibility" ? (
+        <StyledFormRow type={type}>{children}</StyledFormRow>
+      ) : (
+        <StyledFormRow>
+          {children}
+          {error && <Error>{error}</Error>}
+        </StyledFormRow>
+      )}
+    </>
   );
 }
 

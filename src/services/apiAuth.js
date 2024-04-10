@@ -1,6 +1,6 @@
 import supabase, { supabaseUrl } from "./supabase";
 import { createProfile } from "./userService/apiAccountChange";
-import { editNickname } from "./userService/apiProfile";
+import { changeVisibility, editNickname } from "./userService/apiProfile";
 import { addTags } from "./userService/apiTags";
 import { searchByCriteria } from "./userService/apiUsers";
 
@@ -106,6 +106,8 @@ export async function updateCurrentUser({
   nickname,
   avatar,
   newTags,
+  emailVisibilityTag,
+  telegramVisibilityTag,
 }) {
   console.log("UPDATE", password, nickname, avatar, newTags);
   // 1. Update password OR fullName
@@ -119,6 +121,12 @@ export async function updateCurrentUser({
 
   // tags
   addTags(localStorage.getItem("userId"), newTags);
+
+  // visibilities
+  changeVisibility(localStorage.getItem("userId"), {
+    emailVisibility: emailVisibilityTag,
+    telegramVisibility: telegramVisibilityTag,
+  });
 
   // 2.Upload avatar image
   const fileName = `avatar-${nickname}-${Math.random()}`;

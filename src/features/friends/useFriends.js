@@ -36,7 +36,7 @@ export function useFriends() {
     error,
   } = useQuery({
     // queryKey: ["friends", search, filter, sortBy, page],
-    queryKey: ["friends"],
+    queryKey: ["friends", localStorage.getItem("userId")],
     queryFn: () => getFriendList(Number(localStorage.getItem("userId"))),
   });
 

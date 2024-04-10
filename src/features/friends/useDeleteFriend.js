@@ -5,13 +5,14 @@ import { removeFromFriendList } from "../../services/userService/apiFriends";
 export function useDeleteFriend() {
   const queryClient = useQueryClient();
 
-  const { isDeleting, mutate: deleteFriend } = useMutation({
-    mutationFn: (friendId, id) => removeFromFriendList(friendId, 1),
+  const { isLoading: isDeleting, mutate: deleteFriend } = useMutation({
+    mutationFn: ({ friendid, userid }) => {
+      removeFromFriendList(friendid, userid);
+    },
     onSuccess: () => {
-      toast.success("Friend successfully deleted");
-
+      // toast.success("Friend successfully deleted");
       queryClient.invalidateQueries({
-        queryKey: ["friends"], // почему не обновляется список друзей? - потому что не правильно указан queryKey в useQuery
+        queryKey: ["friends"],
       });
     },
     onError: (err) => toast.error(err.message),

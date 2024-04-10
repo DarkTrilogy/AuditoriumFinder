@@ -3,7 +3,13 @@ import { HiOutlineUser } from "react-icons/hi2";
 import DataItem from "../../ui/DataItem";
 import { CiUser } from "react-icons/ci";
 import { MdAlternateEmail } from "react-icons/md";
-import { FaLock, FaTags, FaUserFriends, FaUserLock } from "react-icons/fa";
+import {
+  FaLock,
+  FaTags,
+  FaTelegramPlane,
+  FaUserFriends,
+  FaUserLock,
+} from "react-icons/fa";
 import Tag from "../../ui/Tag";
 import FormRow2 from "../../ui/FormRow2";
 
@@ -64,7 +70,15 @@ const Guest = styled.div`
 `;
 
 function UserDataBox({ profile }) {
-  const { nickname, email, emailVisibility, isFriend, tags } = profile;
+  const {
+    nickname,
+    email,
+    telegramHandle,
+    emailVisibility,
+    telegramVisibility,
+    isFriend,
+    tags,
+  } = profile;
 
   return (
     <StyledBookingDataBox>
@@ -81,6 +95,18 @@ function UserDataBox({ profile }) {
           label="Email:"
         >
           {emailVisibility === "PRIVATE" ? <FaLock /> : email}
+        </DataItem>
+        <DataItem
+          icon={<FaTelegramPlane color="var(--color-brand-600)" size={32} />}
+          label="Telegram:"
+        >
+          {telegramVisibility === "PRIVATE" ? (
+            <FaLock />
+          ) : telegramHandle === "" ? (
+            "-"
+          ) : (
+            telegramHandle
+          )}
         </DataItem>
         <DataItem
           icon={<FaUserFriends color="var(--color-brand-600)" size={32} />}
@@ -101,12 +127,14 @@ function UserDataBox({ profile }) {
           ))} */}
 
           <FormRow2>
-            {tags?.map((tag) => (
-              <Tag key={tag.name} type="green" descriptionPosition="right">
-                {tag.name}
-                <span className="tag-description">{tag.description}</span>
-              </Tag>
-            ))}
+            {tags.length > 0
+              ? tags?.map((tag) => (
+                  <Tag key={tag.name} type="green" descriptionPosition="right">
+                    {tag.name}
+                    <span className="tag-description">{tag.description}</span>
+                  </Tag>
+                ))
+              : "-"}
           </FormRow2>
         </DataItem>
       </Section>

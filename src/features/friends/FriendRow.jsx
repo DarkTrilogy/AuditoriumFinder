@@ -1,23 +1,20 @@
 import styled from "styled-components";
-import {
-  HiArrowDownOnSquare,
-  HiArrowUpOnSquare,
-  HiEye,
-  HiTrash,
-} from "react-icons/hi2";
+import { HiEye, HiTrash } from "react-icons/hi2";
 
 import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import Spinner from "../../ui/Spinner";
 
 import { useNavigate } from "react-router-dom";
-import { useCheckout } from "../check-in-out/useCheckout";
-import { useDeleteBooking } from "../bookings/useDeleteBooking";
 import { useDeleteFriend } from "./useDeleteFriend";
+import { useProfile } from "../users/useProfile";
+import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const Cabin = styled.div`
+const Nickname = styled.div`
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-grey-600);
@@ -39,10 +36,14 @@ const Stacked = styled.div`
   }
 `;
 
-function FriendRow({ friend: { userId: friendId, userNickname: nickname } }) {
+function FriendRow({ friend: { userid: friendid, userNickname: nickname } }) {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { checkout, isCheckingOut } = useCheckout();
   const { deleteFriend, isDeleting } = useDeleteFriend();
+  const { profile, isLoading } = useProfile(friendid);
+  const userid = localStorage.getItem("userId");
+
+  if (isLoading) return <Spinner />;
 
   const status = "friend";
   const statusToTagName = {
@@ -54,45 +55,29 @@ function FriendRow({ friend: { userId: friendId, userNickname: nickname } }) {
 
   return (
     <Table.Row>
-      <Stacked>
-        <span>{nickname}</span>
-        <span>{nickname}</span>
-      </Stacked>
+      <Nickname>{nickname}</Nickname>
+      <Nickname>{profile.email}</Nickname>
 
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
       <Modal>
         <Menus.Menu>
-          <Menus.Toggle id={friendId} />
-          <Menus.List id={friendId}>
+          <Menus.Toggle id={friendid} />
+          <Menus.List id={friendid}>
             <Menus.Button
               icon={<HiEye />}
-              onClick={() => navigate(`/friends/${friendId}`)}
+              onClick={() => navigate(`/users/${friendid}`)}
             >
               See details
             </Menus.Button>
 
-            {status === "unconfirmed" && (
-              <Menus.Button
-                icon={<HiArrowDownOnSquare />}
-                onClick={() => navigate(`/checkin/${friendId}`)}
-              >
-                Check in
-              </Menus.Button>
-            )}
-
-            {status === "checked-in" && (
-              <Menus.Button
-                icon={<HiArrowUpOnSquare />}
-                onClick={() => checkout(friendId)}
-                disabled={isCheckingOut}
-              >
-                Check out
-              </Menus.Button>
-            )}
-
             <Modal.Open opens="delete">
-              <Menus.Button icon={<HiTrash />}>Delete friend</Menus.Button>
+              <Menus.Button
+                icon={<HiTrash />}
+                onClick={() => deleteFriend({ friendid, userid })}
+              >
+                Delete friend
+              </Menus.Button>
             </Modal.Open>
           </Menus.List>
         </Menus.Menu>
@@ -101,7 +86,7 @@ function FriendRow({ friend: { userId: friendId, userNickname: nickname } }) {
           <ConfirmDelete
             resourceName="friend"
             disabled={isDeleting}
-            onConfirm={() => deleteFriend(friendId, friendId)} // как передать 2 аргумента в useDeleteFriend - friendId и id - ? - см. useDeleteBooking
+            onConfirm={() => deleteFriend({ friendid, userid })}
           />
         </Modal.Window>
       </Modal>

@@ -70,6 +70,7 @@ function Pagination({ count }) {
     const next = currentPage === pageCount ? currentPage : currentPage + 1;
 
     searchParams.set("page", next);
+    searchParams.set("size", 10);
     setSearchParams(searchParams);
   }
 
@@ -77,6 +78,7 @@ function Pagination({ count }) {
     const prev = currentPage === 1 ? currentPage : currentPage - 1;
 
     searchParams.set("page", prev);
+    searchParams.set("size", 10);
     setSearchParams(searchParams);
   }
 
