@@ -17,6 +17,7 @@ export async function signIn(request) {
     throw new Error("Некорректный email");
   }
   if (data.message === "Неправильный email или пароль") {
+    console.log("SIGNIN DATA1", data);
     throw new Error("Неправильный email или пароль");
   }
   data = {

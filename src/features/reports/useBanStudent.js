@@ -9,7 +9,7 @@ export function useBanStudent() {
 
   const { isLoading: isBanning, mutate: banStudent } = useMutation({
     mutationFn: ({ userid, banRequest }) => {
-      banUser(userid, banRequest);
+      return banUser(userid, banRequest);
     },
     onSuccess: () => {
       toast.success("Student successfully baned");

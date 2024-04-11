@@ -8,8 +8,9 @@ export function useDeclineRequest() {
   const navigate = useNavigate();
 
   const { isDeclining, mutate: declineRequest } = useMutation({
-    mutationFn: ({ currentUserId, id }) =>
-      declineIncomingRequestFromUser(currentUserId, id),
+    mutationFn: ({ currentUserId, id }) => {
+      return declineIncomingRequestFromUser(currentUserId, id);
+    },
     onSuccess: () => {
       toast.success("Request successfully declined");
       navigate("/friends");

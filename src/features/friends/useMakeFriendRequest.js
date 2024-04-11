@@ -6,7 +6,7 @@ export function useMakeFriendRequest() {
   const { isLoading, mutate: makeRequest } = useMutation({
     mutationFn: ({ id, userId }) => {
       console.log("PARAMS123", userId, id);
-      makeFriendRequest(userId, id);
+      return makeFriendRequest(userId, id);
     },
     onSuccess: () => {
       toast.success("Friend request successfully sent");

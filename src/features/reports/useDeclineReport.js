@@ -9,7 +9,7 @@ export function useDeclineReport() {
 
   const { isLoading: isDeclining, mutate: declineStudentReport } = useMutation({
     mutationFn: ({ userid, id }) => {
-      declineReport(userid, id);
+      return declineReport(userid, id);
     },
     onSuccess: () => {
       toast.success("Report successfully declined");

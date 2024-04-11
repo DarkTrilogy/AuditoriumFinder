@@ -9,7 +9,7 @@ export function useReportUser() {
   const { isLoading: isReporting, mutate: reportStudent } = useMutation({
     mutationFn: ({ id, currentUserId, request }) => {
       console.log("REPORTING", id, currentUserId, request);
-      reportUser(currentUserId, request, id);
+      return reportUser(currentUserId, request, id);
     },
     onSuccess: () => {
       toast.success("Student successfully reported");

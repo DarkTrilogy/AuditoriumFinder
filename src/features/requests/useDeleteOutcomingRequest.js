@@ -8,7 +8,7 @@ export function useDeleteOutcomingRequest() {
   const { isLoading: isDeleting, mutate: deleteOutcomingRequest } = useMutation(
     {
       mutationFn: ({ requestid, currentUserId }) => {
-        removeOutgoingRequest(currentUserId, requestid);
+        return removeOutgoingRequest(currentUserId, requestid);
       },
       onSuccess: () => {
         // toast.success("Request successfully canceled");

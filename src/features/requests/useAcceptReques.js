@@ -9,7 +9,7 @@ export function useAcceptRequest() {
 
   const { isAccepting, mutate: acceptRequest } = useMutation({
     mutationFn: ({ currentUserId, id }) => {
-      makeFriendRequest(currentUserId, id);
+      return makeFriendRequest(currentUserId, id);
     },
     onSuccess: () => {
       toast.success("Request successfully accepted");

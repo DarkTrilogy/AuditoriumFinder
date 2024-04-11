@@ -9,7 +9,7 @@ export function useDeleteFriend() {
 
   const { isLoading: isDeleting, mutate: deleteFriend } = useMutation({
     mutationFn: ({ friendid, userid }) => {
-      removeFromFriendList(friendid, userid);
+      return removeFromFriendList(friendid, userid);
     },
     onSuccess: () => {
       // toast.success("Friend successfully deleted");

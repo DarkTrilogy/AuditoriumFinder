@@ -32,7 +32,7 @@ export function useAddUserToAuditorium() {
 
   const { isAdding, mutate: addUserToAudience } = useMutation({
     mutationFn: ({ userId, audience, silenceStatus }) => {
-      addUserToAuditorium(userId, audience.id, silenceStatus);
+      return addUserToAuditorium(userId, audience.id, silenceStatus);
     },
 
     onSuccess: (data, { userId, audience }) => {
@@ -54,7 +54,7 @@ export function useUserAudience() {
   const { isLoading, mutate: userAudience } = useMutation({
     mutationFn: (params) => {
       const userId = params;
-      getUserAudience(userId);
+      return getUserAudience(userId);
     },
 
     onError: (err) => toast.error(err.message),
@@ -69,7 +69,7 @@ export function useRemoveUserFromAudience() {
   const { isRemoving, mutate: removeUserFromAudience } = useMutation({
     mutationFn: (params) => {
       const userId = params;
-      removeUserFromAuditorium(userId);
+      return removeUserFromAuditorium(userId);
     },
     onSuccess: () => {
       toast.success("You're successfully removed to audience");

@@ -12,7 +12,7 @@ export function useLogin() {
   const { mutate: signIn, isLoading } = useMutation({
     mutationFn: ({ email, password }) => {
       emailForStorage = email;
-      signInApi({ email, password });
+      return signInApi({ email, password });
     },
     onSuccess: (user) => {
       // console.log("USER", user.user);
@@ -21,6 +21,7 @@ export function useLogin() {
       navigate("/", { replace: true });
     },
     onError: (err) => {
+      console.log("SIGNIN DATA2", err);
       toast.error("Provided email or password are incorrect");
     },
   });
