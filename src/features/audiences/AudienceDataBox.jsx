@@ -23,6 +23,8 @@ import { SiGoogleclassroom } from "react-icons/si";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import FormRow2 from "../../ui/FormRow2";
 import Tag from "../../ui/Tag";
+import { PiStudent } from "react-icons/pi";
+import { tr } from "date-fns/locale";
 
 const StyledBookingDataBox = styled.section`
   /* Box */
@@ -116,6 +118,7 @@ const Footer = styled.footer`
 // A purely presentational component
 
 function AudienceDataBox({ audience, users }) {
+  console.log("asjdfl;k", users);
   const {
     id,
     name,
@@ -207,18 +210,33 @@ function AudienceDataBox({ audience, users }) {
           {silentUsersAmount}
         </DataItem>
         <DataItem
-          icon={<FaMicrophoneSlash color="var(--color-brand-600)" size={32} />}
-          label="Silent people:"
+          icon={<PiStudent color="var(--color-brand-600)" size={32} />}
+          label="Students in audience:"
         >
           <FormRow2>
-            {users.length < 0
-              ? users.map((user) => (
-                  <Tag key={user.id} type="green" descriptionPosition="right">
-                    {user.name}
-                    <span className="tag-description">{user.email}</span>
-                  </Tag>
-                ))
-              : "-"}
+            {Object.entries(users).map(([userId, user]) =>
+              user.userid !== Number(localStorage.getItem("userId")) ? (
+                <Tag
+                  key={userId}
+                  type="green"
+                  descriptionPosition="right"
+                  isSelected={true}
+                >
+                  {user.nickname}
+                  <span className="tag-description">{user.email}</span>
+                </Tag>
+              ) : (
+                <Tag
+                  key={userId}
+                  type="blue"
+                  descriptionPosition="right"
+                  isSelected={true}
+                >
+                  YOU
+                  <span className="tag-description">{user.email}</span>
+                </Tag>
+              ),
+            )}
           </FormRow2>
         </DataItem>
       </Section>

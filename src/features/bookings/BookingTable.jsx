@@ -6,31 +6,31 @@ import { useBookings } from "./useBookings";
 import Spinner from "../../ui/Spinner";
 import BookingRow from "./BookingRow";
 import Pagination from "../../ui/Pagination";
+import FriendRow from "../friends/FriendRow";
+import { useFriends } from "../friends/useFriends";
 
 function BookingTable() {
-  const { bookings, isLoading, count } = useBookings();
+  const { friends, isLoading, count } = useFriends();
 
   if (isLoading) return <Spinner />;
 
-  if (!bookings.length) return <Empty resourceName={"bookings"} />;
+  if (!friends.length) return <Empty resourceName={"friends"} />;
 
   return (
     <Menus>
-      <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem">
+      <Table columns="2fr 2fr 2fr 2fr 2fr 0.5fr">
         <Table.Header>
           <div>Audience</div>
-          <div>Guest</div>
-          <div>Dates</div>
+          <div>Building</div>
+          <div>Friend</div>
+          <div>Email</div>
           <div>Status</div>
-          {/* <div>Amount</div> */}
           <div></div>
         </Table.Header>
 
         <Table.Body
-          data={bookings}
-          render={(booking) => (
-            <BookingRow key={booking.id} booking={booking} />
-          )}
+          data={friends}
+          render={(friend) => <FriendRow key={friend.userid} friend={friend} />}
         />
         <Table.Footer>
           <Pagination count={count} />

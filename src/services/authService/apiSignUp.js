@@ -1,4 +1,3 @@
-import { signup } from "../apiAuth";
 import { LOCALHOST_AUTH } from "../constant";
 
 const prefixUrl = LOCALHOST_AUTH + "/signup";
@@ -17,7 +16,6 @@ export async function signUp(request) {
   localStorage.setItem("nickname", request.nickname);
   localStorage.setItem("email", request.email);
 
-  // console.log("СТОРОННИЙ", signup(request.email));
   const data = await response.json();
   console.log("SIGNUP DATA", data);
   return { data };
