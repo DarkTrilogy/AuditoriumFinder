@@ -22,8 +22,8 @@ function RequestTable() {
 
   if (isIncoming || isOutcoming) return <Spinner />;
 
-  if (!incomingRequests.length && !outcomingRequests.length)
-    return <Empty resourceName={"requests"} />;
+  // if (!incomingRequests.length && !outcomingRequests.length)
+  //   return <Empty resourceName={"requests"} />;
 
   return (
     <>

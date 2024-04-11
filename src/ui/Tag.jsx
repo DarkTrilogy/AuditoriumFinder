@@ -13,7 +13,11 @@ const Tag = styled.span`
   background-color: var(--color-${(props) => props.type}-100);
 
   // Envelope
-  font-size: ${(props) => (props.type === "envelope" ? "4rem" : "1.5rem")};
+  font-size: ${(props) =>
+    props.type === "envelope" /* || props.type === "delete" */
+      ? "4rem"
+      : "1.5rem"};
+
   color: ${(props) => props.type === "envelope" && "var(--color-green-700)"};
   background-color: ${(props) =>
     props.type === "envelope" && `var(--color-green-100)`};

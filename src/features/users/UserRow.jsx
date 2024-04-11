@@ -12,6 +12,8 @@ import { useProfile } from "./useProfile";
 import Spinner from "../../ui/Spinner";
 import { useMakeFriendRequest } from "../friends/useMakeFriendRequest";
 import { FaLock } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
+import { useDeleteFriend } from "../friends/useDeleteFriend";
 
 const Nickname = styled.div`
   font-size: 1.6rem;
@@ -38,8 +40,12 @@ const Stacked = styled.div`
 function UserRow({ user, onClick }) {
   const navigate = useNavigate();
   const { userid, userNickname: nickname } = user;
+  const friendid = userid;
+
   const { profile, isLoading } = useProfile(userid);
   const { isLoading: isSending, makeRequest } = useMakeFriendRequest();
+  const { deleteFriend, isDeleting } = useDeleteFriend();
+  const currentUserId = localStorage.getItem("userId");
 
   if (isLoading) return <Spinner />;
   console.log("profile12", profile, user);
@@ -53,9 +59,9 @@ function UserRow({ user, onClick }) {
 
   function handleFriendRequest() {
     console.log("USERID", localStorage.getItem("userId"), userid);
-    const userId = localStorage.getItem("userId");
-    makeRequest({ id: userid, userId });
+    makeRequest({ id: userid, userId: currentUserId });
   }
+
   return (
     <Table.Row /* onClick={onClick} */>
       <Nickname>{nickname}</Nickname>
@@ -82,9 +88,20 @@ function UserRow({ user, onClick }) {
 
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
-      <Tag type="envelope" onClick={handleFriendRequest}>
-        <HiOutlineEnvelope />
-      </Tag>
+      {profile.isFriend === false && (
+        <Tag type="envelope" onClick={handleFriendRequest}>
+          <HiOutlineEnvelope />
+        </Tag>
+      )}
+
+      {profile.isFriend === true && (
+        <Tag
+          type="red"
+          onClick={() => deleteFriend({ friendid, userid: currentUserId })}
+        >
+          <MdDeleteOutline size={40} />
+        </Tag>
+      )}
 
       <Modal>
         <Menus.Menu>
