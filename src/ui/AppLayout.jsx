@@ -4,6 +4,7 @@ import Header from "./Header";
 import styled from "styled-components";
 import { useUser } from "../features/authentication/useUser";
 import { MODERATOR_EMAIL } from "../utils/constants";
+import Spinner from "./Spinner";
 
 const StyledLayount = styled.div`
   display: grid;
@@ -34,15 +35,18 @@ const Container = styled.div`
 `;
 
 function AppLayout({ showOutlet, checkForModerator }) {
-  console.log("AppLayout");
-  const { user } = useUser();
-  const isModerator = user?.email === MODERATOR_EMAIL;
+  const { data: user, isLoading } = useUser();
+
+  if (isLoading) return <Spinner />;
+  console.log("APP LAYOUT", user, MODERATOR_EMAIL);
 
   return (
     <>
-      {isModerator ? (
+      {localStorage.getItem("email") === MODERATOR_EMAIL ? (
         <ModeratorLayout>
-          <Header isModerator={isModerator} />
+          <Header
+            isModerator={localStorage.getItem("email") === MODERATOR_EMAIL}
+          />
           <Sidebar role="moderator" />
 
           <Main>

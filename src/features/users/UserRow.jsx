@@ -14,6 +14,7 @@ import { useMakeFriendRequest } from "../friends/useMakeFriendRequest";
 import { FaLock } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import { useDeleteFriend } from "../friends/useDeleteFriend";
+import { useReportUser } from "./useReport";
 
 const Nickname = styled.div`
   font-size: 1.6rem;
@@ -46,6 +47,7 @@ function UserRow({ user, onClick }) {
   const { isLoading: isSending, makeRequest } = useMakeFriendRequest();
   const { deleteFriend, isDeleting } = useDeleteFriend();
   const currentUserId = localStorage.getItem("userId");
+  const { isReporting, reportStudent } = useReportUser();
 
   if (isLoading) return <Spinner />;
   console.log("profile12", profile, user);
@@ -112,6 +114,19 @@ function UserRow({ user, onClick }) {
               onClick={() => navigate(`/users/${userid}`)}
             >
               See details
+            </Menus.Button>
+            <Menus.Button
+              icon={<HiEye />}
+              onClick={() => {
+                reportStudent({
+                  currentUserId: currentUserId,
+                  id: userid,
+                  request: { description: "Mat" },
+                });
+                navigate(`/users/${userid}`);
+              }}
+            >
+              Report student
             </Menus.Button>
 
             {/* {status === "unconfirmed" && (

@@ -1,5 +1,5 @@
 const prefixUrl = "http://10.8.0.4:8000";
-// const prefixUrl = "http://25.12.120.182:8050";
+// const prefixUrl = "http://25.12.120.182:8000";
 
 // DONE
 export async function getFreeAudiencesInBuilding(building) {
@@ -63,6 +63,7 @@ export async function getAudienceUsers(auditoriumId) {
     `${prefixUrl}/auditorium/info/${auditoriumId}/users`,
   );
   const data = await response.json();
+  console.log("GET AUDIENCE USERS", data);
   return data;
 }
 

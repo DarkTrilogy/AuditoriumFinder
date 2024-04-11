@@ -21,6 +21,7 @@ import { GoPeople } from "react-icons/go";
 import { BsProjector } from "react-icons/bs";
 import { SiGoogleclassroom } from "react-icons/si";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
+import FormRow2 from "../../ui/FormRow2";
 
 const StyledBookingDataBox = styled.section`
   /* Box */
@@ -113,7 +114,8 @@ const Footer = styled.footer`
 
 // A purely presentational component
 
-function AudienceDataBox({ audience }) {
+function AudienceDataBox({ audience, users }) {
+  console.log("fasdjghfd", users);
   const {
     id,
     name,
@@ -203,6 +205,17 @@ function AudienceDataBox({ audience }) {
           label="Silent people:"
         >
           {silentUsersAmount}
+        </DataItem>
+        <DataItem
+          icon={<FaMicrophoneSlash color="var(--color-brand-600)" size={32} />}
+          label="Silent people:"
+        >
+          <FormRow2>
+            {users?.map((user) => {
+              console.log("12345", user);
+              <span>{user.id}</span>;
+            })}
+          </FormRow2>
         </DataItem>
       </Section>
 

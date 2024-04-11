@@ -20,6 +20,7 @@ import { HiArrowUpOnSquare } from "react-icons/hi2";
 import Modal from "../../ui/Modal";
 import { useNavigate } from "react-router-dom";
 import ConfirmAdding from "../../ui/ConfirmAdding";
+import { useAudienceUsers } from "./useAudienceUsers";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -34,6 +35,7 @@ function AudienceDetail() {
   const moveBack = useMoveBack();
   const { isAdding, addUserToAudience } = useAddUserToAuditorium();
   const { userAudience } = useUserAudience();
+  const { isGetting, data: users } = useAudienceUsers();
   const { isRemoving, removeUserFromAudience } = useRemoveUserFromAudience();
 
   const userId = localStorage.getItem("userId");
@@ -44,6 +46,8 @@ function AudienceDetail() {
 
   if (isLoading) return <Spinner />;
   if (error) return <Empty resourceName="audience" />;
+
+  console.log("users101", users?.users);
 
   const { id, type } = audience;
   const status = "friend";
@@ -67,7 +71,7 @@ function AudienceDetail() {
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 
-      <AudienceDataBox audience={audience} />
+      <AudienceDataBox audience={audience} users={users?.users} />
 
       <ButtonGroup>
         <Modal>

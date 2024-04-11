@@ -1,23 +1,15 @@
 import styled from "styled-components";
-import { format, isToday } from "date-fns";
-import {
-  HiArrowDownOnSquare,
-  HiArrowUpOnSquare,
-  HiEye,
-  HiTrash,
-} from "react-icons/hi2";
+import { HiEye, HiTrash } from "react-icons/hi2";
 
-import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
-import ConfirmDelete from "../../ui/ConfirmDelete";
 
-import { formatCurrency } from "../../utils/helpers";
-import { formatDistanceFromNow } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
-import { useCheckout } from "../check-in-out/useCheckout";
-import { useDeleteBooking } from "../bookings/useDeleteBooking";
+import { useDeclineReport } from "./useDeclineReport";
+import ConfirmReportOperation from "../../ui/ConfirmDecline";
+import { FaBan } from "react-icons/fa";
+import { useBanStudent } from "./useBanStudent";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -37,39 +29,52 @@ const Stacked = styled.div`
 
   & span:last-child {
     color: var(--color-grey-500);
+    font-weight: 500;
     font-size: 1.2rem;
   }
 `;
 
-const Amount = styled.div`
-  font-family: "Sono";
-  font-weight: 500;
-`;
-
 function ReportsRow({
-  report: { id: reportId, status, message, accusorId, prosecutorId },
+  report: {
+    reportDescription,
+    reportFromId,
+    reportId,
+    reportTimestamp,
+    reportedUserId,
+    reportedUserProfile,
+  },
 }) {
   const navigate = useNavigate();
-  const { checkout, isCheckingOut } = useCheckout();
-  const { deleteBooking, isDeleting } = useDeleteBooking();
+  const { isDeclining, declineStudentReport } = useDeclineReport();
+  const { isBanning, banStudent } = useBanStudent();
+  const userid = localStorage.getItem("userId");
 
-  const statusToTagName = {
-    unconfirmed: "blue",
-    "checked-in": "green",
-    "checked-out": "silver",
-  };
+  console.log("reportedUserProfile", reportDescription);
+  // const statusToTagName = {
+  //   unconfirmed: "blue",
+  //   "checked-in": "green",
+  //   "checked-out": "silver",
+  // };
+
+  // 2024-04-11T12:29:53.193534
+  const date = reportTimestamp.split("T")[0];
+  const time = reportTimestamp.split("T")[1].slice(0, 8);
 
   return (
     <Table.Row>
       <Cabin>{reportId}</Cabin>
+      <Cabin>{reportFromId}</Cabin>
+
+      <Cabin>{reportedUserId}</Cabin>
+
+      <Cabin>
+        {reportDescription.slice(0, 10)}
+        {reportDescription.length > 10 ? "..." : ""}
+      </Cabin>
 
       <Stacked>
-        <span>{accusorId}</span>
-        {/* <span>{email}</span> */}
-      </Stacked>
-
-      <Stacked>
-        <span className="uppercase">Today</span>
+        <span className="uppercase">{date}</span>
+        <span className="uppercase">{time}</span>
         {/* <span>
           {isToday(new Date(startDate))
             ? "Today"
@@ -82,7 +87,7 @@ function ReportsRow({
         </span> */}
       </Stacked>
 
-      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+      {/* <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag> */}
 
       <Modal>
         <Menus.Menu>
@@ -95,7 +100,7 @@ function ReportsRow({
               See details
             </Menus.Button>
 
-            {status === "unconfirmed" && (
+            {/* {status === "unconfirmed" && (
               <Menus.Button
                 icon={<HiArrowDownOnSquare />}
                 onClick={() => navigate(`/checkin/${reportId}`)}
@@ -112,19 +117,57 @@ function ReportsRow({
               >
                 Check out
               </Menus.Button>
-            )}
+            )} */}
 
-            <Modal.Open opens="delete">
+            {/* <Modal.Open opens="delete">
               <Menus.Button icon={<HiTrash />}>Delete report</Menus.Button>
+            </Modal.Open> */}
+            <Modal.Open opens="decline">
+              <Menus.Button icon={<HiTrash />}>Decline report</Menus.Button>
+            </Modal.Open>
+
+            <Modal.Open opens="ban">
+              <Menus.Button icon={<FaBan />}>Ban student</Menus.Button>
             </Modal.Open>
           </Menus.List>
         </Menus.Menu>
 
-        <Modal.Window name="delete">
+        {/* <Modal.Window name="delete">
           <ConfirmDelete
-            resourceName="booking"
-            disabled={isDeleting}
+            resourceName="repost"
+            disabled={isDeclining}
             onConfirm={() => deleteBooking(reportId)}
+          />
+        </Modal.Window> */}
+
+        <Modal.Window name="decline">
+          <ConfirmReportOperation
+            resourceName="repost"
+            disabled={isDeclining}
+            onConfirm={() => declineStudentReport({ userid, id: reportId })}
+            message={`Are you sure you want to decline this repost? This action cannot
+            be undone.`}
+            action="Decline"
+          />
+        </Modal.Window>
+
+        <Modal.Window name="ban">
+          <ConfirmReportOperation
+            resourceName="Studend"
+            disabled={isDeclining}
+            onConfirm={() =>
+              banStudent({
+                userid,
+                banRequest: {
+                  userid: reportedUserId,
+                  bannedUntil: "2024-04-12 00:00:00",
+                  reason: "something bad",
+                },
+              })
+            }
+            message={`Are you sure you want to ban this student? This action cannot
+            be undone.`}
+            action="Ban"
           />
         </Modal.Window>
       </Modal>

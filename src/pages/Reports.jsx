@@ -10,7 +10,7 @@ function Reports() {
       <SearchBar />
       <Row type="horizontal">
         <Heading as="h1">All reports</Heading>
-        <ReportTableOperations />
+        {/* <ReportTableOperations /> */}
       </Row>
 
       <ReportsTable />

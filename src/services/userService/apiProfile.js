@@ -43,3 +43,18 @@ export async function changeVisibility(userid, visibilityChangeRequest) {
   console.log("changeVisibility", data);
   return data;
 }
+
+export async function mapIntToProfiles(userid, request) {
+  console.log("mapIntToProfiles1", userid, request);
+  const response = await fetch(`${prefixUrl}/listed`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      userid: userid,
+    },
+    body: JSON.stringify(request),
+  });
+  const data2 = await response.json();
+  console.log("mapIntToProfiles2", data2);
+  return data2;
+}

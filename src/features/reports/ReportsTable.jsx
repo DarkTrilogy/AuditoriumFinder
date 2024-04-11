@@ -11,7 +11,7 @@ import { useReports } from "./useReports";
 
 function ReportsTable() {
   const { reports, isLoading, count } = useReports();
-  console.log(reports);
+  console.log("REPORTS123", reports);
 
   // const { bookings, isLoading, count } = useBookings();
 
@@ -21,22 +21,26 @@ function ReportsTable() {
 
   return (
     <Menus>
-      <Table columns="2fr 4fr 4fr 2.5fr 0.5fr">
+      <Table columns="2fr 4fr 4fr 4fr 4fr 0.5fr">
         <Table.Header>
-          <div>Guest</div>
+          <div>ReportID</div>
+          <div>AccusorID</div>
+          <div>StudentID</div>
           <div>Report message</div>
           <div>Date</div>
-          <div>Status</div>
+          {/* <div>Status</div> */}
           <div></div>
         </Table.Header>
 
-        <Table.Body
-          data={reports}
-          render={(report) => <ReportsRow key={report.id} report={report} />}
-        />
-        <Table.Footer>
+        {reports !== undefined && (
+          <Table.Body
+            data={reports}
+            render={(report) => <ReportsRow key={report.id} report={report} />}
+          />
+        )}
+        {/* <Table.Footer>
           <Pagination count={count} />
-        </Table.Footer>
+        </Table.Footer> */}
       </Table>
     </Menus>
   );

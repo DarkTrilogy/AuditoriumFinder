@@ -1,5 +1,5 @@
 export const PAGE_SIZE = 10;
-export const MODERATOR_EMAIL = "moderator@mail.com";
+export const MODERATOR_EMAIL = "moderator@hse.ru";
 
 export const HOME_RU = "Главная";
 export const HOME_EN = "Home";

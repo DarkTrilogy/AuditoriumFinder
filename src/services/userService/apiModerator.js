@@ -5,39 +5,43 @@ const prefixUrl = LOCALHOST_USER + "/moderator";
 export async function getReports() {
   const response = await fetch(`${prefixUrl}/reports`);
   const data = await response.json();
-  return { data };
+  console.log("GET REPORTS", data);
+  return data;
 }
 
-export async function getBanned() {
-  const response = await fetch(`${prefixUrl}/banned`);
-  return response.json();
-}
-
-export async function declineReport(moderatorId, id) {
-  const response = await fetch(
-    `${prefixUrl}/reports/${moderatorId}/${id}/decline`,
-    {
-      method: "POST",
+export async function declineReport(userid, id) {
+  const response = await fetch(`${prefixUrl}/reports/${id}/decline`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      userid: userid,
     },
-  );
-  return response.json();
-}
-
-export async function banUser(moderatorId, id) {
-  const response = await fetch(`${prefixUrl}/${moderatorId}/${id}/ban`, {
-    method: "POST",
   });
-  return response.json();
+  const data = await response.json();
+
+  console.log("DECLINE REPORT", data);
+  return data;
 }
 
-export async function removeUserFromBanned(moderatorId, id) {
-  const response = await fetch(`${prefixUrl}/${moderatorId}/${id}/cancel_ban`, {
+export async function banUser(userid, banRequest) {
+  const response = await fetch(`${prefixUrl}/ban`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      userid: userid,
+    },
+    body: JSON.stringify(banRequest),
   });
-  return response.json();
+  const data = await response.json();
+
+  console.log("BAN USER", data);
+  return data;
 }
 
-export async function getProfileData(moderatorId, id) {
-  const response = await fetch(`${prefixUrl}/${moderatorId}/${id}`);
-  return response.json();
+export async function getProfileData(id) {
+  const response = await fetch(`${prefixUrl}/${id}`);
+  const data = await response.json();
+
+  console.log("GET PROFILE DATA", data);
+  return data;
 }

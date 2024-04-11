@@ -126,7 +126,7 @@ function UserDataBox({ profile }) {
             </Tag>
           ))} */}
 
-          <FormRow2>
+          {/* <FormRow2>
             {tags.length > 0
               ? tags?.map((tag) => (
                   <Tag key={tag.name} type="green" descriptionPosition="right">
@@ -135,7 +135,19 @@ function UserDataBox({ profile }) {
                   </Tag>
                 ))
               : "-"}
-          </FormRow2>
+          </FormRow2> */}
+          {tags.length > 0 ? (
+            <FormRow2>
+              {tags?.map((tag) => (
+                <Tag key={tag.name} type="green" descriptionPosition="right">
+                  {tag.name}
+                  <span className="tag-description">{tag.description}</span>
+                </Tag>
+              ))}
+            </FormRow2>
+          ) : (
+            "-"
+          )}
         </DataItem>
       </Section>
     </StyledBookingDataBox>

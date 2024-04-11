@@ -2,10 +2,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import {
   addUserToAuditorium,
+  getAudienceUsers,
   getUserAudience,
   removeUserFromAuditorium,
 } from "../../services/auditoriumService/apiAudiences";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 // export function useAddUserToAuditorium() {
 //   const navigate = useNavigate();

@@ -25,8 +25,13 @@ export async function searchByCriteria(userId, nickname = "", tagIds = "") {
 export async function reportUser(userid, reportRequest, id) {
   const response = await fetch(`${prefixUrl}/${id}/report`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      userid: userid,
+    },
     body: JSON.stringify(reportRequest),
   });
   const data = await response.json();
-  return { data };
+  console.log("REPORT USER", data, reportRequest);
+  return data;
 }

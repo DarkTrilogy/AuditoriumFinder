@@ -11,6 +11,12 @@ import DataItem from "../../ui/DataItem";
 import { Flag } from "../../ui/Flag";
 
 import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers";
+import FormRow2 from "../../ui/FormRow2";
+import { MdOutlineElectricalServices, MdOutlineSchool } from "react-icons/md";
+import { GoPeople } from "react-icons/go";
+import { BsProjector } from "react-icons/bs";
+import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
+import Tag from "../../ui/Tag";
 
 const StyledBookingDataBox = styled.section`
   /* Box */
@@ -102,83 +108,123 @@ const Footer = styled.footer`
 `;
 
 // A purely presentational component
-function ReportDataBox({ booking }) {
+function ReportDataBox({ report }) {
   const {
-    created_at,
-    startDate,
-    endDate,
-    numNights,
-    numGuests,
-    cabinPrice,
-    extrasPrice,
-    totalPrice,
-    hasBreakfast,
-    observations,
-    isPaid,
-    guests: { fullName: guestName, email, country, countryFlag, nationalID },
-    cabins: { name: cabinName },
-  } = booking;
+    reportDescription,
+    reportFromId,
+    reportId,
+    reportTimestamp,
+    reportedUserId,
+    reportedUserProfile: {
+      email,
+      emailVisibility,
+      isFriend,
+      nickname,
+      tags,
+      telegramHandle,
+      telegramVisibility,
+      userid,
+    },
+  } = report;
 
+  const date = reportTimestamp.split("T")[0];
+  const time = reportTimestamp.split("T")[1].slice(0, 8);
   return (
     <StyledBookingDataBox>
       <Header>
         <div>
           <HiOutlineHomeModern />
-          <p>
-            {numNights} nights in Cabin <span>{cabinName}</span>
-          </p>
+          <span>{email}</span>
         </div>
 
         <p>
-          {format(new Date(startDate), "EEE, MMM dd yyyy")} (
-          {isToday(new Date(startDate))
-            ? "Today"
-            : formatDistanceFromNow(startDate)}
-          ) &mdash; {format(new Date(endDate), "EEE, MMM dd yyyy")}
+          {format(new Date(reportTimestamp), "EEE, MMM dd yyyy")}
+          {/* {formatDistanceFromNow(new Date())}) &mdash;{" "} */}
+          {/* {format(new Date(), "EEE, MMM dd yyyy")} */}
         </p>
       </Header>
 
       <Section>
         <Guest>
-          {countryFlag && <Flag src={countryFlag} alt={`Flag of ${country}`} />}
+          {/* {countryFlag && <Flag src={countryFlag} alt={`Flag of ${country}`} />}
           <p>
             {guestName} {numGuests > 1 ? `+ ${numGuests - 1} guests` : ""}
           </p>
           <span>&bull;</span>
           <p>{email}</p>
           <span>&bull;</span>
-          <p>National ID {nationalID}</p>
+          <p>National ID {nationalID}</p> */}
         </Guest>
-
-        {observations && (
-          <DataItem
-            icon={<HiOutlineChatBubbleBottomCenterText />}
-            label="Observations"
-          >
-            {observations}
-          </DataItem>
-        )}
-
-        <DataItem icon={<HiOutlineCheckCircle />} label="Breakfast included?">
-          {hasBreakfast ? "Yes" : "No"}
+        <DataItem
+          icon={
+            <MdOutlineElectricalServices
+              color="var(--color-brand-600)"
+              size={32}
+            />
+          }
+          label="Nickname:"
+        >
+          {nickname}
         </DataItem>
-
-        <Price isPaid={isPaid}>
-          <DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
-            {formatCurrency(totalPrice)}
-
-            {hasBreakfast &&
-              ` (${formatCurrency(cabinPrice)} cabin + ${formatCurrency(
-                extrasPrice,
-              )} breakfast)`}
-          </DataItem>
-
-          <p>{isPaid ? "Paid" : "Will pay at property"}</p>
-        </Price>
+        <DataItem
+          icon={<GoPeople color="var(--color-brand-600)" size={32} />}
+          label="Tags:"
+        >
+          {tags.length > 0 ? (
+            <FormRow2>
+              {tags?.map((tag) => (
+                <Tag key={tag.name} type="green" descriptionPosition="right">
+                  {tag.name}
+                  <span className="tag-description">{tag.description}</span>
+                </Tag>
+              ))}
+            </FormRow2>
+          ) : (
+            "-"
+          )}
+        </DataItem>
+        <DataItem
+          icon={<BsProjector color="var(--color-brand-600)" size={32} />}
+          label="TelegramID:"
+        >
+          {telegramHandle === null ? "-" : telegramHandle}
+        </DataItem>
+        {/* <DataItem
+          icon={<MdOutlineSchool color="var(--color-brand-600)" size={32} />}
+          label="Type:"
+        >
+          {type}
+        </DataItem>
+        <DataItem
+          icon={<FaMicrophone color="var(--color-brand-600)" size={32} />}
+          label="Noise people:"
+        >
+          {noiseUsersAmount}
+        </DataItem>
+        <DataItem
+          icon={<FaMicrophoneSlash color="var(--color-brand-600)" size={32} />}
+          label="Silent people:"
+        >
+          {silentUsersAmount}
+        </DataItem>
+        <DataItem
+          icon={<FaMicrophoneSlash color="var(--color-brand-600)" size={32} />}
+          label="Silent people:"
+        >
+          <FormRow2>
+            {users?.map((user) => {
+              console.log("12345", user);
+              <span>{user.id}</span>;
+            })}
+          </FormRow2>
+        </DataItem> */}
       </Section>
 
       <Footer>
-        <p>Booked {format(new Date(created_at), "EEE, MMM dd yyyy, p")}</p>
+        {/* <p>
+          Open until
+          {format(new Date(), "EEE, MMM dd yyyy, p")}
+        </p> */}
       </Footer>
     </StyledBookingDataBox>
   );
