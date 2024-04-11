@@ -11,7 +11,7 @@ function Audiences({ building }) {
       <SearchBar />
       <Row type="horizontal">
         <Heading as="h1">All audiences</Heading>
-        <BookingTableOperations />
+        {/* <BookingTableOperations /> */}
       </Row>
 
       <AudienceTable building={building} />

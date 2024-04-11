@@ -23,10 +23,10 @@ function Account() {
         />
       </Row>
 
-      <Row>
+      {/* <Row>
         <Heading as="h3">Update password</Heading>
         <UpdatePasswordForm />
-      </Row>
+      </Row> */}
     </>
   );
 }

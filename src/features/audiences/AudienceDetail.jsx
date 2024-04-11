@@ -35,8 +35,8 @@ function AudienceDetail() {
   const moveBack = useMoveBack();
   const { isAdding, addUserToAudience } = useAddUserToAuditorium();
   const { userAudience } = useUserAudience();
-  const { isGetting, data: users } = useAudienceUsers();
   const { isRemoving, removeUserFromAudience } = useRemoveUserFromAudience();
+  const { isGetting, data: users } = useAudienceUsers();
 
   const userId = localStorage.getItem("userId");
   const userAudienceId =
@@ -44,10 +44,10 @@ function AudienceDetail() {
       localStorage.getItem(`userAudienceId${localStorage.getItem("userId")}`),
     ) || null;
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || isGetting) return <Spinner />;
   if (error) return <Empty resourceName="audience" />;
 
-  console.log("users101", users?.users);
+  console.log("users101", users);
 
   const { id, type } = audience;
   const status = "friend";
@@ -71,7 +71,7 @@ function AudienceDetail() {
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 
-      <AudienceDataBox audience={audience} users={users?.users} />
+      {users && <AudienceDataBox audience={audience} users={users} />}
 
       <ButtonGroup>
         <Modal>

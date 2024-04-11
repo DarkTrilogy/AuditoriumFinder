@@ -44,17 +44,26 @@ export async function changeVisibility(userid, visibilityChangeRequest) {
   return data;
 }
 
-export async function mapIntToProfiles(userid, request) {
-  console.log("mapIntToProfiles1", userid, request);
-  const response = await fetch(`${prefixUrl}/listed`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      userid: userid,
+// @GetMapping("/listed")
+// ResponseEntity<Map<Integer, FullProfileResponse>> mapIntToProfiles(
+//         @RequestHeader(name = "userid") int userid,
+//         @RequestParam(name = "ids") List<String> ids);
+
+export async function mapIntToProfiles(userid, ids) {
+  let arraysOfIds = ids.map((item) => item.id);
+  console.log("mapIntToProfiles1", userid, ids, arraysOfIds);
+  const response = await fetch(
+    `${prefixUrl}/listed?ids=${arraysOfIds.join("&ids=")}`,
+    {
+      method: "GET",
+      headers: { userid: userid },
     },
-    body: JSON.stringify(request),
-  });
-  const data2 = await response.json();
-  console.log("mapIntToProfiles2", data2);
-  return data2;
+  );
+  const data = await response.json();
+  console.log(
+    "mapIntToProfiles2",
+    data,
+    `${prefixUrl}/listed?ids=${arraysOfIds.join("&ids=")}`,
+  );
+  return data;
 }

@@ -55,6 +55,11 @@ const variations = {
     border: 2px solid var(--color-brand-600);
     box-shadow: none;
   `,
+  resetPassword: css`
+    text-decoration: underline;
+
+    box-shadow: none;
+  `,
 };
 
 export const Button = styled.button`

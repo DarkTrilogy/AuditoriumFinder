@@ -4,6 +4,7 @@ import { LOCALHOST_AUTH } from "../constant";
 const prefixUrl = LOCALHOST_AUTH + "/signup";
 
 export async function signUp(request) {
+  console.log("SIGNUP DATA1", request);
   const response = await fetch(`${prefixUrl}/`, {
     method: "POST",
     body: JSON.stringify(request),

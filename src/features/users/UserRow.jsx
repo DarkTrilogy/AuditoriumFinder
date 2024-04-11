@@ -15,6 +15,7 @@ import { FaLock } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import { useDeleteFriend } from "../friends/useDeleteFriend";
 import { useReportUser } from "./useReport";
+import { GoReport } from "react-icons/go";
 
 const Nickname = styled.div`
   font-size: 1.6rem;
@@ -116,7 +117,7 @@ function UserRow({ user, onClick }) {
               See details
             </Menus.Button>
             <Menus.Button
-              icon={<HiEye />}
+              icon={<GoReport />}
               onClick={() => {
                 reportStudent({
                   currentUserId: currentUserId,

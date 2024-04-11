@@ -22,6 +22,7 @@ import { BsProjector } from "react-icons/bs";
 import { SiGoogleclassroom } from "react-icons/si";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import FormRow2 from "../../ui/FormRow2";
+import Tag from "../../ui/Tag";
 
 const StyledBookingDataBox = styled.section`
   /* Box */
@@ -115,7 +116,6 @@ const Footer = styled.footer`
 // A purely presentational component
 
 function AudienceDataBox({ audience, users }) {
-  console.log("fasdjghfd", users);
   const {
     id,
     name,
@@ -211,10 +211,14 @@ function AudienceDataBox({ audience, users }) {
           label="Silent people:"
         >
           <FormRow2>
-            {users?.map((user) => {
-              console.log("12345", user);
-              <span>{user.id}</span>;
-            })}
+            {users.length < 0
+              ? users.map((user) => (
+                  <Tag key={user.id} type="green" descriptionPosition="right">
+                    {user.name}
+                    <span className="tag-description">{user.email}</span>
+                  </Tag>
+                ))
+              : "-"}
           </FormRow2>
         </DataItem>
       </Section>

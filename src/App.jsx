@@ -21,7 +21,6 @@ import Moderator from "./pages/Moderator";
 import Report from "./pages/Report";
 import Reports from "./pages/Reports";
 import Friends from "./pages/Friends";
-import Friend from "./pages/Friend";
 import Users from "./pages/Users";
 import User from "./pages/User";
 import Buildings from "./pages/Buildings";
@@ -29,9 +28,9 @@ import { LocalizationProvider } from "./context/LocalizationContext";
 import WelcomePage from "./pages/WelcomePage";
 import Building from "./pages/Building";
 import Audience from "./pages/Audience";
-import Audiences from "./pages/Audiences";
 import Requests from "./pages/Requests";
 import Request from "./pages/Request";
+import NewPassword from "./pages/NewPassword";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,8 +53,8 @@ function App() {
               <Route
                 element={
                   // <ProtectedRoute>
-                  <AppLayout />
                   // </ProtectedRoute>
+                  <AppLayout />
                 }
               >
                 <Route index element={<Navigate replace to={"welcome"} />} />
@@ -99,6 +98,7 @@ function App() {
 
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
+              <Route path="newpassword" element={<NewPassword />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </BrowserRouter>

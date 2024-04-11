@@ -1,3 +1,5 @@
+import { sendConfirmationCode } from "./authService/apiEmailVerifier";
+import { passwordChange } from "./authService/apiPasswordChange";
 import supabase, { supabaseUrl } from "./supabase";
 import { createProfile } from "./userService/apiAccountChange";
 import { changeVisibility, editNickname } from "./userService/apiProfile";
@@ -115,7 +117,22 @@ export async function updateCurrentUser({
   let updateData;
   if (password) updateData = { password };
   if (nickname) updateData = { data: { nickname } };
+  let updateUser;
 
+  if (password) {
+    sendConfirmationCode(localStorage.getItem("email"));
+    const request = {
+      email: localStorage.getItem("email"),
+      emailCode: "ajsd",
+      newPassword: password,
+    };
+    const data = passwordChange(request);
+    console.log("PASSWORD CHANGE", data);
+    updateUser = {
+      nickname: nickname,
+      tags: newTags,
+    };
+  }
   const data = await editNickname(localStorage.getItem("userId"), nickname);
   console.log("EDITNICKNAME", data);
 
@@ -144,7 +161,6 @@ export async function updateCurrentUser({
   //   },
   // });
 
-  let updateUser;
   if (avatar !== "" && avatar !== undefined && avatar !== null) {
     localStorage.setItem(
       `avatar${localStorage.getItem("userId")}`,
@@ -163,7 +179,6 @@ export async function updateCurrentUser({
     };
   }
 
-  // if (error2) throw new Error(error2.message);
   return updateUser;
 }
 

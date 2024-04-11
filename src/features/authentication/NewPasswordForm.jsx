@@ -9,29 +9,35 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import FormRowVertical from "../../ui/FormRowVertical";
 import { useNavigate } from "react-router-dom";
 import { emailOfCurrentUser } from "./LoginForm";
+import { useChangePassword } from "./useChangePassword";
 
-function RegisterForm() {
-  const [nickname, setNickname] = useState("");
+function NewPasswordForm() {
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [email, setEmail] = useState("");
+
   const navigate = useNavigate();
 
-  const { login, isLoading: loginLoading } = useLogin();
+  const { signIn, isLoading: signinLoading } = useLogin();
   const { signup, isLoading: signupLoading } = useSignup();
+  const { changePassword, isChanging } = useChangePassword();
 
   function handleSubmit(e) {
     e.preventDefault();
     const action = e.nativeEvent.submitter.innerText;
     switch (action) {
       case "Enter":
-        if (!nickname || !code) return;
+        if (!code) return;
         const request = {
           emailCode: code,
-          nickname,
-          email: emailOfCurrentUser,
-          password: password,
+          // nickname,
+          email: localStorage.getItem("email"),
+          newPassword: password,
         };
-        signup(request);
+
+        changePassword(request);
+        // signIn({ email: localStorage.getItem("email"), password });
 
         // как получить
         // signup({ nickname, code });
@@ -49,15 +55,15 @@ function RegisterForm() {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <FormRowVertical label="Nickname">
+      <FormRowVertical label="Email address">
         <Input
-          type="text"
-          id="nickname"
+          type="email"
+          id="email"
           // This makes this form better for password managers
           autoComplete="username"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-          disabled={loginLoading}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={signinLoading}
         />
       </FormRowVertical>
       <FormRowVertical label="Code">
@@ -67,23 +73,33 @@ function RegisterForm() {
           autoComplete="code"
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          disabled={loginLoading}
+          disabled={signinLoading}
         />
       </FormRowVertical>
-      <FormRowVertical label="Repeat password">
+      <FormRowVertical label="New password">
         <Input
           type="password"
           id="password"
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          disabled={loginLoading}
+          disabled={signinLoading}
+        />
+      </FormRowVertical>
+      <FormRowVertical label="Repeat password">
+        <Input
+          type="password"
+          id="Repeat password"
+          autoComplete="current-password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          disabled={signinLoading}
         />
       </FormRowVertical>
 
       <FormRowVertical>
-        <Button size="large" disabled={loginLoading}>
-          {!loginLoading ? "Enter" : <SpinnerMini />}
+        <Button size="large" disabled={signinLoading}>
+          {!signinLoading ? "Enter" : <SpinnerMini />}
         </Button>
       </FormRowVertical>
       <FormRowVertical type="register" className="text-teal-950">
@@ -95,4 +111,4 @@ function RegisterForm() {
   );
 }
 
-export default RegisterForm;
+export default NewPasswordForm;

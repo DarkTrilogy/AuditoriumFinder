@@ -4,20 +4,43 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { login as loginApi } from "../../services/apiAuth";
 
+// export function useLogin() {
+//   const queryClient = useQueryClient();
+//   const navigate = useNavigate();
+//   let emailForStorage;
+
+//   const { mutate: signIn, isLoading } = useMutation({
+//     mutationFn: ({ email, password }) => {
+//       emailForStorage = email;
+//       return signInApi({ email, password });
+//     },
+//     onSuccess: (user) => {
+//       // console.log("USER", user.user);
+//       // queryClient.setQueryData(["user"], user.user);
+//       localStorage.setItem("email", emailForStorage);
+//       navigate("/", { replace: true });
+//     },
+//     onError: (err) => {
+//       console.log("SIGNIN DATA2", err);
+//       toast.error("Provided email or password are incorrect");
+//     },
+//   });
+
+//   return { signIn, isLoading };
+// }
+
 export function useLogin() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  let emailForStorage;
 
   const { mutate: signIn, isLoading } = useMutation({
     mutationFn: ({ email, password }) => {
-      emailForStorage = email;
+      // Прямо передаём email с паролем на API
       return signInApi({ email, password });
     },
-    onSuccess: (user) => {
-      // console.log("USER", user.user);
-      // queryClient.setQueryData(["user"], user.user);
-      localStorage.setItem("email", emailForStorage);
+    onSuccess: (user, variables) => {
+      const { email } = variables;
+      localStorage.setItem("email", email);
       navigate("/", { replace: true });
     },
     onError: (err) => {

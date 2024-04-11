@@ -11,6 +11,7 @@ import { useLocalization } from "../../context/LocalizationContext";
 import {
   EMAIL_EN,
   EMAIL_RU,
+  MODERATOR_EMAIL,
   NICKNAME_EN,
   NICKNAME_RU,
   STATUS_EN,
@@ -36,17 +37,18 @@ function UsersTable() {
           <div>{language === "en" ? STATUS_EN : STATUS_RU}</div>
           <div></div>
         </Table.Header>
-
         <Table.Body
           data={users}
-          render={(user) => (
-            <UserRow
-              key={user.userid}
-              user={user}
-              onClick={() => navigate(`/users/${user.userid}`)}
-              userid={user.userid}
-            />
-          )}
+          render={(user) => {
+            return user.userNickname !== MODERATOR_EMAIL ? (
+              <UserRow
+                key={user.userid}
+                user={user}
+                onClick={() => navigate(`/users/${user.userid}`)}
+                userid={user.userid}
+              />
+            ) : null;
+          }}
         />
         <Table.Footer>
           <Pagination count={count} />

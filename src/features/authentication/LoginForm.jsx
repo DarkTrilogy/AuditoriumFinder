@@ -53,7 +53,7 @@ function LoginForm() {
       emailOfCurrentUser = email;
       // Our option
       console.log("EMAIL", email);
-      confirmCode(email);
+      confirmCode({ email, type: "register" });
       // navigate("/dashboard");
       // Supabase option
 
@@ -69,6 +69,9 @@ function LoginForm() {
       //     },
       //   },
       // );
+    } else if (action === "Don't remember password?") {
+      if (!email) return;
+      confirmCode({ email, type: "password" });
     }
   }
 
@@ -103,6 +106,15 @@ function LoginForm() {
       <FormRowVertical type="register" className="text-teal-950">
         <Button size="register" variation="register" disabled={signupLoading}>
           {!signupLoading ? "Register" : <SpinnerMini />}
+        </Button>
+      </FormRowVertical>
+      <FormRowVertical type="register" className="text-teal-950">
+        <Button
+          size="register"
+          variation="resetPassword"
+          disabled={signupLoading}
+        >
+          {!signupLoading ? "Don't remember password?" : <SpinnerMini />}
         </Button>
       </FormRowVertical>
     </Form>
