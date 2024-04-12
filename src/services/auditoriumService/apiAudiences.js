@@ -31,7 +31,12 @@ export async function getFreeAudiencesInBuilding(building, forGraph = false) {
   let intervalEnd = day + "-" + building.lastLessonEnd;
   if (forGraph) {
     intervalStart = day + "-" + hour + "-" + minutes;
-    intervalEnd = day + "-" + hour + "-" + (minutes + 1);
+    let newMinute =
+      Number(minutes) + 1 < 10
+        ? "0" + (Number(minutes) + 1)
+        : Number(minutes) + 1;
+    intervalEnd = day + "-" + hour + "-" + newMinute;
+    console.log("asdg", intervalStart, intervalEnd);
   } else {
     intervalStart = day + "-" + hour + "-" + minutes;
     intervalEnd = day + "-" + building.lastLessonEnd;

@@ -26,9 +26,9 @@ function HeaderMenu({ isModerator }) {
       <li>
         <DarkModeToggle />
       </li>
-      <li>
+      {/* <li>
         <LanguageToggle />
-      </li>
+      </li> */}
       <li>
         <Logout />
       </li>
