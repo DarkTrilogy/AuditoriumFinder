@@ -25,5 +25,6 @@ export async function getBuilding(buildingId) {
     `${prefixUrl}/buildings/${buildingId}?languageCode=en`,
   );
   const data = await response.json();
+  console.log("GET BUILDING1", data);
   return data;
 }

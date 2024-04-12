@@ -1,52 +1,41 @@
-import {
-  HiOutlineBanknotes,
-  HiOutlineBriefcase,
-  HiOutlineCalendarDays,
-  HiOutlineChartBar,
-} from "react-icons/hi2";
+import { HiOutlineBanknotes, HiOutlineChartBar } from "react-icons/hi2";
 import Stat from "./Stat";
-import { formatCurrency } from "../../utils/helpers";
+import { MdMeetingRoom } from "react-icons/md";
 
-function Stats({ bookings, confirmedStays, numDays, cabinCount }) {
-  // 1.
-  const numBookings = bookings.length;
+function Stats({ totalAmount, freeAmount }) {
+  console.log("totalAuditoriums", totalAmount, "freeAuditoriums", freeAmount);
 
-  // 2.
-  const sales = bookings.reduce((acc, cur) => acc + cur.totalPrice, 0);
+  const totalAuditoriums =
+    totalAmount === null || totalAmount === undefined
+      ? "-"
+      : Number(totalAmount);
+  const freeAuditoriums =
+    freeAmount === null || freeAmount === undefined ? "-" : Number(freeAmount);
 
-  // 3.
-  const checkins = confirmedStays.length;
-
-  // 4.
-  const occupation =
-    confirmedStays.reduce((acc, cur) => acc + cur.numNights, 0) /
-    (numDays * cabinCount);
+  // Процент свободных аудиторий
+  const freeAuditoriumsPercentage =
+    freeAuditoriums === "-" || totalAuditoriums === "-"
+      ? "-"
+      : (freeAuditoriums / totalAuditoriums) * 100;
 
   return (
     <>
       <Stat
-        title="Bookings"
-        color="blue"
-        icon={<HiOutlineBriefcase />}
-        value={numBookings}
-      />
-      <Stat
-        title="Sales"
+        title="Free Auditoriums"
         color="green"
-        icon={<HiOutlineBanknotes />}
-        value={formatCurrency(sales)}
+        icon={<MdMeetingRoom />}
+        value={freeAuditoriums}
       />
-      <Stat
-        title="Check-ins"
-        color="indigo"
-        icon={<HiOutlineCalendarDays />}
-        value={checkins}
-      />
+
       <Stat
         title="Occupancy rate"
         color="yellow"
         icon={<HiOutlineChartBar />}
-        value={Math.round(occupation * 100) + "%"}
+        value={
+          freeAuditoriumsPercentage === "-"
+            ? "-"
+            : `${Math.round(freeAuditoriumsPercentage)}%`
+        }
       />
     </>
   );

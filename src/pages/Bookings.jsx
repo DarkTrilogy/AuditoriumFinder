@@ -7,7 +7,7 @@ import SearchBar from "../ui/SearchBar";
 function Bookings() {
   return (
     <>
-      <SearchBar />
+      {/* <SearchBar /> */}
       <Row type="horizontal">
         <Heading as="h1">All bookings</Heading>
         {/* <BookingTableOperations /> */}

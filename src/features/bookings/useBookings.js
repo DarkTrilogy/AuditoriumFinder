@@ -3,7 +3,7 @@ import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
 import { PAGE_SIZE } from "../../utils/constants";
 
-export function useBookings() {
+export function useBookings(buildingId, forGraph = false) {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
@@ -31,14 +31,18 @@ export function useBookings() {
   // QUERY
   const {
     isLoading,
-    data: { data: bookings, count } = {},
+    data: data2 = {},
     error,
   } = useQuery({
     queryKey: ["bookings", search],
-    queryFn: () => getBookings({ search }),
+    queryFn: async () => {
+      const bookingsData = await getBookings(buildingId, forGraph);
+      return bookingsData;
+    },
   });
+  console.log("asdf", data2);
 
-  return { isLoading, error, bookings, count };
+  return { isLoading, error, data2, count: data2.count };
 
   // PRE-FETCHING
   // const pageCount = Math.ceil(count / PAGE_SIZE);

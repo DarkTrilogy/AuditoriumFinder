@@ -7,7 +7,7 @@ import SearchBar from "../ui/SearchBar";
 function Reports() {
   return (
     <>
-      <SearchBar />
+      {/* <SearchBar /> */}
       <Row type="horizontal">
         <Heading as="h1">All reports</Heading>
         {/* <ReportTableOperations /> */}

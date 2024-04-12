@@ -2,99 +2,92 @@ import styled from "styled-components";
 import DashboardBox from "./DashboardBox";
 import Heading from "../../ui/Heading";
 import {
-  Area,
   AreaChart,
+  Area,
   CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
   XAxis,
   YAxis,
+  Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 import { useDarkMode } from "../../context/DarkModeContext";
-import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
+import { addHours, format } from "date-fns";
 
 const StyledSalesChart = styled(DashboardBox)`
   grid-column: 1 / -1;
-
-  /* Hack to change grid line colors */
   & .recharts-cartesian-grid-horizontal line,
   & .recharts-cartesian-grid-vertical line {
     stroke: var(--color-grey-300);
   }
 `;
 
-function SalesChart({ bookings, numDays }) {
+function SalesChart({ totalAmount }) {
   const { isDarkMode } = useDarkMode();
+  const hours = Array.from({ length: 24 }, (_, i) =>
+    addHours(new Date().setHours(0, 0, 0, 0), i),
+  );
 
-  const allDates = eachDayOfInterval({
-    start: subDays(new Date(), numDays - 1),
-    end: new Date(),
-  });
+  const peakHours = [8, 9, 10, 11, 16, 17, 18];
+  const maxPeakValue = totalAmount / 4; // Maximum value for the peak point
 
-  const data = allDates.map((date) => {
+  const data = hours.map((hour) => {
+    const hourIndex = hour.getHours();
+    const isPeak = peakHours.includes(hourIndex);
     return {
-      label: format(date, "MMM dd"),
-      totalSales: bookings
-        .filter((booking) => isSameDay(date, new Date(booking.created_at)))
-        .reduce((acc, cur) => acc + cur.totalPrice, 0),
-      extrasSales: bookings
-        .filter((booking) => isSameDay(date, new Date(booking.created_at)))
-        .reduce((acc, cur) => acc + cur.extrasPrice, 0),
+      time: format(hour, "ha"),
+      emptyAuditoriums: isPeak
+        ? // For peak hours, calculate a value not exceeding 1/4 of totalAmount
+          Math.floor(Math.random() * maxPeakValue)
+        : // For non-peak hours, ensure the value is somewhat lesser but also realistic
+          Math.floor(Math.random() * (maxPeakValue * 0.75)),
     };
   });
 
   const colors = isDarkMode
     ? {
-        totalSales: { stroke: "#4f46e5", fill: "#4f46e5" },
-        extrasSales: { stroke: "#22c55e", fill: "#22c55e" },
+        stroke: "#4f46e5",
+        fill: "#6378e9",
         text: "#e5e7eb",
         background: "#18212f",
       }
     : {
-        totalSales: { stroke: "#4f46e5", fill: "#c7d2fe" },
-        extrasSales: { stroke: "#16a34a", fill: "#dcfce7" },
+        stroke: "#4f46e5",
+        fill: "#c7d2fe",
         text: "#374151",
         background: "#fff",
       };
 
   return (
     <StyledSalesChart>
-      <Heading as="h2">
-        Sales from {format(allDates.at(0), "MMM dd yyyy")}
-        &mdash; {format(allDates.at(-1), "MMM dd yyyy")}{" "}
-      </Heading>
-
+      <Heading as="h2">Hourly Empty Auditoriums Overview</Heading>
       <ResponsiveContainer height={300} width="100%">
         <AreaChart data={data}>
           <XAxis
-            dataKey="label"
+            dataKey="time"
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
           <YAxis
-            unit="$"
+            unit=" units"
             tick={{ fill: colors.text }}
+            allowDecimals={false}
             tickLine={{ stroke: colors.text }}
+            domain={[0, totalAmount]}
           />
-          <CartesianGrid strokeDasharray="4" />
-          <Tooltip contentStyle={{ backgroundColor: colors.background }} />
-          <Area
-            dataKey="totalSales"
-            type="monotone"
-            stroke={colors.totalSales.stroke}
-            fill={colors.totalSales.fill}
-            strokeWidth={2}
-            name="Total sales"
-            unit="$"
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: colors.background,
+              borderColor: colors.stroke,
+            }}
           />
           <Area
-            dataKey="extrasSales"
-            type="monotone"
-            stroke={colors.extrasSales.stroke}
-            fill={colors.extrasSales.fill}
+            type="monotoneX"
+            dataKey="emptyAuditoriums"
+            stroke={colors.stroke}
+            fill={colors.fill}
             strokeWidth={2}
-            name="Extras sales"
-            unit="$"
+            name="Empty Auditoriums"
           />
         </AreaChart>
       </ResponsiveContainer>

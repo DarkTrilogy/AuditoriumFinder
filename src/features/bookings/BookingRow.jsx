@@ -46,20 +46,28 @@ const Amount = styled.div`
   font-weight: 500;
 `;
 
-function BookingRow({
-  booking: {
-    id: bookingId,
-    created_at,
-    startDate,
-    endDate,
-    numNights,
-    numGuests,
-    totalPrice,
-    status,
-    guests: { fullName: guestName, email },
-    cabins: { name: cabinName },
-  },
-}) {
+function BookingRow({ booking }) {
+  console.log("jdf;salf", booking);
+  const building = booking.building;
+  const {
+    id: buildingId,
+    city,
+    address,
+    firstLessonStart: start,
+    lastLessonEnd: end,
+  } = building;
+  const {
+    id: auditoriumId,
+    name,
+    capacity,
+    corpus,
+    projector,
+    socketsAmount,
+    type,
+    noiseUsersAmount,
+    silentUsersAmount,
+  } = booking;
+
   const navigate = useNavigate();
   const { checkout, isCheckingOut } = useCheckout();
   const { deleteBooking, isDeleting } = useDeleteBooking();
@@ -72,8 +80,15 @@ function BookingRow({
 
   return (
     <Table.Row>
-      <Cabin>{cabinName}</Cabin>
-
+      <Cabin>
+        {corpus.name}
+        {name}
+      </Cabin>
+      <Cabin>{address}</Cabin>
+      <Cabin>{noiseUsersAmount}</Cabin>
+      <Cabin>{silentUsersAmount}</Cabin>
+      <Cabin>{type}</Cabin>
+      {/* 
       <Stacked>
         <span>{guestName}</span>
         <span>{email}</span>
@@ -92,11 +107,9 @@ function BookingRow({
         </span>
       </Stacked>
 
-      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag> */}
 
-      {/* <Amount>{formatCurrency(totalPrice)}</Amount> */}
-
-      <Modal>
+      {/* <Modal>
         <Menus.Menu>
           <Menus.Toggle id={bookingId} />
           <Menus.List id={bookingId}>
@@ -139,7 +152,7 @@ function BookingRow({
             onConfirm={() => deleteBooking(bookingId)}
           />
         </Modal.Window>
-      </Modal>
+      </Modal> */}
     </Table.Row>
   );
 }

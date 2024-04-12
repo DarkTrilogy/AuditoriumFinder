@@ -5,36 +5,53 @@ import Empty from "../../ui/Empty";
 import { useBookings } from "./useBookings";
 import Spinner from "../../ui/Spinner";
 import BookingRow from "./BookingRow";
-import Pagination from "../../ui/Pagination";
-import FriendRow from "../friends/FriendRow";
-import { useFriends } from "../friends/useFriends";
+import { useEffect, useState } from "react";
 
 function BookingTable() {
-  const { friends, isLoading, count } = useFriends();
+  const [loading, setLoading] = useState(true);
+  let {
+    data2: bookings,
+    isLoading,
+    count,
+  } = useBookings(localStorage.getItem("lastClickedBuildingId"));
 
-  if (isLoading) return <Spinner />;
+  useEffect(() => {
+    if (!isLoading) {
+      setLoading(false);
+    }
+  }, [isLoading]);
 
-  if (!friends.length) return <Empty resourceName={"friends"} />;
+  if (loading) return <Spinner />;
+
+  if (!bookings || bookings.length === 0) {
+    console.log("asdkfl;asdf");
+    return <Empty resourceName={"bookings"} />;
+  }
 
   return (
     <Menus>
-      <Table columns="2fr 2fr 2fr 2fr 2fr 0.5fr">
+      <Table columns="2fr 2fr 2fr 2fr 2fr">
         <Table.Header>
           <div>Audience</div>
           <div>Building</div>
-          <div>Friend</div>
-          <div>Email</div>
-          <div>Status</div>
+          <div>Noise students</div>
+          <div>Quite students</div>
+          <div>Type</div>
           <div></div>
         </Table.Header>
 
-        <Table.Body
-          data={friends}
-          render={(friend) => <FriendRow key={friend.userid} friend={friend} />}
-        />
-        <Table.Footer>
+        {bookings && (
+          <Table.Body2
+            data={bookings}
+            render={(booking) => {
+              console.log("asdfasdf", booking);
+              return <BookingRow key={booking.userid} booking={booking} />;
+            }}
+          />
+        )}
+        {/* <Table.Footer>
           <Pagination count={count} />
-        </Table.Footer>
+        </Table.Footer> */}
       </Table>
     </Menus>
   );

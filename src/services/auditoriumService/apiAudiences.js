@@ -4,7 +4,8 @@ const prefixUrl = "http://10.8.0.4:8000";
 // const prefixUrl = "http://25.12.120.182:8000";
 
 // DONE
-export async function getFreeAudiencesInBuilding(building) {
+export async function getFreeAudiencesInBuilding(building, forGraph = false) {
+  console.log("GET BUILDING23", building);
   const currentDate = new Date();
   const day = currentDate.toISOString().split("T")[0];
   let hour =
@@ -17,8 +18,24 @@ export async function getFreeAudiencesInBuilding(building) {
       : currentDate.getMinutes();
 
   hour = 10; // для тестов
-  const intervalStart = day + "-" + hour + "-" + minutes;
-  const intervalEnd = day + "-" + building.lastLessonEnd;
+
+  if (hour > Number(building.lastLessonEnd.split("-")[0])) {
+    console.log("GET BUILDING3 - LATE");
+    return {
+      building: {},
+      auditoriums: {},
+    };
+  }
+
+  let intervalStart = day + "-" + hour + "-" + minutes;
+  let intervalEnd = day + "-" + building.lastLessonEnd;
+  if (forGraph) {
+    intervalStart = day + "-" + hour + "-" + minutes;
+    intervalEnd = day + "-" + hour + "-" + (minutes + 1);
+  } else {
+    intervalStart = day + "-" + hour + "-" + minutes;
+    intervalEnd = day + "-" + building.lastLessonEnd;
+  }
 
   if (hour <= Number(building.lastLessonEnd.split("-")[0])) {
     const response = await fetch(
@@ -26,6 +43,13 @@ export async function getFreeAudiencesInBuilding(building) {
     );
 
     const data = await response.json();
+    const totalAmount = response.headers.get("auditoriums_amount");
+    const freeAmount = response.headers.get("entities_amount");
+
+    localStorage.setItem("totalAmount", totalAmount);
+    localStorage.setItem("freeAmount", freeAmount);
+    console.log("GET BUILDING78", data, totalAmount, freeAmount);
+
     return data;
   } else {
     return {

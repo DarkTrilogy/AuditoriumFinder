@@ -160,7 +160,7 @@ function ReportsRow({
                 userid,
                 banRequest: {
                   userid: reportedUserId,
-                  bannedUntil: "2024-04-12 00:00:00",
+                  bannedUntil: "2024-05-01 00:00:00",
                   reason: "something bad",
                 },
               })

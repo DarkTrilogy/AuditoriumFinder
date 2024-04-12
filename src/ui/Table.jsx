@@ -89,14 +89,33 @@ function Row({ children, onClick }) {
     </StyledRow>
   );
 }
+
 function Body({ data, render }) {
   if (!data.length) return <Empty>No data to show at the moment</Empty>;
 
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
 
+function Body2({ data, render }) {
+  if (!data || !data.auditoriums || !data.building)
+    return <Empty>No data to show at the moment</Empty>;
+
+  const { auditoriums, building } = data;
+
+  // Функция для объединения данных об аудитории и здании
+  const renderWithBuilding = (auditorium) =>
+    render({ ...auditorium, building });
+
+  // Преобразовываем каждую аудиторию с данными о здании
+  const auditoriumStrings = auditoriums.map(renderWithBuilding);
+
+  // Возвращаем строки данных
+  return <StyledBody>{auditoriumStrings}</StyledBody>;
+}
+
 Table.Header = Header;
 Table.Body = Body;
+Table.Body2 = Body2;
 Table.Row = Row;
 Table.Footer = Footer;
 

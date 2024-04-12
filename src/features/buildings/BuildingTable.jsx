@@ -20,8 +20,8 @@ function BuildingTable() {
       <Table columns="30% 30% 30% 1%">
         <Table.Header>
           <div>Address</div>
-          <div>Start</div>
-          <div>End</div>
+          <div>Start lessons</div>
+          <div>End lessons</div>
         </Table.Header>
         {buildings !== undefined && (
           <Table.Body
@@ -31,7 +31,8 @@ function BuildingTable() {
                 key={building.id}
                 building={building}
                 onClick={() => {
-                  navigate(`/buildings/${building.id}`);
+                  localStorage.setItem("lastClickedBuildingId", building.id);
+                  return navigate(`/buildings/${building.id}`);
                 }}
               />
             )}

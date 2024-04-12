@@ -7,32 +7,36 @@ import { useCabins } from "../cabins/useCabins";
 import SalesChart from "./SalesChart";
 import DurationChart from "./DurationChart";
 import TodayActivity from "../check-in-out/TodayActivity";
+import { useBookings } from "../bookings/useBookings";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: auto 34rem auto;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
   gap: 2.4rem;
 `;
 
 function DashboardLayout() {
-  const { bookings, isLoading: isLoading1 } = useRecentBookings();
-  const { confirmedStays, isLoading: isLoading2, numDays } = useRecentStays();
-  const { cabins, isLoading: isLoading3 } = useCabins();
+  const { data2: bookings, isLoading: isLoading1 } = useBookings(
+    localStorage.getItem("lastClickedBuildingId"),
+    true,
+  );
 
-  if (isLoading1 || isLoading2 || isLoading3) return <Spinner />;
+  if (isLoading1) return <Spinner />;
 
   return (
     <StyledDashboardLayout>
       <Stats
-        bookings={bookings}
-        confirmedStays={confirmedStays}
-        numDays={numDays}
-        cabinCount={cabins.length}
+        totalAmount={localStorage.getItem("totalAmount")}
+        freeAmount={localStorage.getItem("freeAmount")}
       />
       {/* <TodayActivity /> */}
-      <DurationChart confirmedStays={confirmedStays} />
-      <SalesChart bookings={bookings} numDays={numDays} />
+      {/* <DurationChart bookings={bookings} /> */}
+      <SalesChart
+        bookings={bookings}
+        numDays={30}
+        totalAmount={localStorage.getItem("totalAmount")}
+      />
     </StyledDashboardLayout>
   );
 }

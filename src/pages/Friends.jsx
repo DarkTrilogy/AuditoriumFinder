@@ -5,7 +5,7 @@ import SearchBar from "../ui/SearchBar";
 function Friends() {
   return (
     <>
-      <SearchBar />
+      {/* <SearchBar /> */}
       <Heading as="h1">Your friends</Heading>
       {/* <SignupForm /> */}
       <FriendsTable />

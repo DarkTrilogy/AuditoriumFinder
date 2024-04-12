@@ -49,7 +49,10 @@ function BuildingRow({
           <Menus.List id={id}>
             <Menus.Button
               icon={<HiEye />}
-              onClick={() => navigate(`/buildings/${id}`, { state: { id } })}
+              onClick={() => {
+                localStorage.setItem("lastClickedBuildingId", id);
+                return navigate(`/buildings/${id}`, { state: { id } });
+              }}
             >
               See details
             </Menus.Button>

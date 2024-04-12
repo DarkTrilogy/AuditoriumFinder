@@ -9,7 +9,6 @@ export function useSignup() {
   const { mutate: signup, isLoading } = useMutation({
     mutationFn: signUpApi,
     onSuccess: (user, variables) => {
-      console.log("fjasld;k", user, variables);
       navigate("/login", { replace: true });
       toast.success("Account successfully verified!");
     },
