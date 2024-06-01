@@ -1,5 +1,3 @@
-// @PostMapping("/")
-
 import { LOCALHOST_AUTH } from "../constant";
 
 const prefixUrl = LOCALHOST_AUTH + "/pwd";

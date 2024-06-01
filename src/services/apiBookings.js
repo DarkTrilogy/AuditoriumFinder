@@ -1,12 +1,6 @@
-import { PAGE_SIZE } from "../utils/constants";
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getFriendList } from "./userService/apiFriends";
-import {
-  getAudienceUsers,
-  getFreeAudiencesInBuilding,
-} from "./auditoriumService/apiAudiences";
+import { getFreeAudiencesInBuilding } from "./auditoriumService/apiAudiences";
 import { getBuilding } from "./auditoriumService/apiBuildings";
 
 export async function getBookings(buildingId, forGraph = false) {
@@ -72,10 +66,6 @@ export async function getStaysTodayActivity() {
       `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`,
     )
     .order("created_at");
-
-  // Equivalent to this. But by querying this, we only download the data we actually need, otherwise we would need ALL bookings ever created
-  // (stay.status === 'unconfirmed' && isToday(new Date(stay.startDate))) ||
-  // (stay.status === 'checked-in' && isToday(new Date(stay.endDate)))
 
   if (error) {
     console.error(error);

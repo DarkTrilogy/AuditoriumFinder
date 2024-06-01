@@ -6,7 +6,6 @@ import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 
-import { useUser } from "./useUser";
 import { useUpdateUser } from "./useUpdateUser";
 import { useProfile } from "./useProfile";
 import Spinner from "../../ui/Spinner";
@@ -27,7 +26,7 @@ function UpdateUserDataForm({
   const [avatar, setAvatar] = useState(null);
   const [nick, setNick] = useState(nickname);
   const [telegramId, setTelegramId] = useState(telegramHandle);
-  const [tags, setTags] = useState(currentTags);
+  const [tags] = useState(currentTags);
   const [newTags, setNewTags] = useState([]);
 
   const [emailVisibilityTag, setEmailVisibilityTag] = useState(emailVisibility);

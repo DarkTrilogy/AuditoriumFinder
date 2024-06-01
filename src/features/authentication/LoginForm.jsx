@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-import { useLogin, useLogin1 } from "./useLogin";
+import { useLogin } from "./useLogin";
 import { useSignup } from "./useSignup";
 import { useEmailVerification } from "./useEmailVerification";
 
@@ -17,11 +16,8 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signIn, isLoading: signinLoading } = useLogin();
-  const { login, isLoading: loginLoading } = useLogin1();
-  const { signup, isLoading: signupLoading } = useSignup();
-  const { confirmCode, isLoading: confirmationLoading } =
-    useEmailVerification();
-  const navigate = useNavigate();
+  const { isLoading: signupLoading } = useSignup();
+  const { confirmCode } = useEmailVerification();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -30,15 +26,6 @@ function LoginForm() {
       if (!email || !password) return;
       emailOfCurrentUser = email;
       console.log("CURRENT_EMAIL", emailOfCurrentUser);
-      // signIn(
-      //   { email, password },
-      //   {
-      //     onSettled: () => {
-      //       setEmail("");
-      //       setPassword("");
-      //     },
-      //   },
-      // );
       signIn(
         { email, password },
         {
@@ -51,24 +38,8 @@ function LoginForm() {
     } else if (action === "Register") {
       if (!email || !password) return;
       emailOfCurrentUser = email;
-      // Our option
       console.log("EMAIL", email);
       confirmCode({ email, type: "register" });
-      // navigate("/dashboard");
-      // Supabase option
-
-      // signup(
-      //   { email, password },
-      //   {
-      //     onSettled: () => {
-      //       setEmail("");
-      //       setPassword("");
-      //     },
-      //     onError: () => {
-      //       return;
-      //     },
-      //   },
-      // );
     } else if (action === "Don't remember password?") {
       if (!email) return;
       confirmCode({ email, type: "password" });

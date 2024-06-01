@@ -16,7 +16,7 @@ function RegisterForm() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { login, isLoading: loginLoading } = useLogin();
+  const { isLoading: loginLoading } = useLogin();
   const { signup, isLoading: signupLoading } = useSignup();
 
   function handleSubmit(e) {
@@ -32,12 +32,6 @@ function RegisterForm() {
           password: password,
         };
         signup(request);
-
-        // как получить
-        // signup({ nickname, code });
-        // нужно зарегистрировать пользователя с ранее введеным email и password
-        // и отправить код на почту
-        // после этого перейти на страницу ввода кода
         break;
       case "Go back to log in":
         navigate("/login");

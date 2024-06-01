@@ -15,13 +15,11 @@ export async function createEditCabin(newCabin, id) {
 
   const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll(
     "/",
-    ""
+    "",
   );
   const imagePath = hasImagePath
     ? newCabin.image
     : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
-
-  // https://lxnzwzykdikqduyoxzmw.supabase.co/storage/v1/object/public/cabin-images/cabin-001.jpg
 
   // 1. Create cabin
   let query = supabase.from("cabins");
@@ -50,7 +48,7 @@ export async function createEditCabin(newCabin, id) {
     await supabase.from("cabins").delete().eq("id", data.id);
     console.error(storageError);
     throw new Error(
-      "Cabin image could not be uploaded and the cabin was not created"
+      "Cabin image could not be uploaded and the cabin was not created",
     );
   }
   return data;
