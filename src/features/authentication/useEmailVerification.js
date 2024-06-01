@@ -3,38 +3,6 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { sendConfirmationCode } from "../../services/authService/apiEmailVerifier";
 
-// export function useEmailVerification() {
-//   const navigate = useNavigate();
-//   let typeAction;
-
-//   const { mutate: confirmCode, isLoading } = useMutation({
-//     mutationFn: ({ email, type }) => {
-//       console.log("TYPEACTION1", email, type);
-//       typeAction = type;
-//       return sendConfirmationCode(email);
-//     },
-//     onSuccess: (user) => {
-//       console.log("TYPEACTION2", typeAction);
-
-//       if (typeAction === "register") {
-//         navigate("/register", { replace: true });
-//         toast.success(
-//           "Account successfully created! Please verify the new account from the user's email address",
-//         );
-//       } else if (typeAction === "password") {
-//         navigate("/newpassword", { replace: true });
-//         toast.success(
-//           "Password successfully changed! Please verify the new password from the user's email address",
-//         );
-//       }
-//     },
-//     onError: (err) => {
-//       toast.error("Invalid email");
-//     },
-//   });
-
-//   return { confirmCode, isLoading };
-// }
 export function useEmailVerification() {
   const navigate = useNavigate();
 

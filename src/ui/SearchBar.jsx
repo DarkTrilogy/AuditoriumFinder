@@ -39,7 +39,7 @@ const Button = styled.button.attrs({
 `;
 
 function SearchBar({ prop }) {
-  const { register, formState, handleSubmit, reset } = useForm();
+  const { handleSubmit, reset } = useForm();
   // const { errors } = formState;
   const filterField = "search";
 

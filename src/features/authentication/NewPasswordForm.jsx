@@ -8,7 +8,6 @@ import Button from "../../ui/Button";
 import SpinnerMini from "../../ui/SpinnerMini";
 import FormRowVertical from "../../ui/FormRowVertical";
 import { useNavigate } from "react-router-dom";
-import { emailOfCurrentUser } from "./LoginForm";
 import { useChangePassword } from "./useChangePassword";
 
 function NewPasswordForm() {
@@ -19,9 +18,9 @@ function NewPasswordForm() {
 
   const navigate = useNavigate();
 
-  const { signIn, isLoading: signinLoading } = useLogin();
-  const { signup, isLoading: signupLoading } = useSignup();
-  const { changePassword, isChanging } = useChangePassword();
+  const { isLoading: signinLoading } = useLogin();
+  const { isLoading: signupLoading } = useSignup();
+  const { changePassword } = useChangePassword();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -37,13 +36,6 @@ function NewPasswordForm() {
         };
 
         changePassword(request);
-        // signIn({ email: localStorage.getItem("email"), password });
-
-        // как получить
-        // signup({ nickname, code });
-        // нужно зарегистрировать пользователя с ранее введеным email и password
-        // и отправить код на почту
-        // после этого перейти на страницу ввода кода
         break;
       case "Go back to log in":
         navigate("/login");
